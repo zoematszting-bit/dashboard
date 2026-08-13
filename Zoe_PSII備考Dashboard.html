@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>PSII 備考 Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@400;600;700&family=Noto+Sans+HK:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBFBFA;
+    --surface: #FFFFFF;
+    --surface-2: #F7F6F3;
+    --text: #1A1A1A;
+    --text-muted: #787774;
+    --border: #EAEAEA;
+    --border-strong: #D4D3D0;
+    --pale-red-bg: #FDEBEC; --pale-red-text: #9F2F2D;
+    --pale-blue-bg: #E1F3FE; --pale-blue-text: #1F6C9F;
+    --pale-green-bg: #EDF3EC; --pale-green-text: #346538;
+    --pale-yellow-bg: #FBF3DB; --pale-yellow-text: #956400;
+    --accent: #1A1A1A;
+    --shadow-soft: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-hover: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Noto Sans HK', 'PingFang HK', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+    padding-bottom: env(safe-area-inset-bottom);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .serif { font-family: 'Noto Serif HK', 'Songti TC', serif; }
+  .mono { font-family: 'JetBrains Mono', 'SF Mono', monospace; }
+
+  /* ===== Layout ===== */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* ===== Header ===== */
+  header {
+    padding: 48px 16px 24px;
+    padding-top: max(48px, env(safe-area-inset-top));
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  header .eyebrow {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  header h1 {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  header .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  header .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 12px;
+  }
+
+  /* ===== Section ===== */
+  section {
+    padding: 0 0 32px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  /* ===== Bento Grid ===== */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--shadow-hover); }
+
+  .card-full { grid-column: span 2; }
+
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .card-value {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .card-value-sm {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .card-unit {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== Progress Ring ===== */
+  .ring-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .ring {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .ring svg { transform: rotate(-90deg); }
+
+  .ring-track { stroke: var(--border); }
+  .ring-fill {
+    stroke: var(--accent);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .ring-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* ===== Progress Bar ===== */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .progress-row:last-child { margin-bottom: 0; }
+
+  .progress-label {
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .progress-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+    margin-bottom: 14px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  /* ===== Tag ===== */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 9999px;
+  }
+
+  .tag-green { background: var(--pale-green-bg); color: var(--pale-green-text); }
+  .tag-blue { background: var(--pale-blue-bg); color: var(--pale-blue-text); }
+  .tag-yellow { background: var(--pale-yellow-bg); color: var(--pale-yellow-text); }
+  .tag-red { background: var(--pale-red-bg); color: var(--pale-red-text); }
+  .tag-gray { background: var(--surface-2); color: var(--text-muted); }
+
+  /* ===== Checklist ===== */
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+
+  .checklist-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease;
+  }
+
+  .checklist-item input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .checklist-item input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 5px;
+    width: 5px; height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .checklist-item input[type="checkbox"]:checked + label {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--border-strong);
+  }
+
+  .checklist-item label {
+    font-size: 13px;
+    line-height: 1.5;
+    cursor: pointer;
+    flex: 1;
+  }
+
+  /* ===== Typing Log ===== */
+  .log-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .log-row:last-child { border-bottom: none; }
+  .log-date { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .log-value { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+
+  /* ===== Resource Links ===== */
+  .link-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .link-item:last-child { border-bottom: none; }
+  .link-item:active { opacity: 0.6; }
+  .link-text { font-size: 13px; }
+  .link-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* ===== Bottom Nav ===== */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(251,251,250,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px max(8px, env(safe-area-inset-bottom));
+    z-index: 100;
+  }
+
+  .nav-btn {
+    flex: 1;
+    max-width: 90px;
+    background: none;
+    border: none;
+    padding: 8px 4px;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: 'Noto Sans HK', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-btn.active { color: var(--accent); background: var(--surface-2); }
+  .nav-btn:active { transform: scale(0.95); }
+
+  /* ===== Tab Views ===== */
+  .tab-view { display: none; animation: fadeIn 0.3s ease; }
+  .tab-view.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Typing Input ===== */
+  .typing-input-wrap {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .typing-input {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    background: var(--surface-2);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s ease;
+    -webkit-appearance: none;
+  }
+
+  .typing-input:focus { border-color: var(--accent); }
+
+  .typing-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Noto Sans HK', sans-serif;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.1s ease;
+  }
+  .typing-btn:active { transform: scale(0.96); }
+
+  /* ===== Day Type Button (Fitness) ===== */
+  .day-btn {
+    flex: 1;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 8px;
+    font-size: 12px;
+    font-family: 'Noto Sans HK', sans-serif;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
+  }
+  .day-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .day-btn:active { transform: scale(0.96); }
+
+  /* ===== Fitness Segmented Control ===== */
+  .fit-seg {
+    display: flex;
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 3px;
+    margin-bottom: 8px;
+  }
+  .fit-seg-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 9px 4px;
+    font-size: 12px;
+    font-family: 'Noto Sans HK', sans-serif;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fit-seg-btn.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-soft); }
+  .fit-sub { display: none; animation: fadeIn 0.3s ease; }
+  .fit-sub.active { display: block; }
+
+  /* ===== Macro Donut ===== */
+  .donut-wrap { display: flex; align-items: center; gap: 16px; }
+  .donut { width: 116px; height: 116px; flex-shrink: 0; position: relative; }
+  .donut svg { transform: rotate(-90deg); }
+  .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+  .donut-center .dc-val { font-family: 'Noto Serif HK', serif; font-size: 24px; font-weight: 700; line-height: 1; }
+  .donut-center .dc-unit { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+  .macro-legend { flex: 1; }
+  .macro-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12px; }
+  .macro-row:last-child { margin-bottom: 0; }
+  .macro-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .macro-row .macro-g { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+  /* ===== Horizontal Bar (muscle dist) ===== */
+  .bar-row { margin-bottom: 14px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label-line { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+  .bar-track-h { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+  .bar-fill-h { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.16,1,0.3,1); }
+
+  /* ===== Quick add pills ===== */
+  .quick-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .quick-btn {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 9999px;
+    padding: 7px 16px; font-size: 12px; font-weight: 500; font-family: 'Noto Sans HK', sans-serif;
+    color: var(--text); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s ease;
+  }
+  .quick-btn:active { transform: scale(0.95); }
+
+  /* ===== Log items ===== */
+  .log-item { padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .log-item:last-child { border-bottom: none; }
+  .log-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .log-item-title { font-size: 13px; font-weight: 500; flex: 1; }
+  .log-item-time { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); }
+  .log-item-meta { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-top: 3px; }
+  .log-del { background: none; border: none; color: var(--border-strong); font-size: 15px; cursor: pointer; padding: 0 2px; -webkit-tap-highlight-color: transparent; line-height: 1; }
+  .log-del:active { color: var(--pale-red-text); }
+
+  /* ===== Field grid (forms) ===== */
+  .field-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .field-full { grid-column: span 2; }
+  .field-label-mini { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; letter-spacing: 0.05em; }
+  .input-mini {
+    width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 9px 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--surface-2); color: var(--text);
+    outline: none; transition: border-color 0.15s ease; -webkit-appearance: none;
+  }
+  .input-mini:focus { border-color: var(--accent); }
+  .input-text { font-family: 'Noto Sans HK', sans-serif; }
+
+  /* ===== Food library ===== */
+  .lib-cat { font-size: 11px; color: var(--text-muted); margin: 16px 0 8px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+  .lib-cat:first-child { margin-top: 0; }
+  .food-tag { display: inline-block; font-size: 11px; padding: 5px 11px; border-radius: 6px; background: var(--surface-2); margin: 0 4px 6px 0; color: var(--text); }
+
+  /* ===== Period timeline ===== */
+  .timeline { position: relative; margin: 12px 8px 28px; }
+  .timeline-line { height: 6px; background: var(--surface-2); border-radius: 3px; position: relative; }
+  .timeline-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; top: -4px; transform: translateX(-50%); border: 2px solid var(--surface); }
+  .timeline-dot.period { background: var(--pale-red-text); }
+  .timeline-dot.today { background: var(--accent); }
+  .timeline-label { position: absolute; font-size: 9px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; top: 14px; transform: translateX(-50%); white-space: nowrap; }
+
+  /* ===== Schedule grid ===== */
+  .sched-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .sched-day { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; text-align: center; }
+  .sched-box {
+    background: var(--surface-2); border-radius: 6px; padding: 8px 2px; font-size: 9px; min-height: 42px;
+    cursor: pointer; border: 1px solid transparent; text-align: center; -webkit-tap-highlight-color: transparent; transition: all 0.15s ease;
+  }
+  .sched-box.active { background: var(--pale-green-bg); border-color: var(--pale-green-text); color: var(--pale-green-text); }
+  .sched-box:active { transform: scale(0.95); }
+
+  /* ===== Trend rows ===== */
+  .trend-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .trend-row:last-child { border-bottom: none; }
+  .trend-delta { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .trend-down { color: var(--pale-green-text); }
+  .trend-up { color: var(--pale-red-text); }
+
+  /* ===== Status emoji picker ===== */
+  .status-emoji-row { display: flex; gap: 6px; }
+  .status-emoji {
+    flex: 1; text-align: center; padding: 10px 2px; font-size: 20px; background: var(--surface-2);
+    border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s ease; -webkit-tap-highlight-color: transparent;
+  }
+  .status-emoji.active { border-color: var(--accent); background: var(--surface); }
+  .status-emoji:active { transform: scale(0.95); }
+
+  /* ===== Quick Info ===== */
+  .info-block {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .info-block strong { font-weight: 600; }
+  .info-block p { margin-bottom: 12px; }
+  .info-block p:last-child { margin-bottom: 0; }
+
+  /* ===== Countdown ===== */
+  .countdown-box {
+    text-align: center;
+    padding: 8px 0;
+  }
+  .countdown-num {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .countdown-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 24px 16px max(80px, calc(80px + env(safe-area-inset-bottom)));
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+
+  .spacer { height: 80px; }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="container">
+    <span class="eyebrow">備考作戰室</span>
+    <h1 class="serif">PSII 二級私人秘書</h1>
+    <p class="subtitle">Zoe 嘅 16 週備考計劃</p>
+    <p class="date" id="todayDate">2026.08.06</p>
+  </div>
+</header>
+
+<!-- ============ TAB: 總覽 ============ -->
+<div class="tab-view active" id="tab-overview">
+  <div class="container">
+
+    <!-- Countdown -->
+    <section>
+      <div class="card card-full" style="text-align:center;">
+        <div class="card-label">距離現職到期</div>
+        <div class="countdown-box">
+          <div class="countdown-num serif" id="countdown">147</div>
+          <div class="countdown-label">天 · 2026.12.31 合約完結</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overall progress -->
+    <section>
+      <p class="section-title">整體進度</p>
+      <div class="card card-full">
+        <div class="ring-wrap">
+          <div class="ring">
+            <svg width="64" height="64">
+              <circle class="ring-track" cx="32" cy="32" r="28" fill="none" stroke-width="3"/>
+              <circle class="ring-fill" cx="32" cy="32" r="28" fill="none" stroke-width="3"
+                stroke-dasharray="175.9" stroke-dashoffset="140.7" id="overallRing"/>
+            </svg>
+            <span class="ring-text" id="overallPct">20%</span>
+          </div>
+          <div style="flex:1;">
+            <div class="progress-label" style="margin-bottom:4px;">16 週計劃</div>
+            <div class="progress-num" id="weekLabel">第 1 週 / 啟動階段</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three battle lines -->
+    <section>
+      <p class="section-title">三條戰線</p>
+      <div class="bento">
+
+        <div class="card">
+          <div class="card-label">戰線一</div>
+          <div class="card-value-sm serif">打字</div>
+          <div style="margin-top:10px;">
+            <span class="tag tag-yellow">進行中</span>
+          </div>
+          <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+            <div class="progress-fill" style="width:10%;" id="typingProgress"></div>
+          </div>
+          <div class="progress-num" style="margin-top:6px;" id="typingWpm">暫未開始</div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">戰線二</div>
+          <div class="card-value-sm serif">Office 技能</div>
+          <div style="margin-top:10px;">
+            <span class="tag tag-gray">未開始</span>
+          </div>
+          <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+            <div class="progress-fill" style="width:0%;"></div>
+          </div>
+          <div class="progress-num" style="margin-top:6px;">第 7 週開始</div>
+        </div>
+
+        <div class="card card-full">
+          <div class="card-label">戰線三</div>
+          <div class="card-value-sm serif">面試準備</div>
+          <div style="margin-top:10px;">
+            <span class="tag tag-blue">提早累積中</span>
+          </div>
+          <div style="margin-top:8px; font-size:12px; color:var(--text-muted);">
+            職系知識 + 時事 + 英文浸潤 · 接到通知後集中練
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Key targets -->
+    <section>
+      <p class="section-title">關鍵目標</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">英文打字</span>
+          <span class="tag tag-yellow">40 wpm</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:10%;" id="targetTyping"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">Word 技能</span>
+          <span class="tag tag-gray">5 個主題</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;" id="targetWord"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">Excel 技能</span>
+          <span class="tag tag-gray">8 個功能</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;" id="targetExcel"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">職系知識</span>
+          <span class="tag tag-blue">背誦中</span>
+        </div>
+        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:0%;" id="targetKnowledge"></div></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 本週任務 ============ -->
+<div class="tab-view" id="tab-week">
+  <div class="container">
+    <section>
+      <p class="section-title">本週任務 · 啟動階段（第 1-2 週）</p>
+
+      <div class="card card-full">
+        <div class="checklist-item">
+          <input type="checkbox" id="t1"><label for="t1">去 csb.gov.hk 報名 PSII</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="t2"><label for="t2">手機系統語言轉做英文</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="t3"><label for="t3">搵定打字練習工具（推薦 CAACO Typing）</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="t4"><label for="t4">英文打字練習 15 分鐘</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="t5"><label for="t5">睇新聞 15-20 分鐘</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="t6"><label for="t6">搵定 Word 2016 / Excel 2016 練習環境</label>
+        </div>
+      </div>
+
+      <div class="card card-full" style="margin-top:16px;">
+        <div class="card-label">驗收標準</div>
+        <div class="info-block" style="font-size:12px;">
+          <p>· 報名確認收到</p>
+          <p>· 打字速度記錄開始</p>
+          <p>· 新聞閱讀成為每日習慣</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily habit tracker -->
+    <section>
+      <p class="section-title">每日習慣追蹤</p>
+      <div class="card card-full">
+        <div class="checklist-item">
+          <input type="checkbox" id="h1"><label for="h1">打字練習 15 分鐘</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="h2"><label for="h2">睇新聞 15 分鐘</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="h3"><label for="h3">接觸英文（手機 + 聽力）</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="h4"><label for="h4">記低今日學習內容</label>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 打字記錄 ============ -->
+<div class="tab-view" id="tab-typing">
+  <div class="container">
+    <section>
+      <p class="section-title">打字速度記錄</p>
+
+      <div class="card card-full">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:8px;">
+          <div>
+            <div class="card-label">最新成績</div>
+            <div class="card-value serif" id="latestWpm">—</div>
+            <div class="card-unit">words per minute</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="card-label">目標</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:500;">40</div>
+            <div class="card-unit">wpm 合格線</div>
+          </div>
+        </div>
+
+        <div class="progress-track" style="margin-top:16px; margin-bottom:8px;">
+          <div class="progress-fill" id="typingBar" style="width:0%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span class="progress-num">0 wpm</span>
+          <span class="progress-num">50 wpm</span>
+        </div>
+      </div>
+
+      <!-- Input new score -->
+      <div class="card card-full" style="margin-top:12px;">
+        <div class="card-label">記錄今日成績</div>
+        <div class="typing-input-wrap">
+          <input type="number" class="typing-input" id="wpmInput" placeholder="輸入 wpm" min="0" max="100">
+          <button class="typing-btn" onclick="addWpm()">記錄</button>
+        </div>
+      </div>
+
+      <!-- Log -->
+      <div class="card card-full" style="margin-top:12px;">
+        <div class="card-label">記錄歷史</div>
+        <div id="wpmLog">
+          <div class="log-row" style="color:var(--text-muted); justify-content:center;">
+            <span style="font-size:12px;">未有記錄，輸入你嘅第一個成績</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-full" style="margin-top:12px;">
+        <div class="card-label">打字練習資源</div>
+        <a class="link-item" href="https://caacotyping.com/" target="_blank">
+          <span class="link-text">CAACO Typing（免費，專為政府工）</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ============ TAB: 知識庫 ============ -->
+<div class="tab-view" id="tab-knowledge">
+  <div class="container">
+
+    <section>
+      <p class="section-title">職系知識速覽</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><strong>隸屬：</strong>一般職系，由公務員事務局一般職系處（GGO）中央管理</p>
+          <p><strong>職級：</strong>PSII → PSI → 高級 PS → PA → 高級 PA</p>
+          <p><strong>薪酬：</strong>$18,305 - $35,080（第 4-15 點）</p>
+          <p><strong>服務對象：</strong>助理處長或以下官員，可能同時服務 2-3 位上司</p>
+          <p><strong>同 ACO 分別：</strong>PSII 貼身支援特定官員；ACO 工作範圍較闊</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">面試結構</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><strong>形式：</strong>一輪面試，20-30 分鐘</p>
+          <p><strong>考官：</strong>3-4 位</p>
+          <p><strong>語言：</strong>廣東話 + 英文（約 7:3）</p>
+          <p><strong>環節：</strong>自我介紹 → 經驗 → 情境題 → 英文朗讀 → 時事題</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">情境題框架</p>
+      <div class="card card-full">
+        <div class="card-value-sm serif" style="margin-bottom:12px;">評估 → 溝通 → 提供選項 → 跟進</div>
+        <div class="info-block" style="font-size:12px;">
+          <p>· 評估重要性同緊急程度</p>
+          <p>· 主動聯絡上司或相關人士</p>
+          <p>· 俾幾個可行方案上司揀</p>
+          <p>· 善後同記錄</p>
+          <p style="margin-top:8px;"><strong>關鍵：</strong>主動、細心、處變不驚、唔越權、保密</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">時事重點範疇</p>
+      <div class="card card-full">
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="tag tag-red">北部都會區</span>
+          <span class="tag tag-blue">房屋政策</span>
+          <span class="tag tag-green">經濟金融</span>
+          <span class="tag tag-yellow">民生安老</span>
+          <span class="tag tag-blue">人才政策</span>
+          <span class="tag tag-green">AI 創科</span>
+        </div>
+        <div class="info-block" style="font-size:12px; margin-top:12px;">
+          <p><strong>來源：</strong>施政報告、財政預算案、政府新聞、立法會新聞</p>
+          <p><strong>作答框架：</strong>原則 → 利弊 → 方案（從政策制定者角度）</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 資源 ============ -->
+<div class="tab-view" id="tab-resources">
+  <div class="container">
+
+    <section>
+      <p class="section-title">官方</p>
+      <div class="card card-full">
+        <a class="link-item" href="https://www.csb.gov.hk/tc_chi/admin/grade/cs/2689.html" target="_blank">
+          <span class="link-text">公務員事務局 PSII 招聘</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">技能測試</p>
+      <div class="card card-full">
+        <a class="link-item" href="https://caacotyping.com/" target="_blank">
+          <span class="link-text">CAACO Typing 打字練習</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://civilservice.ctgoodjobs.hk/article/46880/" target="_blank">
+          <span class="link-text">CTgoodjobs 技能測試攻略</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">面試準備</p>
+      <div class="card card-full">
+        <a class="link-item" href="https://academy.csradar.com/course/ps2-interview-guide" target="_blank">
+          <span class="link-text">CSRadar PSII 面試攻略</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://csradar.com/useful-info/current-affairs-database" target="_blank">
+          <span class="link-text">CSRadar 時事搜尋器</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://www.cremock.com/post/cs-psii" target="_blank">
+          <span class="link-text">CRE Mock PSII 職位攻略</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://www.hkoff.com/psiicourse" target="_blank">
+          <span class="link-text">HKOFF PSII 面試課程</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">時事備考</p>
+      <div class="card card-full">
+        <a class="link-item" href="https://www.policyaddress.gov.hk/2025/tc/highlight.html" target="_blank">
+          <span class="link-text">2025 施政報告重點</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://www.budget.gov.hk/2025/chi/pf.html" target="_blank">
+          <span class="link-text">2025-26 財政預算案</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://www.nm.gov.hk/downloads/NM_Chi_Booklet_Web.pdf" target="_blank">
+          <span class="link-text">北部都會區行動綱領</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">考生分享</p>
+      <div class="card card-full">
+        <a class="link-item" href="https://lihkg.com/thread/551077/page/1" target="_blank">
+          <span class="link-text">LIHKG PSII 討論區</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://www.discuss.com.hk/viewthread.php?tid=31316404" target="_blank">
+          <span class="link-text">Discuss PSII 分享</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 健身塑型 ============ -->
+<div class="tab-view" id="tab-fitness">
+  <div class="container">
+
+    <!-- Segmented Control -->
+    <div class="fit-seg">
+      <button class="fit-seg-btn active" onclick="switchFit('overview', this)">總覽</button>
+      <button class="fit-seg-btn" onclick="switchFit('diet', this)">飲食</button>
+      <button class="fit-seg-btn" onclick="switchFit('exercise', this)">運動</button>
+      <button class="fit-seg-btn" onclick="switchFit('body', this)">身體</button>
+    </div>
+
+    <!-- ===== SUB: 總覽 ===== -->
+    <div class="fit-sub active" id="fit-overview">
+
+      <section>
+        <div class="card card-full">
+          <div class="ring-wrap">
+            <div class="ring">
+              <svg width="64" height="64">
+                <circle class="ring-track" cx="32" cy="32" r="28" fill="none" stroke-width="3"/>
+                <circle class="ring-fill" cx="32" cy="32" r="28" fill="none" stroke-width="3"
+                  stroke-dasharray="175.9" stroke-dashoffset="175.9" id="weightRing" style="stroke: var(--pale-green-text);"/>
+              </svg>
+              <span class="ring-text" id="weightPct">0%</span>
+            </div>
+            <div style="flex:1;">
+              <div class="card-label">減脂塑型進度</div>
+              <div class="card-value serif" id="currentWeight">57.6</div>
+              <div class="card-unit">kg · 目標 53 kg</div>
+              <div class="progress-num" style="margin-top:4px;" id="weightToGo">仲要減 4.6 kg</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">今日快覽</p>
+        <div class="card card-full">
+          <div class="progress-row">
+            <span class="progress-label">熱量</span>
+            <span class="progress-num"><span id="ovKcal">0</span> / <span id="ovKcalGoal">1750</span></span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="ovKcalBar" style="width:0%; background: var(--pale-yellow-text);"></div></div>
+          <div class="progress-row">
+            <span class="progress-label">蛋白質</span>
+            <span class="progress-num"><span id="ovProtein">0</span> / <span id="ovProteinGoal">110</span> g</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="ovProteinBar" style="width:0%; background: var(--pale-green-text);"></div></div>
+          <div class="progress-row">
+            <span class="progress-label">水分</span>
+            <span class="progress-num"><span id="ovWater">0</span> / 2000 ml</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" id="ovWaterBar" style="width:0%; background: var(--pale-blue-text);"></div></div>
+          <div style="margin-top:12px; font-size:11px; color:var(--text-muted);" id="ovDayLabel">訓練日</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">熱量循環計劃</p>
+        <div class="card card-full">
+          <div class="info-block" style="font-size:12px;">
+            <p><strong>訓練日</strong>　1,750 kcal · 蛋白 110g</p>
+            <p><strong>休息日</strong>　1,400 kcal · 蛋白 100g</p>
+            <p><strong>BMR</strong> 1,282 · <strong>TDEE</strong> 2,086 kcal</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">身體因素</p>
+        <div class="card card-full">
+          <div class="info-block" style="font-size:12px;">
+            <p><strong>多囊卵巢症 PCOS</strong> · 胰島素阻抗</p>
+            <p><strong>藥物</strong> Microgynon（調經+避孕）</p>
+            <p style="color:var(--text-muted);">體重波動要預留荷爾蒙因素</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ===== SUB: 飲食 ===== -->
+    <div class="fit-sub" id="fit-diet">
+
+      <section>
+        <div class="card card-full">
+          <div class="card-label">日型</div>
+          <div style="display:flex; gap:8px; margin-top:6px;">
+            <button class="day-btn active" onclick="setDayType('training')" id="dayBtnTraining">訓練日</button>
+            <button class="day-btn" onclick="setDayType('rest')" id="dayBtnRest">休息日</button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">今日總計</p>
+        <div class="bento">
+          <div class="card">
+            <div class="card-label">熱量</div>
+            <div class="card-value-sm serif"><span id="kcalNow">0</span></div>
+            <div class="card-unit">/ <span id="kcalGoal">1750</span> kcal</div>
+            <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="kcalBar" style="width:0%; background: var(--pale-yellow-text);"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-label">蛋白質</div>
+            <div class="card-value-sm serif"><span id="proteinNow">0</span></div>
+            <div class="card-unit">/ <span id="proteinGoal">110</span> g</div>
+            <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="proteinBar" style="width:0%; background: var(--pale-green-text);"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">三大營養素比例</p>
+        <div class="card card-full">
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="116" height="116">
+                <circle cx="58" cy="58" r="52" fill="none" stroke="var(--surface-2)" stroke-width="12"/>
+                <circle id="segProtein" cx="58" cy="58" r="52" fill="none" stroke="var(--pale-green-text)" stroke-width="12" stroke-linecap="butt"/>
+                <circle id="segCarb" cx="58" cy="58" r="52" fill="none" stroke="var(--pale-yellow-text)" stroke-width="12" stroke-linecap="butt"/>
+                <circle id="segFat" cx="58" cy="58" r="52" fill="none" stroke="var(--pale-red-text)" stroke-width="12" stroke-linecap="butt"/>
+              </svg>
+              <div class="donut-center">
+                <div class="dc-val" id="macroKcal">0</div>
+                <div class="dc-unit">kcal</div>
+              </div>
+            </div>
+            <div class="macro-legend">
+              <div class="macro-row"><span class="macro-dot" style="background:var(--pale-green-text);"></span>蛋白質<span class="macro-g" id="legProtein">0g</span></div>
+              <div class="macro-row"><span class="macro-dot" style="background:var(--pale-yellow-text);"></span>碳水<span class="macro-g" id="legCarb">0g</span></div>
+              <div class="macro-row"><span class="macro-dot" style="background:var(--pale-red-text);"></span>脂肪<span class="macro-g" id="legFat">0g</span></div>
+            </div>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">由每餐記錄自動計算 · 蛋白/碳水/脂肪理想約 30/45/25%</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">每餐記錄</p>
+        <div class="card card-full">
+          <div class="field-grid">
+            <div class="field-full">
+              <div class="field-label-mini">食物 / 餐名</div>
+              <input class="input-mini input-text" id="mealFood" placeholder="例如：豬潤米線">
+            </div>
+            <div>
+              <div class="field-label-mini">時間</div>
+              <input class="input-mini" id="mealTime" placeholder="12:30">
+            </div>
+            <div>
+              <div class="field-label-mini">熱量 kcal</div>
+              <input type="number" class="input-mini" id="mealKcal" placeholder="500">
+            </div>
+            <div>
+              <div class="field-label-mini">蛋白 g</div>
+              <input type="number" class="input-mini" id="mealP" placeholder="27">
+            </div>
+            <div>
+              <div class="field-label-mini">碳水 g</div>
+              <input type="number" class="input-mini" id="mealC" placeholder="60">
+            </div>
+            <div>
+              <div class="field-label-mini">脂肪 g</div>
+              <input type="number" class="input-mini" id="mealF" placeholder="15">
+            </div>
+            <div class="field-full">
+              <button class="typing-btn" style="width:100%;" onclick="addMeal()">＋ 記錄餐點</button>
+            </div>
+          </div>
+          <div id="mealLog" style="margin-top:14px;">
+            <div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">未有記錄</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">水分追蹤</p>
+        <div class="card card-full">
+          <div class="ring-wrap">
+            <div class="ring">
+              <svg width="64" height="64">
+                <circle class="ring-track" cx="32" cy="32" r="28" fill="none" stroke-width="3"/>
+                <circle id="waterRing" cx="32" cy="32" r="28" fill="none" stroke-width="3" stroke-dasharray="175.9" stroke-dashoffset="175.9" style="stroke: var(--pale-blue-text); stroke-linecap: round;"/>
+              </svg>
+              <span class="ring-text" id="waterPct">0%</span>
+            </div>
+            <div style="flex:1;">
+              <div class="card-label">今日飲水</div>
+              <div class="card-value-sm serif"><span id="waterNow">0</span><span style="font-size:13px;"> ml</span></div>
+              <div class="card-unit">目標 2000 ml · PCOS 宜多飲水</div>
+            </div>
+          </div>
+          <div class="quick-btns" style="margin-top:14px;">
+            <button class="quick-btn" onclick="addWater(200)">+200 ml</button>
+            <button class="quick-btn" onclick="addWater(500)">+500 ml</button>
+            <button class="quick-btn" onclick="addWater(-200)">−200</button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">低 GI 食物庫</p>
+        <div class="card card-full">
+          <div class="lib-cat">低 GI 主食（穩血糖）</div>
+          <div>
+            <span class="food-tag">糙米</span><span class="food-tag">燕麥</span><span class="food-tag">地瓜</span>
+            <span class="food-tag">藜麥</span><span class="food-tag">全麥麵包</span><span class="food-tag">蕎麥麵</span><span class="food-tag">米粉</span>
+          </div>
+          <div class="lib-cat">優質蛋白</div>
+          <div>
+            <span class="food-tag">雞胸</span><span class="food-tag">雞蛋</span><span class="food-tag">三文魚</span>
+            <span class="food-tag">豬潤</span><span class="food-tag">豆腐</span><span class="food-tag">蝦</span><span class="food-tag">希臘乳酪</span><span class="food-tag">脫脂奶</span>
+          </div>
+          <div class="lib-cat">高纖蔬果</div>
+          <div>
+            <span class="food-tag">西蘭花</span><span class="food-tag">芥菜</span><span class="food-tag">菠菜</span>
+            <span class="food-tag">金菇</span><span class="food-tag">青椒</span><span class="food-tag">火龍果</span><span class="food-tag">蘋果</span><span class="food-tag">莓果</span>
+          </div>
+          <div class="lib-cat">健康脂肪</div>
+          <div>
+            <span class="food-tag">橄欖油</span><span class="food-tag">牛油果</span><span class="food-tag">杏仁</span>
+            <span class="food-tag">合桃</span><span class="food-tag">奇亞籽</span>
+          </div>
+          <div class="lib-cat">⚠ 盡量少（高 GI / 高糖）</div>
+          <div>
+            <span class="food-tag" style="background:var(--pale-red-bg); color:var(--pale-red-text);">白飯（多）</span>
+            <span class="food-tag" style="background:var(--pale-red-bg); color:var(--pale-red-text);">白麵包</span>
+            <span class="food-tag" style="background:var(--pale-red-bg); color:var(--pale-red-text);">奶茶</span>
+            <span class="food-tag" style="background:var(--pale-red-bg); color:var(--pale-red-text);">甜品</span>
+            <span class="food-tag" style="background:var(--pale-red-bg); color:var(--pale-red-text);">炸物</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ===== SUB: 運動 ===== -->
+    <div class="fit-sub" id="fit-exercise">
+
+      <section>
+        <p class="section-title">今日訓練</p>
+        <div class="card card-full">
+          <div id="todayWorkout">
+            <div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">今日未有訓練記錄</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">訓練日誌</p>
+        <div class="card card-full">
+          <div class="field-grid">
+            <div class="field-full">
+              <div class="field-label-mini">動作名稱</div>
+              <input class="input-mini input-text" id="woExercise" placeholder="例如：寬距深蹲">
+            </div>
+            <div>
+              <div class="field-label-mini">重量 kg</div>
+              <input type="number" class="input-mini" id="woWeight" placeholder="17.5">
+            </div>
+            <div>
+              <div class="field-label-mini">下數 × 組數</div>
+              <input class="input-mini" id="woReps" placeholder="12×4">
+            </div>
+            <div class="field-full">
+              <div class="field-label-mini">肌群</div>
+              <select class="input-mini input-text" id="woGroup">
+                <option value="背">背</option>
+                <option value="胸">胸</option>
+                <option value="肩">肩</option>
+                <option value="臀">臀</option>
+                <option value="腿">腿</option>
+                <option value="手臂">手臂</option>
+                <option value="核心">核心</option>
+                <option value="有氧">有氧</option>
+              </select>
+            </div>
+            <div class="field-full">
+              <button class="typing-btn" style="width:100%;" onclick="addWorkout()">＋ 記錄動作</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">訓練排程（點選切換）</p>
+        <div class="card card-full">
+          <div class="sched-grid" id="schedGrid"></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">點格仔循環切換：臀→背→胸→肩→腿→有氧→休息→空</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">肌群訓練分佈（本週）</p>
+        <div class="card card-full">
+          <div id="muscleDist">
+            <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">記錄訓練後顯示分佈</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">力量進步追蹤</p>
+        <div class="card card-full">
+          <div class="field-label-mini">揀動作</div>
+          <select class="input-mini input-text" id="strengthSelect" onchange="renderStrength()" style="margin-bottom:14px;">
+            <option value="">— 揀動作 —</option>
+          </select>
+          <div id="strengthChart" style="text-align:center; color:var(--text-muted); font-size:12px;">揀動作查看重量變化</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ===== SUB: 身體 ===== -->
+    <div class="fit-sub" id="fit-body">
+
+      <section>
+        <p class="section-title">身體數據 · InBody 2026.04.23</p>
+        <div class="bento">
+          <div class="card">
+            <div class="card-label">體脂率</div>
+            <div class="card-value-sm serif">25.6%</div>
+            <div style="margin-top:8px;"><span class="tag tag-yellow">中高</span></div>
+          </div>
+          <div class="card">
+            <div class="card-label">骨骼肌</div>
+            <div class="card-value-sm serif">22.9<span style="font-size:13px;"> kg</span></div>
+            <div style="margin-top:8px;"><span class="tag tag-green">正常</span></div>
+          </div>
+          <div class="card">
+            <div class="card-label">腰臀比</div>
+            <div class="card-value-sm serif">0.83</div>
+            <div style="margin-top:8px;"><span class="tag tag-yellow">接近警戒</span></div>
+          </div>
+          <div class="card">
+            <div class="card-label">內臟脂肪</div>
+            <div class="card-value-sm serif">L6</div>
+            <div style="margin-top:8px;"><span class="tag tag-yellow">中等</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">體重記錄</p>
+        <div class="card card-full">
+          <div class="typing-input-wrap" style="margin-top:0;">
+            <input type="number" step="0.1" class="typing-input" id="weightInput" placeholder="輸入體重 kg">
+            <button class="typing-btn" onclick="addWeight()">記錄</button>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">建議每週一空腹、去完廁所後量度</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">身體圍度記錄</p>
+        <div class="card card-full">
+          <div class="field-grid">
+            <div><div class="field-label-mini">腰圍 cm</div><input type="number" class="input-mini" id="mWaist" placeholder="70"></div>
+            <div><div class="field-label-mini">臀圍 cm</div><input type="number" class="input-mini" id="mHip" placeholder="84"></div>
+            <div><div class="field-label-mini">大腿 cm</div><input type="number" class="input-mini" id="mThigh" placeholder="52"></div>
+            <div><div class="field-label-mini">手臂 cm</div><input type="number" class="input-mini" id="mArm" placeholder="26"></div>
+            <div class="field-full"><button class="typing-btn" style="width:100%;" onclick="addMeasurement()">＋ 記錄圍度</button></div>
+          </div>
+          <div id="measureTrend" style="margin-top:14px;">
+            <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">未有圍度記錄</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">經期週期</p>
+        <div class="card card-full">
+          <div class="card-label">記錄經期開始日</div>
+          <div class="typing-input-wrap" style="margin-top:6px;">
+            <input type="date" class="typing-input input-text" id="periodInput">
+            <button class="typing-btn" onclick="addPeriod()">記錄</button>
+          </div>
+          <div class="info-block" style="font-size:12px; margin-top:12px;">
+            <p id="periodInfo" style="margin-bottom:0;">未有記錄</p>
+          </div>
+          <div id="periodTimeline"></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">每日狀態</p>
+        <div class="card card-full">
+          <div class="field-label-mini">能量水平</div>
+          <div class="status-emoji-row" id="energyRow">
+            <div class="status-emoji" data-val="1" onclick="pickStatus('energy',this)">😫</div>
+            <div class="status-emoji" data-val="2" onclick="pickStatus('energy',this)">😦</div>
+            <div class="status-emoji" data-val="3" onclick="pickStatus('energy',this)">😐</div>
+            <div class="status-emoji" data-val="4" onclick="pickStatus('energy',this)">🙂</div>
+            <div class="status-emoji" data-val="5" onclick="pickStatus('energy',this)">😄</div>
+          </div>
+
+          <div class="field-label-mini" style="margin-top:14px;">睡眠時數</div>
+          <div class="status-emoji-row" id="sleepRow">
+            <div class="status-emoji" data-val="<5" onclick="pickStatus('sleep',this)">😣</div>
+            <div class="status-emoji" data-val="5" onclick="pickStatus('sleep',this)">5h</div>
+            <div class="status-emoji" data-val="6" onclick="pickStatus('sleep',this)">6h</div>
+            <div class="status-emoji" data-val="7" onclick="pickStatus('sleep',this)">7h</div>
+            <div class="status-emoji" data-val="8" onclick="pickStatus('sleep',this)">8h+</div>
+          </div>
+
+          <div class="field-label-mini" style="margin-top:14px;">心情</div>
+          <div class="status-emoji-row" id="moodRow">
+            <div class="status-emoji" data-val="差" onclick="pickStatus('mood',this)">😞</div>
+            <div class="status-emoji" data-val="一般" onclick="pickStatus('mood',this)">😌</div>
+            <div class="status-emoji" data-val="好" onclick="pickStatus('mood',this)">😊</div>
+            <div class="status-emoji" data-val="很好" onclick="pickStatus('mood',this)">🥰</div>
+          </div>
+
+          <div class="field-label-mini" style="margin-top:14px;">水腫情況</div>
+          <div class="status-emoji-row" id="bloatRow">
+            <div class="status-emoji" data-val="無" onclick="pickStatus('bloat',this)">✅</div>
+            <div class="status-emoji" data-val="輕微" onclick="pickStatus('bloat',this)">💧</div>
+            <div class="status-emoji" data-val="明顯" onclick="pickStatus('bloat',this)">🌊</div>
+          </div>
+
+          <button class="typing-btn" style="width:100%; margin-top:16px;" onclick="saveStatus()">儲存今日狀態</button>
+          <div id="statusSaved" style="font-size:11px; color:var(--pale-green-text); text-align:center; margin-top:8px; display:none;">已儲存 ✓</div>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  堅持每日進步少少，好過一星期爆衝一次
+</footer>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="switchTab('overview', this)">總覽</button>
+  <button class="nav-btn" onclick="switchTab('fitness', this)">健身</button>
+  <button class="nav-btn" onclick="switchTab('week', this)">本週</button>
+  <button class="nav-btn" onclick="switchTab('typing', this)">打字</button>
+  <button class="nav-btn" onclick="switchTab('knowledge', this)">知識</button>
+  <button class="nav-btn" onclick="switchTab('resources', this)">資源</button>
+</nav>
+
+<script>
+  // ===== Tab switching =====
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== Today date =====
+  const today = new Date();
+  const dateStr = today.getFullYear() + '.' +
+    String(today.getMonth() + 1).padStart(2, '0') + '.' +
+    String(today.getDate()).padStart(2, '0');
+  document.getElementById('todayDate').textContent = dateStr;
+
+  // ===== Countdown =====
+  const deadline = new Date('2026-12-31');
+  const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+  document.getElementById('countdown').textContent = daysLeft;
+
+  // ===== Checklist save (localStorage) =====
+  document.querySelectorAll('input[type="checkbox"]').forEach((cb, i) => {
+    const key = 'psii_cb_' + i;
+    if (localStorage.getItem(key) === 'true') {
+      cb.checked = true;
+    }
+    cb.addEventListener('change', () => {
+      localStorage.setItem(key, cb.checked);
+      updateProgress();
+    });
+  });
+
+  // ===== Typing WPM log (localStorage) =====
+  let wpmData = JSON.parse(localStorage.getItem('psii_wpm') || '[]');
+
+  function renderWpm() {
+    const logEl = document.getElementById('wpmLog');
+    const latestEl = document.getElementById('latestWpm');
+    const barEl = document.getElementById('typingBar');
+    const wpmTextEl = document.getElementById('typingWpm');
+
+    if (wpmData.length === 0) {
+      logEl.innerHTML = '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄，輸入你嘅第一個成績</span></div>';
+      latestEl.textContent = '—';
+      barEl.style.width = '0%';
+      return;
+    }
+
+    // Show last 7 entries reversed
+    const recent = wpmData.slice(-7).reverse();
+    logEl.innerHTML = recent.map(entry =>
+      '<div class="log-row"><span class="log-date">' + entry.date + '</span><span class="log-value">' + entry.wpm + ' wpm</span></div>'
+    ).join('');
+
+    const latest = wpmData[wpmData.length - 1].wpm;
+    latestEl.textContent = latest;
+    const pct = Math.min((latest / 50) * 100, 100);
+    barEl.style.width = pct + '%';
+
+    if (latest >= 40) {
+      wpmTextEl.textContent = latest + ' wpm · 已達標';
+    } else {
+      wpmTextEl.textContent = latest + ' wpm · 目標 40';
+    }
+  }
+
+  function addWpm() {
+    const input = document.getElementById('wpmInput');
+    const val = parseInt(input.value);
+    if (!val || val < 0) return;
+    wpmData.push({ date: dateStr, wpm: val });
+    localStorage.setItem('psii_wpm', JSON.stringify(wpmData));
+    input.value = '';
+    renderWpm();
+    updateProgress();
+  }
+
+  // ===== Progress calculation =====
+  function updateProgress() {
+    // Count task checkboxes (tab-week section)
+    const taskCbs = document.querySelectorAll('#tab-week input[type="checkbox"]');
+    const taskChecked = Array.from(taskCbs).filter(cb => cb.checked).length;
+    // Only count first card (tasks), not habit tracker - count all for now
+    const taskPct = Math.round((taskChecked / taskCbs.length) * 20); // tasks = 20% of total
+
+    // Typing progress (up to 30%)
+    let typingPct = 0;
+    if (wpmData.length > 0) {
+      const latest = wpmData[wpmData.length - 1].wpm;
+      typingPct = Math.min((latest / 40) * 30, 30);
+    }
+
+    const total = Math.min(taskPct + typingPct, 100);
+    const ringEl = document.getElementById('overallRing');
+    const pctEl = document.getElementById('overallPct');
+    const circumference = 175.9;
+    ringEl.style.strokeDashoffset = circumference - (circumference * total / 100);
+    pctEl.textContent = total + '%';
+  }
+
+  // Init
+  renderWpm();
+  updateProgress();
+
+  // Allow Enter key in typing input
+  document.getElementById('wpmInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') addWpm();
+  });
+
+  // ===== Fitness tracking (Zoe 減脂塑型) =====
+  const START_WEIGHT = 57.6;   // Day 1 基準（2026-08-13）
+  const INBODY_WEIGHT = 57.2;  // 4月 InBody 參考
+  const GOAL_WEIGHT = 53;
+  const WATER_GOAL = 2000;
+  const dayTargets = {
+    training: { kcal: 1750, protein: 110 },
+    rest: { kcal: 1400, protein: 100 }
+  };
+  const MUSCLE_COLORS = {
+    '背':'#1F6C9F','胸':'#9F2F2D','肩':'#956400','臀':'#346538',
+    '腿':'#6B5B95','手臂':'#C2548A','核心':'#5C7A69','有氧':'#787774'
+  };
+  const SCHED_CYCLE = ['', '臀', '背', '胸', '肩', '腿', '有氧', '休息'];
+  const DAY_NAMES = ['一','二','三','四','五','六','日'];
+
+  let dayType = localStorage.getItem('zoe_dayType') || 'training';
+  let weightData = JSON.parse(localStorage.getItem('zoe_weight') || '[]');
+  let meals = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
+  let water = parseInt(localStorage.getItem('zoe_water_' + dateStr) || '0');
+  let workouts = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
+  let schedule = JSON.parse(localStorage.getItem('zoe_schedule') || '{}');
+  let measurements = JSON.parse(localStorage.getItem('zoe_measurements') || '[]');
+  let periodData = JSON.parse(localStorage.getItem('zoe_period') || '[]');
+  let statusSel = {};
+
+  // ----- Sub-segment switching -----
+  function switchFit(id, btn) {
+    document.querySelectorAll('.fit-sub').forEach(s => s.classList.remove('active'));
+    document.getElementById('fit-' + id).classList.add('active');
+    document.querySelectorAll('.fit-seg-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ----- Day type -----
+  function setDayType(type) {
+    dayType = type;
+    localStorage.setItem('zoe_dayType', type);
+    renderDiet();
+    renderOverview();
+  }
+
+  // ----- Totals from meals -----
+  function mealTotals() {
+    return meals.reduce((a, m) => ({
+      kcal: a.kcal + (parseFloat(m.kcal)||0),
+      p: a.p + (parseFloat(m.p)||0),
+      c: a.c + (parseFloat(m.c)||0),
+      f: a.f + (parseFloat(m.f)||0)
+    }), { kcal:0, p:0, c:0, f:0 });
+  }
+
+  // ----- Macro donut (r=52, C=326.73) -----
+  const DONUT_C = 326.73;
+  function renderMacro() {
+    const t = mealTotals();
+    const pK = t.p*4, cK = t.c*4, fK = t.f*9;
+    const total = pK + cK + fK;
+    document.getElementById('macroKcal').textContent = Math.round(t.kcal);
+    document.getElementById('legProtein').textContent = Math.round(t.p) + 'g';
+    document.getElementById('legCarb').textContent = Math.round(t.c) + 'g';
+    document.getElementById('legFat').textContent = Math.round(t.f) + 'g';
+    const setSeg = (id, frac, offset) => {
+      const el = document.getElementById(id);
+      el.setAttribute('stroke-dasharray', (frac*DONUT_C) + ' ' + DONUT_C);
+      el.setAttribute('stroke-dashoffset', -offset*DONUT_C);
+    };
+    if (total === 0) {
+      ['segProtein','segCarb','segFat'].forEach(id => {
+        document.getElementById(id).setAttribute('stroke-dasharray', '0 ' + DONUT_C);
+      });
+    } else {
+      setSeg('segProtein', pK/total, 0);
+      setSeg('segCarb', cK/total, pK/total);
+      setSeg('segFat', fK/total, (pK+cK)/total);
+    }
+  }
+
+  // ----- Diet render (totals + donut) -----
+  function renderDiet() {
+    const t = dayTargets[dayType];
+    const tot = mealTotals();
+    document.getElementById('kcalGoal').textContent = t.kcal;
+    document.getElementById('proteinGoal').textContent = t.protein;
+    document.getElementById('kcalNow').textContent = Math.round(tot.kcal);
+    document.getElementById('proteinNow').textContent = Math.round(tot.p);
+    document.getElementById('kcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100) + '%';
+    document.getElementById('proteinBar').style.width = Math.min(tot.p/t.protein*100,100) + '%';
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    const ab = document.getElementById(dayType==='training'?'dayBtnTraining':'dayBtnRest');
+    if (ab) ab.classList.add('active');
+    renderMacro();
+  }
+
+  // ----- Meal log -----
+  function addMeal() {
+    const food = document.getElementById('mealFood').value.trim();
+    if (!food) return;
+    meals.push({
+      food, time: document.getElementById('mealTime').value || dateStr.slice(5),
+      kcal: document.getElementById('mealKcal').value || 0,
+      p: document.getElementById('mealP').value || 0,
+      c: document.getElementById('mealC').value || 0,
+      f: document.getElementById('mealF').value || 0
+    });
+    localStorage.setItem('zoe_meals_' + dateStr, JSON.stringify(meals));
+    ['mealFood','mealTime','mealKcal','mealP','mealC','mealF'].forEach(id => document.getElementById(id).value='');
+    renderMeals(); renderDiet(); renderOverview();
+  }
+  function delMeal(i) {
+    meals.splice(i,1);
+    localStorage.setItem('zoe_meals_' + dateStr, JSON.stringify(meals));
+    renderMeals(); renderDiet(); renderOverview();
+  }
+  function renderMeals() {
+    const el = document.getElementById('mealLog');
+    if (meals.length === 0) {
+      el.innerHTML = '<div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">未有記錄</div>';
+      return;
+    }
+    el.innerHTML = meals.map((m,i) =>
+      '<div class="log-item"><div class="log-item-head"><span class="log-item-title">'+m.food+'</span>'+
+      '<span><span class="log-item-time">'+m.time+'</span> <button class="log-del" onclick="delMeal('+i+')">×</button></span></div>'+
+      '<div class="log-item-meta">'+(m.kcal||0)+' kcal · P'+(m.p||0)+' C'+(m.c||0)+' F'+(m.f||0)+'</div></div>'
+    ).join('');
+  }
+
+  // ----- Water -----
+  function addWater(ml) {
+    water = Math.max(0, water + ml);
+    localStorage.setItem('zoe_water_' + dateStr, water);
+    renderWater(); renderOverview();
+  }
+  function renderWater() {
+    document.getElementById('waterNow').textContent = water;
+    const pct = Math.min(water/WATER_GOAL*100,100);
+    document.getElementById('waterPct').textContent = Math.round(pct) + '%';
+    document.getElementById('waterRing').style.strokeDashoffset = 175.9 - (175.9*pct/100);
+  }
+
+  // ----- Overview -----
+  function renderOverview() {
+    const t = dayTargets[dayType];
+    const tot = mealTotals();
+    document.getElementById('ovKcalGoal').textContent = t.kcal;
+    document.getElementById('ovProteinGoal').textContent = t.protein;
+    document.getElementById('ovKcal').textContent = Math.round(tot.kcal);
+    document.getElementById('ovProtein').textContent = Math.round(tot.p);
+    document.getElementById('ovWater').textContent = water;
+    document.getElementById('ovKcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100)+'%';
+    document.getElementById('ovProteinBar').style.width = Math.min(tot.p/t.protein*100,100)+'%';
+    document.getElementById('ovWaterBar').style.width = Math.min(water/WATER_GOAL*100,100)+'%';
+    document.getElementById('ovDayLabel').textContent = dayType==='training' ? '今日：訓練日' : '今日：休息日';
+  }
+
+  // ----- Weight -----
+  function renderWeight() {
+    let cw = START_WEIGHT;
+    if (weightData.length > 0) cw = weightData[weightData.length-1].weight;
+    document.getElementById('currentWeight').textContent = cw.toFixed(1);
+    const toLose = START_WEIGHT - GOAL_WEIGHT;
+    const lost = START_WEIGHT - cw;
+    const pct = Math.max(0, Math.min(lost/toLose*100,100));
+    document.getElementById('weightPct').textContent = Math.round(pct)+'%';
+    document.getElementById('weightRing').style.strokeDashoffset = 175.9 - (175.9*pct/100);
+    const toGo = cw - GOAL_WEIGHT;
+    document.getElementById('weightToGo').textContent = toGo>0.05 ? '仲要減 '+toGo.toFixed(1)+' kg' : '已達標 🎉';
+  }
+  function addWeight() {
+    const input = document.getElementById('weightInput');
+    const val = parseFloat(input.value);
+    if (!val || val<30 || val>100) return;
+    weightData.push({ date: dateStr, weight: val });
+    localStorage.setItem('zoe_weight', JSON.stringify(weightData));
+    input.value=''; renderWeight();
+  }
+
+  // ----- Workouts -----
+  function addWorkout() {
+    const ex = document.getElementById('woExercise').value.trim();
+    if (!ex) return;
+    workouts.push({
+      date: dateStr, exercise: ex,
+      weight: document.getElementById('woWeight').value||'',
+      reps: document.getElementById('woReps').value||'',
+      group: document.getElementById('woGroup').value
+    });
+    localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
+    document.getElementById('woExercise').value='';
+    document.getElementById('woWeight').value='';
+    document.getElementById('woReps').value='';
+    renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect();
+  }
+  function renderTodayWorkout() {
+    const el = document.getElementById('todayWorkout');
+    const todays = workouts.filter(w => w.date === dateStr);
+    if (todays.length === 0) {
+      el.innerHTML = '<div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">今日未有訓練記錄</div>';
+      return;
+    }
+    el.innerHTML = todays.map(w =>
+      '<div class="log-item"><div class="log-item-head"><span class="log-item-title">'+w.exercise+
+      ' <span class="tag tag-gray" style="margin-left:4px;">'+w.group+'</span></span>'+
+      '<span class="log-item-meta">'+w.weight+'kg · '+w.reps+'</span></div></div>'
+    ).join('');
+  }
+
+  // ----- Muscle distribution (this week) -----
+  function startOfWeek(d) {
+    const x = new Date(d);
+    const day = (x.getDay()+6)%7; // Mon=0
+    x.setDate(x.getDate()-day); x.setHours(0,0,0,0);
+    return x;
+  }
+  function renderMuscleDist() {
+    const el = document.getElementById('muscleDist');
+    const ws = startOfWeek(today);
+    const weekWos = workouts.filter(w => new Date(w.date.replace(/\./g,'-')) >= ws);
+    const counts = {};
+    weekWos.forEach(w => counts[w.group] = (counts[w.group]||0)+1);
+    const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+    if (entries.length === 0) {
+      el.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">記錄訓練後顯示分佈</div>';
+      return;
+    }
+    const max = Math.max(...entries.map(e=>e[1]));
+    el.innerHTML = entries.map(([g,n]) =>
+      '<div class="bar-row"><div class="bar-label-line"><span>'+g+'</span><span style="font-family:JetBrains Mono,monospace; font-size:11px; color:var(--text-muted);">'+n+' 組</span></div>'+
+      '<div class="bar-track-h"><div class="bar-fill-h" style="width:'+(n/max*100)+'%; background:'+(MUSCLE_COLORS[g]||'#1A1A1A')+';"></div></div></div>'
+    ).join('');
+  }
+
+  // ----- Strength progress -----
+  function rebuildStrengthSelect() {
+    const sel = document.getElementById('strengthSelect');
+    const exs = [...new Set(workouts.map(w=>w.exercise))].sort();
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">— 揀動作 —</option>' + exs.map(e=>'<option>'+e+'</option>').join('');
+    if (exs.includes(cur)) sel.value = cur;
+  }
+  function renderStrength() {
+    const ex = document.getElementById('strengthSelect').value;
+    const el = document.getElementById('strengthChart');
+    if (!ex) { el.innerHTML = '揀動作查看重量變化'; return; }
+    const recs = workouts.filter(w=>w.exercise===ex && w.weight)
+      .map(w=>({date:w.date, w:parseFloat(w.weight)}));
+    if (recs.length === 0) { el.innerHTML = '<span style="color:var(--text-muted); font-size:12px;">未有重量記錄</span>'; return; }
+    const ws = Math.min(...recs.map(r=>r.w));
+    const we = Math.max(...recs.map(r=>r.w));
+    const range = Math.max(we-ws, 1);
+    const W=280, H=90, pad=8;
+    const pts = recs.map((r,i)=>{
+      const x = recs.length===1?W/2:pad+(W-2*pad)*i/(recs.length-1);
+      const y = H-pad-(H-2*pad)*(r.w-ws)/range;
+      return [x,y,r];
+    });
+    const line = pts.map((p,i)=>(i===0?'M':'L')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    const dots = pts.map(p=>'<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3.5" fill="#1A1A1A"/>').join('');
+    el.innerHTML =
+      '<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="max-width:'+W+'px;">'+
+      '<path d="'+line+'" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
+      dots + '</svg>'+
+      '<div style="font-size:11px; color:var(--text-muted); margin-top:6px;">起點 '+ws+'kg → 最新 '+we+'kg'+
+      (we>ws?' · <span style="color:var(--pale-green-text);">進步 +'+(we-ws).toFixed(1)+'kg 💪</span>':'')+'</div>';
+  }
+
+  // ----- Schedule -----
+  function renderSchedule() {
+    const el = document.getElementById('schedGrid');
+    el.innerHTML = DAY_NAMES.map((d,i)=>{
+      const key = 'd'+i;
+      const v = schedule[key]||'';
+      return '<div><div class="sched-day">'+d+'</div><div class="sched-box'+(v?' active':'')+'" onclick="toggleSched('+i+')">'+(v||'-')+'</div></div>';
+    }).join('');
+  }
+  function toggleSched(i) {
+    const key='d'+i;
+    const cur = schedule[key]||'';
+    const idx = SCHED_CYCLE.indexOf(cur);
+    schedule[key] = SCHED_CYCLE[(idx+1)%SCHED_CYCLE.length];
+    localStorage.setItem('zoe_schedule', JSON.stringify(schedule));
+    renderSchedule();
+  }
+
+  // ----- Measurements -----
+  function addMeasurement() {
+    const m = {
+      date: dateStr,
+      waist: document.getElementById('mWaist').value||'',
+      hip: document.getElementById('mHip').value||'',
+      thigh: document.getElementById('mThigh').value||'',
+      arm: document.getElementById('mArm').value||''
+    };
+    if (!m.waist && !m.hip && !m.thigh && !m.arm) return;
+    measurements.push(m);
+    localStorage.setItem('zoe_measurements', JSON.stringify(measurements));
+    ['mWaist','mHip','mThigh','mArm'].forEach(id=>document.getElementById(id).value='');
+    renderMeasurements();
+  }
+  function renderMeasurements() {
+    const el = document.getElementById('measureTrend');
+    if (measurements.length === 0) {
+      el.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">未有圍度記錄</div>';
+      return;
+    }
+    const fields = [['waist','腰圍'],['hip','臀圍'],['thigh','大腿'],['arm','手臂']];
+    const first = measurements[0], last = measurements[measurements.length-1];
+    el.innerHTML = fields.map(([k,label])=>{
+      const fv=parseFloat(first[k]), lv=parseFloat(last[k]);
+      let delta='';
+      if (fv && lv) {
+        const diff=lv-fv;
+        delta = diff===0 ? '<span class="trend-delta">不變</span>'
+          : diff<0 ? '<span class="trend-delta trend-down">'+diff.toFixed(1)+' cm 📉</span>'
+          : '<span class="trend-delta trend-up">+'+diff.toFixed(1)+' cm</span>';
+      }
+      return '<div class="trend-row"><span>'+label+' '+(!isNaN(lv)?lv:'-')+' cm</span>'+delta+'</div>';
+    }).join('') + '<div style="font-size:10px; color:var(--text-muted); margin-top:8px;">對比首次記錄</div>';
+  }
+
+  // ----- Period -----
+  function calcPeriodStatus() {
+    const infoEl = document.getElementById('periodInfo');
+    if (periodData.length === 0) {
+      infoEl.textContent = '未有記錄。記低上次經期開始日，我幫你追蹤週期。';
+      renderPeriodTimeline();
+      return;
+    }
+    const sorted = [...periodData].sort((a,b)=>new Date(a.date)-new Date(b.date));
+    const last = sorted[sorted.length-1].date;
+    const lastDate = new Date(last);
+    const daysSince = Math.floor((today-lastDate)/(1000*60*60*24));
+    let status;
+    if (daysSince<0) status='未來經期（'+last+'）';
+    else if (daysSince<6) status='經期中 · 第 '+(daysSince+1)+' 日';
+    else if (daysSince<30) status='週期第 '+(daysSince+1)+' 日 · PCOS 週期較長屬常見';
+    else status='已遲約 '+(daysSince-30)+' 日（PCOS 週期不規律）';
+    infoEl.innerHTML = '<strong>上次開始：</strong>'+last+'<br><strong>狀態：</strong>'+status;
+    renderPeriodTimeline();
+  }
+  function renderPeriodTimeline() {
+    const el = document.getElementById('periodTimeline');
+    const sorted = [...periodData].sort((a,b)=>new Date(a.date)-new Date(b.date));
+    if (sorted.length===0) { el.innerHTML=''; return; }
+    // timeline from 35 days before earliest to today
+    const earliest = new Date(sorted[0].date); earliest.setDate(earliest.getDate()-10);
+    const span = Math.max(40, Math.floor((today-earliest)/(1000*60*60*24)));
+    const dots = sorted.map(p=>{
+      const d = new Date(p.date);
+      const pct = (d-earliest)/(1000*60*60*24)/span*100;
+      return {pct, label:p.date.slice(5), type:'period'};
+    });
+    const todayPct = (today-earliest)/(1000*60*60*24)/span*100;
+    let dotsHtml = dots.map(d=>
+      '<div class="timeline-dot '+d.type+'" style="left:'+Math.max(0,Math.min(100,d.pct))+'%;"></div>'+
+      '<div class="timeline-label" style="left:'+Math.max(0,Math.min(100,d.pct))+'%;">'+d.label+'</div>'
+    ).join('');
+    dotsHtml += '<div class="timeline-dot today" style="left:'+Math.max(0,Math.min(100,todayPct))+'%;"></div>'+
+      '<div class="timeline-label" style="left:'+Math.max(0,Math.min(100,todayPct))+'%;">今日</div>';
+    el.innerHTML = '<div class="timeline"><div class="timeline-line">'+dotsHtml+'</div></div>';
+  }
+  function addPeriod() {
+    const input = document.getElementById('periodInput');
+    if (!input.value) return;
+    periodData.push({ date: input.value });
+    localStorage.setItem('zoe_period', JSON.stringify(periodData));
+    input.value=''; calcPeriodStatus();
+  }
+
+  // ----- Daily status -----
+  function pickStatus(cat, el) {
+    const row = document.getElementById(cat+'Row');
+    row.querySelectorAll('.status-emoji').forEach(e=>e.classList.remove('active'));
+    el.classList.add('active');
+    statusSel[cat] = el.getAttribute('data-val');
+  }
+  function saveStatus() {
+    localStorage.setItem('zoe_status_'+dateStr, JSON.stringify(statusSel));
+    const s=document.getElementById('statusSaved');
+    s.style.display='block';
+    setTimeout(()=>s.style.display='none', 2000);
+  }
+  function loadStatus() {
+    const saved = JSON.parse(localStorage.getItem('zoe_status_'+dateStr)||'{}');
+    statusSel = {...saved};
+    ['energy','sleep','mood','bloat'].forEach(cat=>{
+      if (saved[cat]) {
+        const row=document.getElementById(cat+'Row');
+        row.querySelectorAll('.status-emoji').forEach(e=>{
+          if (e.getAttribute('data-val')===saved[cat]) e.classList.add('active');
+        });
+      }
+    });
+  }
+
+  // ----- Enter key helpers -----
+  document.getElementById('weightInput')?.addEventListener('keydown', e=>{ if(e.key==='Enter') addWeight(); });
+  document.getElementById('mealFood')?.addEventListener('keydown', e=>{ if(e.key==='Enter') addMeal(); });
+
+  // ----- Init -----
+  renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight();
+  renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderSchedule();
+  renderMeasurements(); calcPeriodStatus(); loadStatus();
+</script>
+
+</body>
+</html>

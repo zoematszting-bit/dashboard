@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Zoe · 總指揮台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@400;600;700&family=Noto+Sans+HK:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBFBFA;
+    --surface: #FFFFFF;
+    --surface-2: #F7F6F3;
+    --text: #1A1A1A;
+    --text-muted: #787774;
+    --border: #EAEAEA;
+    --border-strong: #D4D3D0;
+    --pale-red-bg: #FDEBEC; --pale-red-text: #9F2F2D;
+    --pale-blue-bg: #E1F3FE; --pale-blue-text: #1F6C9F;
+    --pale-green-bg: #EDF3EC; --pale-green-text: #346538;
+    --pale-yellow-bg: #FBF3DB; --pale-yellow-text: #956400;
+    --accent: #1A1A1A;
+    --shadow-soft: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-hover: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Noto Sans HK', 'PingFang HK', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+    padding-bottom: env(safe-area-inset-bottom);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .serif { font-family: 'Noto Serif HK', 'Songti TC', serif; }
+  .mono { font-family: 'JetBrains Mono', 'SF Mono', monospace; }
+
+  .container { max-width: 480px; margin: 0 auto; padding: 0 16px; }
+
+  /* ===== Header ===== */
+  header {
+    padding: 48px 16px 24px;
+    padding-top: max(48px, env(safe-area-inset-top));
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  header .eyebrow {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  header h1 {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  header .subtitle { font-size: 13px; color: var(--text-muted); }
+  header .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 12px;
+  }
+
+  /* ===== Section ===== */
+  section { padding: 0 0 32px; }
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ===== Bento Grid ===== */
+  .bento { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); }
+  .card-full { grid-column: span 2; }
+  .card-link { text-decoration: none; color: inherit; display: block; }
+  .card-link:active { transform: scale(0.99); }
+
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .card-value {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .card-value-sm {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .card-unit {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== Progress Bar ===== */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .progress-row:last-child { margin-bottom: 0; }
+  .progress-label { font-size: 13px; font-weight: 400; }
+  .progress-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+    margin-bottom: 14px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  /* ===== Tag ===== */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 9999px;
+  }
+  .tag-green { background: var(--pale-green-bg); color: var(--pale-green-text); }
+  .tag-blue { background: var(--pale-blue-bg); color: var(--pale-blue-text); }
+  .tag-yellow { background: var(--pale-yellow-bg); color: var(--pale-yellow-text); }
+  .tag-red { background: var(--pale-red-bg); color: var(--pale-red-text); }
+  .tag-gray { background: var(--surface-2); color: var(--text-muted); }
+
+  /* ===== Info Block ===== */
+  .info-block { font-size: 13px; color: var(--text); line-height: 1.7; }
+  .info-block strong { font-weight: 600; }
+  .info-block p { margin-bottom: 8px; }
+  .info-block p:last-child { margin-bottom: 0; }
+
+  /* ===== Asset Row ===== */
+  .asset-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .asset-row:last-child { border-bottom: none; }
+  .asset-name { font-size: 13px; }
+  .asset-sub { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  .asset-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; }
+  .asset-val.pos { color: var(--pale-green-text); }
+  .asset-val.neg { color: var(--pale-red-text); }
+
+  /* ===== Link Item ===== */
+  .link-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .link-item:last-child { border-bottom: none; }
+  .link-item:active { opacity: 0.6; }
+  .link-text { font-size: 13px; }
+  .link-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* ===== Checklist (inline read-only style) ===== */
+  .check-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--pale-green-text);
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .check-dot.todo { background: var(--border-strong); }
+
+  /* ===== Countdown ===== */
+  .countdown-box { text-align: center; padding: 8px 0; }
+  .countdown-num {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .countdown-label { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+  /* ===== Mini countdown grid ===== */
+  .countdown-mini {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .mini-box {
+    text-align: center;
+    padding: 14px 8px;
+    background: var(--surface-2);
+    border-radius: 10px;
+  }
+  .mini-num {
+    font-family: 'Noto Serif HK', serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .mini-label { font-size: 10px; color: var(--text-muted); margin-top: 6px; letter-spacing: 0.05em; }
+  .mini-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ===== Bottom Nav ===== */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(251,251,250,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px max(8px, env(safe-area-inset-bottom));
+    z-index: 100;
+  }
+  .nav-btn {
+    flex: 1;
+    max-width: 72px;
+    background: none;
+    border: none;
+    padding: 8px 4px;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: 'Noto Sans HK', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    letter-spacing: 0.05em;
+  }
+  .nav-btn.active { color: var(--accent); background: var(--surface-2); }
+  .nav-btn:active { transform: scale(0.95); }
+
+  /* ===== Tab Views ===== */
+  .tab-view { display: none; animation: fadeIn 0.3s ease; }
+  .tab-view.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 24px 16px max(80px, calc(80px + env(safe-area-inset-bottom)));
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+  .spacer { height: 80px; }
+
+  /* ===== Alert banner ===== */
+  .alert-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--pale-red-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(159,47,45,0.15);
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; line-height: 1.5; }
+  .alert-text { font-size: 12px; color: var(--pale-red-text); line-height: 1.5; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="container">
+    <span class="eyebrow">Personal Command Center</span>
+    <h1 class="serif">Zoe · 總指揮台</h1>
+    <p class="subtitle">備考 · 財庫 · 項目 · 安排</p>
+    <p class="date" id="todayDate">2026.08.07</p>
+  </div>
+</header>
+
+<!-- ============ TAB: 總覽 ============ -->
+<div class="tab-view active" id="tab-overview">
+  <div class="container">
+
+    <!-- Hero countdown -->
+    <section>
+      <div class="card card-full" style="text-align:center;">
+        <div class="card-label">距離現職合約完結</div>
+        <div class="countdown-box">
+          <div class="countdown-num serif" id="countdown">147</div>
+          <div class="countdown-label">天 · 2026.12.31</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Urgent alerts -->
+    <section>
+      <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15);">
+        <span class="alert-icon" style="color:var(--pale-green-text);">🎉</span>
+        <div class="alert-text" style="color:var(--pale-green-text);">
+          <strong>三張信用卡全部清零！</strong>零負債狀態
+        </div>
+      </div>
+    </section>
+
+    <!-- Net worth snapshot -->
+    <section>
+      <p class="section-title">財庫快照</p>
+      <div class="card card-full">
+        <div class="card-label">淨資產（HKD）</div>
+        <div class="card-value serif">135,624<span style="font-size:20px;">.00</span></div>
+        <div class="card-unit">資產 135,624 · 負債 0 · 零負債 ✨</div>
+      </div>
+    </section>
+
+    <!-- Four pillars -->
+    <section>
+      <p class="section-title">五大板塊</p>
+      <div class="bento">
+
+        <a class="card-link" href="#" onclick="switchTab('study', document.querySelector('.nav-btn[data-tab=study]'));return false;">
+          <div class="card">
+            <div class="card-label">備考</div>
+            <div class="card-value-sm serif">PSII</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-yellow">第 1 週</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" style="width:20%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">16 週計劃 · 20%</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('fitness', document.querySelector('.nav-btn[data-tab=fitness]'));return false;">
+          <div class="card">
+            <div class="card-label">健身</div>
+            <div class="card-value-sm serif">塑型</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-yellow">進行中</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" style="width:0%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">57.2 → 53.0 kg</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('finance', document.querySelector('.nav-btn[data-tab=finance]'));return false;">
+          <div class="card">
+            <div class="card-label">財庫</div>
+            <div class="card-value-sm serif">資產管理</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-red">2 卡到期</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" style="width:95%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">月入 22,271 · 零負債 ✨</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('web', document.querySelector('.nav-btn[data-tab=web]'));return false;">
+          <div class="card">
+            <div class="card-label">網站</div>
+            <div class="card-value-sm serif">2 個項目</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-green">已上線</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" style="width:70%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">餐廳 Menu + 打字練習</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('life', document.querySelector('.nav-btn[data-tab=life]'));return false;">
+          <div class="card">
+            <div class="card-label">安排</div>
+            <div class="card-value-sm serif">生活</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-blue">進行中</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" style="width:50%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">補習社 · 行程</div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Today focus -->
+    <section>
+      <p class="section-title">今日重點</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><span class="check-dot"></span><strong>打字練習</strong>15 分鐘（目標 40 wpm）</p>
+          <p><span class="check-dot"></span><strong>睇新聞</strong>15 分鐘（時事累積）</p>
+          <p><span class="check-dot todo"></span><strong>午膳運動</strong>2hr 時段做運動</p>
+          <p><span class="check-dot" style="background:var(--pale-green-text);"></span><strong>信用卡</strong>三張已全部清零 ✨</p>
+          <p><span class="check-dot todo"></span><strong>報名 PSII</strong>去 csb.gov.hk 確認</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 健身 ============ -->
+<div class="tab-view" id="tab-fitness">
+  <div class="container">
+
+    <section>
+      <div class="card card-full" style="text-align:center;">
+        <div class="card-label">體重目標</div>
+        <div class="countdown-box">
+          <div class="countdown-num serif">57.2<span style="font-size:20px;"> → </span>53.0</div>
+          <div class="countdown-label">kg · 減脂塑型（保留肌肉）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress -->
+    <section>
+      <p class="section-title">減脂進度</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">體重</span>
+          <span class="progress-num">待更新 / 53.0 kg</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;" id="weightProgress"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">腰臀比</span>
+          <span class="progress-num">0.83 / 0.80</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:40%;"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">體脂率</span>
+          <span class="progress-num">25.6% / 目標 &lt;24%</span>
+        </div>
+        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:30%;"></div></div>
+      </div>
+    </section>
+
+    <!-- InBody data -->
+    <section>
+      <p class="section-title">InBody 數據（2026.04.23）</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><strong>身高：</strong>161cm｜<strong>年齡：</strong>25｜<strong>性別：</strong>女</p>
+          <p><strong>體重：</strong>57.2kg｜<strong>體脂率：</strong>25.6%（正常中高）</p>
+          <p><strong>骨骼肌量：</strong>22.9kg（正常）</p>
+          <p><strong>腰臀比：</strong>0.83 ⚠️ 接近警戒線 0.85</p>
+          <p><strong>內臟脂肪：</strong>Level 6（中等）</p>
+          <p><strong>InBody Score：</strong>78/100</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Energy -->
+    <section>
+      <p class="section-title">能量需求</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <span class="asset-name">BMR 基礎代謝</span>
+          <span class="asset-val">1,282 kcal</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">TDEE 維持</span>
+          <span class="asset-val">2,086 kcal</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name"><strong>每日攝取目標</strong></span>
+          <span class="asset-val"><strong>1,600 kcal</strong></span>
+        </div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">每日熱量缺口</div>
+        <div class="card-value-sm serif" style="color:var(--pale-green-text);">-486 kcal</div>
+        <div class="card-unit">溫和減脂 · 預計每週減約 0.4kg</div>
+      </div>
+    </section>
+
+    <!-- Macros -->
+    <section>
+      <p class="section-title">營養素分配</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">蛋白質 🥩</div>
+            <div class="asset-sub">保留肌肉</div>
+          </div>
+          <span class="asset-val">105 g</span>
+        </div>
+        <div class="progress-track" style="margin-top:4px; margin-bottom:8px;"><div class="progress-fill" style="width:26%; background:var(--pale-red-text);"></div></div>
+
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">脂肪 🥑</div>
+            <div class="asset-sub">荷爾蒙健康</div>
+          </div>
+          <span class="asset-val">50 g</span>
+        </div>
+        <div class="progress-track" style="margin-top:4px; margin-bottom:8px;"><div class="progress-fill" style="width:28%; background:var(--pale-yellow-text);"></div></div>
+
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">碳水 🍚</div>
+            <div class="asset-sub">訓練能量</div>
+          </div>
+          <span class="asset-val">185 g</span>
+        </div>
+        <div class="progress-track" style="margin-top:4px; margin-bottom:0;"><div class="progress-fill" style="width:46%; background:var(--pale-blue-text);"></div></div>
+
+        <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono',monospace;">
+          蛋白質 26% · 脂肪 28% · 碳水 46%
+        </div>
+      </div>
+    </section>
+
+    <!-- Workout -->
+    <section>
+      <p class="section-title">運動安排</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><strong>時段：</strong>午膳 2hr 時段做運動</p>
+          <p><strong>目標：</strong>減脂塑型，非單純減重</p>
+          <p><strong>重點：</strong>保留肌肉 · 改善腰臀比 · 降低內臟脂肪</p>
+        </div>
+      </div>
+      <div class="card card-full" style="margin-top:12px;">
+        <div class="card-label">三大改善目標</div>
+        <div style="margin-top:8px;">
+          <div class="asset-row">
+            <span class="asset-name">🎯 腰臀比</span>
+            <span class="tag tag-red">0.83 ⚠️ 接近警戒線</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">🎯 內臟脂肪</span>
+            <span class="tag tag-yellow">Level 6（中等）</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">🎯 體脂率</span>
+            <span class="tag tag-yellow">25.6%（中高）</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weight log input -->
+    <section>
+      <p class="section-title">體重追蹤</p>
+      <div class="card card-full">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:8px;">
+          <div>
+            <div class="card-label">最新體重</div>
+            <div class="card-value serif" id="latestWeight">57.2</div>
+            <div class="card-unit">起始 · 2026.04.23</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="card-label">目標</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:500;">53.0</div>
+            <div class="card-unit">kg</div>
+          </div>
+        </div>
+        <div class="progress-track" style="margin-top:16px; margin-bottom:8px;">
+          <div class="progress-fill" id="weightBar" style="width:0%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span class="progress-num">57.2 kg</span>
+          <span class="progress-num">53.0 kg</span>
+        </div>
+      </div>
+
+      <div class="card card-full" style="margin-top:12px;">
+        <div class="card-label">記錄今日體重</div>
+        <div class="typing-input-wrap">
+          <input type="number" class="typing-input" id="weightInput" placeholder="輸入 kg" min="40" max="80" step="0.1">
+          <button class="typing-btn" onclick="addWeight()">記錄</button>
+        </div>
+      </div>
+
+      <div class="card card-full" style="margin-top:12px;">
+        <div class="card-label">記錄歷史</div>
+        <div id="weightLog">
+          <div class="log-row" style="color:var(--text-muted); justify-content:center;">
+            <span style="font-size:12px;">未有新記錄，起始 57.2kg</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 備考 ============ -->
+<div class="tab-view" id="tab-study">
+  <div class="container">
+
+    <section>
+      <div class="card card-full">
+        <div class="card-label">距離現職到期</div>
+        <div class="countdown-box">
+          <div class="countdown-num serif" id="countdown2">147</div>
+          <div class="countdown-label">天 · 2026.12.31 合約完結</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">目標</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><strong>目標：</strong>2027 年中考入二級私人秘書（PSII）</p>
+          <p><strong>流程：</strong>報名 → 資格審核 → 技能測試 → 面試 → 聘書</p>
+          <p><strong>合格線：</strong>中文打字 20 wpm · 英文打字 40 wpm · Word/Excel 2016</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">三條戰線</p>
+      <div class="bento">
+        <div class="card">
+          <div class="card-label">戰線一</div>
+          <div class="card-value-sm serif">打字</div>
+          <div style="margin-top:10px;"><span class="tag tag-yellow">進行中</span></div>
+          <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+            <div class="progress-fill" style="width:10%;"></div>
+          </div>
+          <div class="progress-num" style="margin-top:6px;">目標 40 wpm</div>
+        </div>
+        <div class="card">
+          <div class="card-label">戰線二</div>
+          <div class="card-value-sm serif">Office</div>
+          <div style="margin-top:10px;"><span class="tag tag-gray">第 7 週</span></div>
+          <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+            <div class="progress-fill" style="width:0%;"></div>
+          </div>
+          <div class="progress-num" style="margin-top:6px;">Word + Excel</div>
+        </div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">戰線三</div>
+        <div class="card-value-sm serif">面試準備</div>
+        <div style="margin-top:10px;"><span class="tag tag-blue">提早累積中</span></div>
+        <div style="margin-top:8px; font-size:12px; color:var(--text-muted);">
+          職系知識 + 時事 + 英文浸潤 · 接到通知後集中練
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">16 週計劃</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">第 1-2 週 · 啟動</span>
+          <span class="tag tag-yellow">進行中</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:30%;"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">第 3-6 週 · 打字攻堅</span>
+          <span class="tag tag-gray">未開始</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">第 7-10 週 · Word</span>
+          <span class="tag tag-gray">未開始</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">第 11-14 週 · Excel</span>
+          <span class="tag tag-gray">未開始</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">第 15-16 週 · 模考</span>
+          <span class="tag tag-gray">未開始</span>
+        </div>
+        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:0%;"></div></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">深入操作</p>
+      <div class="card card-full">
+        <a class="link-item" href="Zoe_PSII備考Dashboard.html" target="_blank">
+          <span class="link-text">📐 完整備考 Dashboard（每日任務 + 打字記錄）</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://zoematszting-bit.github.io/typing-trainer/" target="_blank">
+          <span class="link-text">⌨️ 打字練習網站（即練）</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a class="link-item" href="https://www.csb.gov.hk/tc_chi/admin/grade/cs/2689.html" target="_blank">
+          <span class="link-text">報名 PSII（公務員事務局）</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 網站 ============ -->
+<div class="tab-view" id="tab-web">
+  <div class="container">
+
+    <section>
+      <p class="section-title">上線項目</p>
+
+      <!-- Restaurant -->
+      <div class="card card-full" style="margin-bottom:12px;">
+        <div class="progress-row" style="margin-bottom:6px;">
+          <span class="card-value-sm serif">🍽️ 餐廳 Menu 匯集</span>
+          <span class="tag tag-green">已上線</span>
+        </div>
+        <div class="card-unit" style="margin-top:0;">日式燒肉 · 1 餐廳 · 11 菜式 · 3 分店</div>
+
+        <div style="margin-top:14px;">
+          <div class="asset-row">
+            <span class="asset-name">目錄 + 兩層篩選</span>
+            <span class="tag tag-green">完成</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">搜尋、排序、評分、多語言</span>
+            <span class="tag tag-green">完成</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">⭐ 加更多餐廳</span>
+            <span class="tag tag-red">待辦</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">修價格顯示、加圖片</span>
+            <span class="tag tag-yellow">待辦</span>
+          </div>
+        </div>
+
+        <a class="link-item" href="https://zoematszting-bit.github.io/restaurant-menu/" target="_blank" style="margin-top:8px; border-top:1px solid var(--border); padding-top:14px;">
+          <span class="link-text">查看網站 →</span>
+          <span class="link-arrow">↗</span>
+        </a>
+      </div>
+
+      <!-- Typing -->
+      <div class="card card-full">
+        <div class="progress-row" style="margin-bottom:6px;">
+          <span class="card-value-sm serif">⌨️ 打字練習網站</span>
+          <span class="tag tag-green">已上線</span>
+        </div>
+        <div class="card-unit" style="margin-top:0;">計時測試 · Blind Mode · WPM 分析</div>
+
+        <div style="margin-top:14px;">
+          <div class="asset-row">
+            <span class="asset-name">計時測試（30s/1m/2m/3m）</span>
+            <span class="tag tag-green">完成</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">雙行影子跟打 + Blind Mode</span>
+            <span class="tag tag-green">完成</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">結果分析 + 歷史 + 熱力圖</span>
+            <span class="tag tag-green">完成</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">Tricky Keys 一鍵練習</span>
+            <span class="tag tag-yellow">待辦</span>
+          </div>
+        </div>
+
+        <a class="link-item" href="https://zoematszting-bit.github.io/typing-trainer/" target="_blank" style="margin-top:8px; border-top:1px solid var(--border); padding-top:14px;">
+          <span class="link-text">查看網站 →</span>
+          <span class="link-arrow">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">資源</p>
+      <div class="card card-full">
+        <div class="link-item" style="cursor:default;">
+          <span class="link-text">📋 項目狀態追蹤</span>
+          <span class="tag tag-gray">桌面版</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 財庫 ============ -->
+<div class="tab-view" id="tab-finance">
+  <div class="container">
+
+    <section>
+      <div class="card card-full" style="text-align:center;">
+        <div class="card-label">淨資產（HKD）· 零負債</div>
+        <div class="countdown-box">
+          <div class="countdown-num serif">135,624<span style="font-size:24px;">.00</span></div>
+          <div class="countdown-label">截至 2026.08.10 · 資產 = 淨資產</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">每月固定收入</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">全職秘書月薪</div>
+            <div class="asset-sub">ADECCO PERSONNEL LTD</div>
+          </div>
+          <span class="asset-val pos">+17,271</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">補習社月薪</div>
+            <div class="asset-sub">每月固定</div>
+          </div>
+          <span class="asset-val pos">+5,000</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name"><strong>月入總計</strong></span>
+          <span class="asset-val pos"><strong>+22,271</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">資產明細</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">📈 富途基金（Zoe 實際）</div>
+            <div class="asset-sub">總額 85,644 · 扣除媽媽代存 10,000</div>
+          </div>
+          <span class="asset-val">75,644.74</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">🏦 中銀香港</div>
+            <div class="asset-sub">結餘</div>
+          </div>
+          <span class="asset-val">8,073.96</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">🏦 Za Bank</div>
+            <div class="asset-sub">結餘</div>
+          </div>
+          <span class="asset-val">2,905.30</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">👨🏻‍💼 Brian 應收欠款</div>
+            <div class="asset-sub">老師人工+淘寶+運費+借款</div>
+          </div>
+          <span class="asset-val">49,000.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name"><strong>總資產</strong></span>
+          <span class="asset-val"><strong>135,624.00</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">負債（信用卡）</p>
+      <div class="card card-full">
+        <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15); margin-bottom:14px;">
+          <span class="alert-icon" style="color:var(--pale-green-text);">🎉</span>
+          <div class="alert-text" style="color:var(--pale-green-text);">
+            <strong>三張信用卡全部清零！</strong>零負債狀態
+          </div>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">💳 信銀 Motion</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
+          </div>
+          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">💳 花旗 Citi Quick Cash</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
+          </div>
+          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">💳 中銀 Go 銀聯鑽石卡</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
+          </div>
+          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name"><strong>總負債</strong></span>
+          <span class="asset-val" style="color:var(--pale-green-text);"><strong>0.00 ✨</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7月現金流分析 ===== -->
+    <section>
+      <p class="section-title">7月現金流（中銀）</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <span class="asset-name">6月底結餘</span>
+          <span class="asset-val">12,382.42</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">薪金入帳（ADECCO）</div>
+            <div class="asset-sub">7/7</div>
+          </div>
+          <span class="asset-val pos">+17,271.00</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">Brian 宿舍證明資金</div>
+            <div class="asset-sub">7/1 LEE KA HEI · 已歸位</div>
+          </div>
+          <span class="asset-val pos">+80,700.00</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">轉入富途（Zoe 自己）</div>
+            <div class="asset-sub">7/3 · 已計入富途</div>
+          </div>
+          <span class="asset-val neg">-75,000.00</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">媽媽資金（已退回）</div>
+            <div class="asset-sub">已轉返媽媽帳戶</div>
+          </div>
+          <span class="asset-val neg">-5,700.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name"><strong>7月底結餘</strong></span>
+          <span class="asset-val"><strong>3,768.40</strong></span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">8月薪金入帳後</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 已回升</div>
+          </div>
+          <span class="asset-val" style="color:var(--pale-green-text);"><strong>8,073.96</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 信用卡消費分析 ===== -->
+    <section>
+      <p class="section-title">7月信用卡消費分析</p>
+
+      <!-- CITIC -->
+      <div class="card card-full" style="margin-bottom:12px;">
+        <div class="progress-row" style="margin-bottom:8px;">
+          <span class="card-value-sm serif" style="font-size:16px;">💳 信銀 Motion</span>
+          <span class="tag tag-gray">已清 ✅</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🏋️ 健身房（SnapFi）</span>
+          <span class="asset-val">568.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🚇 港鐵 MTR</span>
+          <span class="asset-val" style="color:var(--pale-yellow-text);">460.00 ⚠️</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🛒 超市（Wellcome×3 + TASTE）</span>
+          <span class="asset-val">417.70</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">📋 分期（第5/6期）</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">差1期就清</div>
+          </div>
+          <span class="asset-val">591.57</span>
+        </div>
+      </div>
+
+      <!-- Citi -->
+      <div class="card card-full">
+        <div class="progress-row" style="margin-bottom:8px;">
+          <span class="card-value-sm serif" style="font-size:16px;">💳 花旗 Citi</span>
+          <span class="tag tag-gray">已清 ✅</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">🍣 翠屋日料（Daikiya）</div>
+            <div class="asset-sub" style="color:var(--pale-red-text);">⚠️ 佔 76%</div>
+          </div>
+          <span class="asset-val" style="color:var(--pale-red-text);">2,244.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🚌 八達通增值</span>
+          <span class="asset-val">500.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🎬 電影院</span>
+          <span class="asset-val">195.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🚇 港鐵</span>
+          <span class="asset-val">15.80</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 財務健康評分 ===== -->
+    <section>
+      <p class="section-title">財務健康評分</p>
+      <div class="card card-full">
+        <div style="text-align:center; margin-bottom:16px;">
+          <div class="card-label">綜合評分</div>
+          <div class="countdown-num serif" style="color:var(--pale-green-text);">8.5<span style="font-size:20px;">/10</span></div>
+        </div>
+
+        <div class="progress-row">
+          <span class="progress-label">收入穩定性</span>
+          <span class="tag tag-green">優</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:95%; background:var(--pale-green-text);"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">信用使用率</span>
+          <span class="tag tag-green">&lt; 7%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:95%; background:var(--pale-green-text);"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">負債狀況</span>
+          <span class="tag tag-green">零負債</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:100%; background:var(--pale-green-text);"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">投資理財</span>
+          <span class="tag tag-green">有</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:80%; background:var(--pale-green-text);"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">現金緩衝</span>
+          <span class="tag tag-yellow">可加強</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:65%; background:var(--pale-yellow-text);"></div></div>
+
+        <div class="progress-row">
+          <span class="progress-label">消費控制</span>
+          <span class="tag tag-yellow">留意餐飲</span>
+        </div>
+        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:70%; background:var(--pale-yellow-text);"></div></div>
+      </div>
+
+      <div class="card card-full" style="margin-top:12px;">
+        <div class="card-label">💡 財務管家建議</div>
+        <div class="info-block" style="font-size:12px;">
+          <p>· 中銀戶口 keep 住 5,000+ 緩衝</p>
+          <p>· 大額餐飲（翠屋 2,244）每月限 1-2 次</p>
+          <p>· 港鐵 460 偏高，留意交通補貼</p>
+          <p>· 兩張卡 APR 34%+，保持全數清還</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">備註</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p>💡 富途基金總額 85,644.74，當中 10,000 為媽媽代存投資，Zoe 實際持有 75,644.74</p>
+          <p>💡 完整月結單分析：<strong>2026-08-12_銀行月結單分析.md</strong>（桌面）</p>
+          <p style="margin-top:10px; color:var(--text-muted); font-size:12px;">每月更新後跟我講，我幫你同步到此頁面</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 安排 ============ -->
+<div class="tab-view" id="tab-life">
+  <div class="container">
+
+    <section>
+      <p class="section-title">即將到來</p>
+      <div class="countdown-mini">
+        <div class="mini-box">
+          <div class="mini-num serif" id="cc4">143</div>
+          <div class="mini-label">天</div>
+          <div class="mini-sub">合約完結 · 12/31</div>
+        </div>
+        <div class="mini-box">
+          <div class="mini-num serif" style="color:var(--pale-green-text);">🎉</div>
+          <div class="mini-label">零負債</div>
+          <div class="mini-sub">三卡全清</div>
+        </div>
+        <div class="mini-box">
+          <div class="mini-num serif" style="font-size:22px;">0</div>
+          <div class="mini-label">HKD</div>
+          <div class="mini-sub">信用卡待還</div>
+        </div>
+        <div class="mini-box">
+          <div class="mini-num serif" style="font-size:22px;">49k</div>
+          <div class="mini-label">HKD</div>
+          <div class="mini-sub">Brian 應收</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">補習社業務</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><strong>角色：</strong>聯合創辦人 · 後台營運</p>
+          <p><strong>月薪：</strong>5,000 HKD（固定）</p>
+          <p><strong>課程：</strong>IB MYP 精修班 · 考試操卷班 · 功課輔導 · 專科精修 · 暑期全科精讀</p>
+        </div>
+        <div style="margin-top:12px;">
+          <div class="asset-row">
+            <span class="asset-name">📄 學費資助計劃 A3</span>
+            <span class="tag tag-green">已設計</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">📄 辦學理念 A3</span>
+            <span class="tag tag-green">已設計</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">📄 各類易拉架</span>
+            <span class="tag tag-green">已設計</span>
+          </div>
+          <div class="asset-row">
+            <span class="asset-name">📊 7月暑期班營收表</span>
+            <span class="tag tag-blue">追蹤中</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">減脂塑型計劃</p>
+      <div class="card card-full">
+        <div class="info-block">
+          <p><strong>目標：</strong>57.2kg → 53kg（減脂塑型）</p>
+          <p><strong>每日：</strong>1,600 kcal · 蛋白質 105g · 脂肪 50g · 碳水 185g</p>
+          <p><strong>運動：</strong>午膳 2hr 時段做運動</p>
+        </div>
+        <div style="margin-top:14px;">
+          <div class="progress-row">
+            <span class="progress-label">體重進度</span>
+            <span class="progress-num">57.2 → 53.0 kg</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:10px;">
+            <div class="progress-fill" style="width:0%;"></div>
+          </div>
+          <div class="progress-row">
+            <span class="progress-label">腰臀比</span>
+            <span class="progress-num">0.83 / 目標 &lt;0.80</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:0;">
+            <div class="progress-fill" style="width:40%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">資源</p>
+      <div class="card card-full">
+        <div class="link-item" style="cursor:default;">
+          <span class="link-text">🖨️ 補習社打印資料夾</span>
+          <span class="tag tag-gray">桌面版</span>
+        </div>
+        <div class="link-item" style="cursor:default;">
+          <span class="link-text">📊 暑期班營收表</span>
+          <span class="tag tag-gray">桌面版</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  一步一腳印，每日進步少少
+</footer>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview', this)">總覽</button>
+  <button class="nav-btn" data-tab="study" onclick="switchTab('study', this)">備考</button>
+  <button class="nav-btn" data-tab="fitness" onclick="switchTab('fitness', this)">健身</button>
+  <button class="nav-btn" data-tab="web" onclick="switchTab('web', this)">網站</button>
+  <button class="nav-btn" data-tab="finance" onclick="switchTab('finance', this)">財庫</button>
+  <button class="nav-btn" data-tab="life" onclick="switchTab('life', this)">安排</button>
+</nav>
+
+<script>
+  // ===== Tab switching =====
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== Today date =====
+  const today = new Date();
+  const dateStr = today.getFullYear() + '.' +
+    String(today.getMonth() + 1).padStart(2, '0') + '.' +
+    String(today.getDate()).padStart(2, '0');
+  document.getElementById('todayDate').textContent = dateStr;
+
+  // ===== Countdown to contract end (2026-12-31) =====
+  const deadline = new Date('2026-12-31');
+  const daysLeft = Math.max(0, Math.ceil((deadline - today) / (1000 * 60 * 60 * 24)));
+  document.getElementById('countdown').textContent = daysLeft;
+  document.getElementById('countdown2').textContent = daysLeft;
+
+  // ===== Mini countdowns =====
+  const events = [
+    { id: 'cc4', date: '2026-12-31' }
+  ];
+  events.forEach(ev => {
+    const d = new Date(ev.date);
+    const left = Math.max(0, Math.ceil((d - today) / (1000 * 60 * 60 * 24)));
+    const el = document.getElementById(ev.id);
+    if (el) el.textContent = left;
+  });
+
+  // ===== Weight log (localStorage) =====
+  const START_WEIGHT = 57.2;
+  const TARGET_WEIGHT = 53.0;
+  let weightData = JSON.parse(localStorage.getItem('zoe_weight') || '[]');
+
+  function renderWeight() {
+    const logEl = document.getElementById('weightLog');
+    const latestEl = document.getElementById('latestWeight');
+    const barEl = document.getElementById('weightBar');
+    const overviewBar = document.getElementById('weightProgress');
+
+    // Current = latest logged, or start weight if none
+    const current = weightData.length > 0 ? weightData[weightData.length - 1].weight : START_WEIGHT;
+    latestEl.textContent = current.toFixed(1);
+
+    // Progress: how far from start toward target
+    const totalChange = START_WEIGHT - TARGET_WEIGHT; // 4.2
+    const currentChange = START_WEIGHT - current;
+    const pct = Math.max(0, Math.min(100, Math.round((currentChange / totalChange) * 100)));
+    barEl.style.width = pct + '%';
+    if (overviewBar) overviewBar.style.width = pct + '%';
+
+    if (weightData.length === 0) {
+      logEl.innerHTML = '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有新記錄，起始 ' + START_WEIGHT.toFixed(1) + 'kg</span></div>';
+      return;
+    }
+
+    const recent = weightData.slice(-7).reverse();
+    logEl.innerHTML = recent.map(entry => {
+      const diff = entry.weight - START_WEIGHT;
+      const diffStr = diff <= 0 ? '<span style="color:var(--pale-green-text);">' + diff.toFixed(1) + '</span>' : '<span style="color:var(--pale-red-text);">+' + diff.toFixed(1) + '</span>';
+      return '<div class="log-row"><span class="log-date">' + entry.date + '</span><span class="log-value">' + entry.weight.toFixed(1) + ' kg ' + diffStr + '</span></div>';
+    }).join('');
+  }
+
+  function addWeight() {
+    const input = document.getElementById('weightInput');
+    const val = parseFloat(input.value);
+    if (!val || val < 40 || val > 80) return;
+    weightData.push({ date: dateStr, weight: val });
+    localStorage.setItem('zoe_weight', JSON.stringify(weightData));
+    input.value = '';
+    renderWeight();
+  }
+
+  renderWeight();
+  document.getElementById('weightInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') addWeight();
+  });
+</script>
+
+</body>
+</html>
