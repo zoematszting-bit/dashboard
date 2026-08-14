@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>PSII 備考 Dashboard</title>
+<title>Zoe · 個人儀表板</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@400;600;700&family=Noto+Sans+HK:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -596,9 +596,9 @@
 <!-- ============ HEADER ============ -->
 <header>
   <div class="container">
-    <span class="eyebrow">備考作戰室</span>
-    <h1 class="serif">PSII 二級私人秘書</h1>
-    <p class="subtitle">Zoe 嘅 16 週備考計劃</p>
+    <span class="eyebrow" id="headerEyebrow">備考作戰室</span>
+    <h1 class="serif" id="headerTitle">PSII 二級私人秘書</h1>
+    <p class="subtitle" id="headerSubtitle">Zoe 嘅 16 週備考計劃</p>
     <p class="date" id="todayDate">2026.08.06</p>
   </div>
 </header>
@@ -1433,12 +1433,32 @@
 </nav>
 
 <script>
+  // ===== Per-tab branding (header + title + footer) =====
+  const tabBranding = {
+    overview:  { eyebrow:'備考作戰室', title:'PSII 二級私人秘書', sub:'Zoe 嘅 16 週備考計劃', footer:'堅持每日進步少少，好過一星期爆衝一次' },
+    fitness:   { eyebrow:'健身塑型', title:'減脂塑型計劃', sub:'Zoe 嘅 減脂旅程', footer:'減脂唔睇一日，睇長期趨勢 · 繼續堅持 💪' },
+    week:      { eyebrow:'備考作戰室', title:'本週任務', sub:'PSII 備考計劃', footer:'堅持每日進步少少，好過一星期爆衝一次' },
+    typing:    { eyebrow:'備考作戰室', title:'打字訓練', sub:'PSII 技能測試', footer:'打字靠日積月累，每日 15 分鐘就得' },
+    knowledge: { eyebrow:'備考作戰室', title:'職系知識', sub:'PSII 面試準備', footer:'知識要反覆溫習，先記得牢' },
+    resources: { eyebrow:'備考作戰室', title:'備考資源', sub:'PSII 工具與連結', footer:'善用資源，事半功倍' }
+  };
+  function applyBranding(tabId) {
+    const b = tabBranding[tabId] || tabBranding.overview;
+    document.getElementById('headerEyebrow').textContent = b.eyebrow;
+    document.getElementById('headerTitle').textContent = b.title;
+    document.getElementById('headerSubtitle').textContent = b.sub;
+    document.title = b.title + ' · Zoe';
+    const f = document.querySelector('footer');
+    if (f) f.textContent = b.footer;
+  }
+
   // ===== Tab switching =====
   function switchTab(tabId, btn) {
     document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
     document.getElementById('tab-' + tabId).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    applyBranding(tabId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1479,6 +1499,8 @@
       logEl.innerHTML = '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄，輸入你嘅第一個成績</span></div>';
       latestEl.textContent = '—';
       barEl.style.width = '0%';
+      const tp0 = document.getElementById('typingProgress'); if (tp0) tp0.style.width = '0%';
+      const tt0 = document.getElementById('targetTyping'); if (tt0) tt0.style.width = '0%';
       return;
     }
 
@@ -1492,6 +1514,10 @@
     latestEl.textContent = latest;
     const pct = Math.min((latest / 50) * 100, 100);
     barEl.style.width = pct + '%';
+    // sync overview battle-line bar + key-target bar (goal = 40 wpm)
+    const goalPct = Math.min((latest / 40) * 100, 100);
+    const tp = document.getElementById('typingProgress'); if (tp) tp.style.width = goalPct + '%';
+    const tt = document.getElementById('targetTyping'); if (tt) tt.style.width = goalPct + '%';
 
     if (latest >= 40) {
       wpmTextEl.textContent = latest + ' wpm · 已達標';
@@ -1545,7 +1571,6 @@
 
   // ===== Fitness tracking (Zoe 減脂塑型) =====
   const START_WEIGHT = 57.6;   // Day 1 基準（2026-08-13）
-  const INBODY_WEIGHT = 57.2;  // 4月 InBody 參考
   const GOAL_WEIGHT = 53;
   const WATER_GOAL = 2000;
   const dayTargets = {
