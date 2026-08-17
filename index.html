@@ -519,6 +519,47 @@
   .status-emoji.active { border-color: var(--accent); background: var(--surface); }
   .status-emoji:active { transform: scale(0.95); }
 
+  /* ===== Yoga Module CSS ===== */
+  .yoga-seg { display: flex; background: var(--surface-2); border-radius: 10px; padding: 3px; gap: 3px; margin-bottom: 8px; }
+  .yoga-seg-btn { flex: 1; background: none; border: none; padding: 9px 4px; font-size: 12px; font-family: 'Noto Sans HK', sans-serif; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
+  .yoga-seg-btn.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-soft); }
+  .yoga-sub { display: none; animation: fadeIn 0.3s ease; }
+  .yoga-sub.active { display: block; }
+
+  .mod-card { border: 1px solid var(--border); border-radius: 10px; background: var(--surface); margin-bottom: 10px; overflow: hidden; }
+  .mod-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .mod-head:active { background: var(--surface-2); }
+  .mod-name { font-size: 13px; font-weight: 600; }
+  .mod-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+  .mod-right { display: flex; align-items: center; gap: 8px; }
+  .mod-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); }
+  .mod-arrow { font-size: 11px; color: var(--text-muted); transition: transform 0.2s ease; }
+  .mod-card.open .mod-arrow { transform: rotate(90deg); }
+  .mod-bar { height: 3px; background: var(--surface-2); }
+  .mod-bar-fill { height: 100%; background: var(--pale-green-text); transition: width 0.4s ease; }
+  .mod-topics { display: none; padding: 6px 14px 12px; border-top: 1px solid var(--border); }
+  .mod-card.open .mod-topics { display: block; }
+  .topic-item { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 13px; -webkit-tap-highlight-color: transparent; }
+  .topic-item:last-child { border-bottom: none; }
+  .topic-box { width: 18px; height: 18px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; position: relative; transition: all 0.15s ease; }
+  .topic-item.done .topic-box { background: var(--pale-green-text); border-color: var(--pale-green-text); }
+  .topic-item.done .topic-box::after { content: ''; position: absolute; top: 2px; left: 5px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .topic-item.done .topic-name { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--border-strong); }
+
+  .week-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .week-pill { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 10px; font-size: 12px; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s ease; color: var(--text); }
+  .week-pill.done { background: var(--pale-green-bg); border-color: var(--pale-green-text); color: var(--pale-green-text); font-weight: 500; }
+  .week-pill:active { transform: scale(0.96); }
+  .week-pill .wp-sub { display: block; font-size: 9px; color: var(--text-muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+  .ylog-item { padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .ylog-item:last-child { border-bottom: none; }
+  .ylog-head { display: flex; align-items: center; gap: 6px; }
+  .ylog-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); margin-left: auto; }
+  .ylog-content { font-size: 13px; margin-top: 4px; line-height: 1.55; }
+  .ylog-meta { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-top: 3px; }
+  .ylog-q-solved { text-decoration: line-through; text-decoration-color: var(--border-strong); color: var(--text-muted); }
+
 </style>
 </head>
 <body>
@@ -528,7 +569,7 @@
   <div class="container">
     <span class="eyebrow">Personal Command Center</span>
     <h1 class="serif">Zoe · 總指揮台</h1>
-    <p class="subtitle">備考 · 財庫 · 項目 · 安排</p>
+    <p class="subtitle">備考 · 瑜伽 · 健身 · 財庫 · 網站 · 安排</p>
     <p class="date" id="todayDate">2026.08.07</p>
   </div>
 </header>
@@ -570,7 +611,7 @@
 
     <!-- Four pillars -->
     <section>
-      <p class="section-title">五大板塊</p>
+      <p class="section-title">六大板塊</p>
       <div class="bento">
 
         <a class="card-link" href="#" onclick="switchTab('study', document.querySelector('.nav-btn[data-tab=study]'));return false;">
@@ -599,6 +640,21 @@
             </div>
             <div class="progress-num" style="margin-top:6px;" id="fitCardInfo">57.6 → 53.0 kg</div>
             <div class="progress-num" id="fitCardToday" style="margin-top:2px;">今日 0 / 1750 kcal</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('yoga', document.querySelector('.nav-btn[data-tab=yoga]'));return false;">
+          <div class="card">
+            <div class="card-label">瑜伽</div>
+            <div class="card-value-sm serif">YT200</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-blue">自學中</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" id="yogaCardBar" style="width:0%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;" id="yogaCardMod">模組一 · 基礎入門</div>
+            <div class="progress-num" id="yogaCardHrs" style="margin-top:2px;">理論 0h · 實踐 0h</div>
           </div>
         </a>
 
@@ -941,6 +997,7 @@
                 <option value="手臂">手臂</option>
                 <option value="核心">核心</option>
                 <option value="有氧">有氧</option>
+                <option value="瑜伽">瑜伽</option>
               </select>
             </div>
             <div class="field-full">
@@ -1092,6 +1149,159 @@
         </div>
       </section>
 
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 瑜伽 ============ -->
+<div class="tab-view" id="tab-yoga">
+  <div class="container">
+
+    <!-- Segmented Control -->
+    <div class="yoga-seg">
+      <button class="yoga-seg-btn active" onclick="switchYoga('overview', this)">總覽</button>
+      <button class="yoga-seg-btn" onclick="switchYoga('modules', this)">模組</button>
+      <button class="yoga-seg-btn" onclick="switchYoga('log', this)">日誌</button>
+    </div>
+
+    <!-- ===== SUB: 總覽 ===== -->
+    <div class="yoga-sub active" id="yoga-overview">
+
+      <section>
+        <div class="card card-full" style="text-align:center;">
+          <div class="card-label">YT200 導師之路</div>
+          <div class="countdown-box">
+            <div class="countdown-num serif" id="yogaTotalHrs">0</div>
+            <div class="countdown-label">總累積小時 · 目標 250 hr（理論 150 + 實踐 100）</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">時數累積</p>
+        <div class="card card-full">
+          <div class="progress-row">
+            <span class="progress-label">📖 理論自修</span>
+            <span class="progress-num"><span id="yogaTheoryHrs">0</span> / 150 hr</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="yogaTheoryBar" style="width:0%; background: var(--pale-green-text);"></div></div>
+          <div class="progress-row">
+            <span class="progress-label">🧘 實踐練習（健身板塊自動同步）</span>
+            <span class="progress-num"><span id="yogaPracticeHrs">0</span> / 100 hr</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" id="yogaPracticeBar" style="width:0%; background: var(--pale-blue-text);"></div></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">本週學習節奏</p>
+        <div class="card card-full">
+          <div class="week-grid" id="yogaWeekGrid"></div>
+          <div class="progress-track" style="margin-top:14px; margin-bottom:6px;"><div class="progress-fill" id="yogaWeekBar" style="width:0%;"></div></div>
+          <div style="font-size:10px; color:var(--text-muted); font-family:'JetBrains Mono',monospace;" id="yogaWeekLabel"></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">當前模組</p>
+        <div class="card card-full">
+          <div class="ring-wrap">
+            <div class="ring">
+              <svg width="64" height="64">
+                <circle class="ring-track" cx="32" cy="32" r="28" fill="none" stroke-width="3"/>
+                <circle id="yogaModRing" cx="32" cy="32" r="28" fill="none" stroke-width="3" stroke-dasharray="175.9" stroke-dashoffset="175.9" style="stroke: var(--pale-green-text); stroke-linecap: round;"/>
+              </svg>
+              <span class="ring-text" id="yogaModPct">0%</span>
+            </div>
+            <div style="flex:1;">
+              <div class="card-value-sm serif" id="yogaModName">模組一 · 基礎入門</div>
+              <div class="card-unit" id="yogaModSub">第 1-2 個月</div>
+              <div class="progress-num" style="margin-top:4px;" id="yogaModCount">0 / 7 主題</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">路線圖</p>
+        <div class="card card-full">
+          <div class="info-block" style="font-size:12px;">
+            <p><strong>而家：</strong>自學打好基礎（12 個月 · 6 模組）</p>
+            <p><strong>之後：</strong>報 CEF 資助課程攞 RYT 200 牌</p>
+            <p><strong>慳錢路線：</strong>自學 250hr &gt; 正式課程 200hr，贏在起跑線</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ===== SUB: 模組 ===== -->
+    <div class="yoga-sub" id="yoga-modules">
+      <section>
+        <p class="section-title">六大模組 · 進度地圖</p>
+        <div class="card card-full" style="margin-bottom:12px;">
+          <div class="progress-row">
+            <span class="progress-label">整體進度</span>
+            <span class="progress-num" id="yogaAllCount">0 / 0 主題</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" id="yogaAllBar" style="width:0%;"></div></div>
+        </div>
+        <div id="yogaModules"></div>
+        <div style="font-size:10px; color:var(--text-muted);">撳模組展開 · 撳主題打勾 ✅</div>
+      </section>
+    </div>
+
+    <!-- ===== SUB: 日誌 ===== -->
+    <div class="yoga-sub" id="yoga-log">
+      <section>
+        <p class="section-title">記錄學習 / 筆記 / 疑問</p>
+        <div class="card card-full">
+          <div class="field-grid">
+            <div>
+              <div class="field-label-mini">類型</div>
+              <select class="input-mini input-text" id="ylType">
+                <option value="理論">📖 理論</option>
+                <option value="筆記">📝 筆記</option>
+                <option value="疑問">❓ 疑問</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label-mini">模組</div>
+              <select class="input-mini input-text" id="ylModule">
+                <option value="m1">一 基礎</option><option value="m2">二 站姿</option>
+                <option value="m3">三 前屈</option><option value="m4">四 後彎</option>
+                <option value="m5">五 倒立</option><option value="m6">六 教學</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label-mini">分鐘（理論計時數）</div>
+              <input type="number" class="input-mini" id="ylMins" placeholder="30">
+            </div>
+            <div>
+              <div class="field-label-mini">主題（選填）</div>
+              <input class="input-mini input-text" id="ylTopic" placeholder="例如：拜日式 A">
+            </div>
+            <div class="field-full">
+              <div class="field-label-mini">內容</div>
+              <input class="input-mini input-text" id="ylContent" placeholder="學到咩 / 筆記 / 唔明嘅地方">
+            </div>
+            <div class="field-full">
+              <button class="typing-btn" style="width:100%;" onclick="addYogaLog()">＋ 記錄</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">學習日誌 · 疑問簿</p>
+        <div class="card card-full">
+          <div id="yogaLog">
+            <div class="ylog-item" style="color:var(--text-muted); text-align:center;">未有記錄</div>
+          </div>
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">❓ 疑問撳一下 = 已解決（刪除線）· 下次問我記得貼過嚟</div>
+      </section>
     </div>
 
   </div>
@@ -1698,7 +1908,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.5 · 2026.08.17</span>
+  <span style="font-size:10px; opacity:0.5;">v2.6 · 2026.08.17</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -1706,6 +1916,7 @@
   <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview', this)">總覽</button>
   <button class="nav-btn" data-tab="study" onclick="switchTab('study', this)">備考</button>
   <button class="nav-btn" data-tab="fitness" onclick="switchTab('fitness', this)">健身</button>
+  <button class="nav-btn" data-tab="yoga" onclick="switchTab('yoga', this)">瑜伽</button>
   <button class="nav-btn" data-tab="web" onclick="switchTab('web', this)">網站</button>
   <button class="nav-btn" data-tab="finance" onclick="switchTab('finance', this)">財庫</button>
   <button class="nav-btn" data-tab="life" onclick="switchTab('life', this)">安排</button>
@@ -1756,7 +1967,7 @@
   };
   const MUSCLE_COLORS = {
     '背':'#1F6C9F','胸':'#9F2F2D','肩':'#956400','臀':'#346538',
-    '腿':'#6B5B95','手臂':'#C2548A','核心':'#5C7A69','有氧':'#787774'
+    '腿':'#6B5B95','手臂':'#C2548A','核心':'#5C7A69','有氧':'#787774','瑜伽':'#8B7355'
   };
   const SCHED_CYCLE = ['', '臀', '背', '胸', '肩', '腿', '有氧', '休息'];
   const DAY_NAMES = ['一','二','三','四','五','六','日'];
@@ -1944,7 +2155,7 @@
     document.getElementById('woExercise').value='';
     document.getElementById('woWeight').value='';
     document.getElementById('woReps').value='';
-    renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect();
+    renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderYogaHours();
   }
   function renderTodayWorkout() {
     const el = document.getElementById('todayWorkout');
@@ -2153,9 +2364,189 @@
   document.getElementById('mealFood')?.addEventListener('keydown', e=>{ if(e.key==='Enter') addMeal(); });
 
   // ----- Init -----
+  // ===== Yoga YT200 Module =====
+  const YOGA_MODULES = [
+    {id:'m1', name:'模組一 · 基礎入門', sub:'第 1-2 個月', topics:['拜日式 A','拜日式 B','基本站姿（山式/下犬/平板/嬰兒式）','骨骼系統','脊椎結構','關節類型','瑜伽歷史五大時期']},
+    {id:'m2', name:'模組二 · 站姿系列', sub:'第 3-4 個月', topics:['戰士一、二、三','三角式＋側角式','平衡體式（樹式/鷹式）','肌肉系統','核心肌群','肩膀結構','八支瑜伽入門']},
+    {id:'m3', name:'模組三 · 前屈扭轉', sub:'第 5-6 個月', topics:['前屈體式','扭轉體式','筋膜系統','肌腱 vs 韌帶','生物力學','瑜伽經']},
+    {id:'m4', name:'模組四 · 後彎開髖', sub:'第 7-8 個月', topics:['後彎（眼鏡蛇/駱駝/橋/輪）','開髖（鴿子/牛面式）','神經系統','迷走神經','Yamas ＋ Niyamas']},
+    {id:'m5', name:'模組五 · 倒立平衡', sub:'第 9-10 個月', topics:['倒立（頭/肩/靠牆腿）','手臂平衡（烏鴉式）','呼吸系統','Pranayama 生理影響','薄伽梵歌','八支 6-8 支']},
+    {id:'m6', name:'模組六 · 整合教學', sub:'第 11-12 個月', topics:['脈輪','經絡 Nadis','鞘層 Koshas','呼吸法實踐（Ujjayi 等）','口令技巧 Cueing','課堂編排','觀察＋調整','教學練習']}
+  ];
+  const WEEK_ITEMS = [
+    {k:'w1', label:'平日理論 ①', sub:'30 min'},
+    {k:'w2', label:'平日理論 ②', sub:'30 min'},
+    {k:'sat', label:'週六深入學習', sub:'1 hr'},
+    {k:'sun', label:'週日複習＋筆記', sub:'30 min'},
+    {k:'p1', label:'實踐堂 ①', sub:'瑜伽課'},
+    {k:'p2', label:'實踐堂 ②', sub:'瑜伽課'}
+  ];
+  const TYPE_TAGS = { '理論':'tag-green', '筆記':'tag-blue', '疑問':'tag-yellow' };
+
+  let yogaTopics = JSON.parse(localStorage.getItem('zoe_yoga_topics') || '{}');
+  let yogaLogs = JSON.parse(localStorage.getItem('zoe_yoga_log') || '[]');
+
+  function isoWeekKey(d) {
+    const x = new Date(d);
+    const day = (x.getDay()+6)%7;
+    x.setDate(x.getDate()-day+3);
+    const firstThu = new Date(x.getFullYear(),0,4);
+    const wk = 1 + Math.round(((x - firstThu)/86400000 - 3 + ((firstThu.getDay()+6)%7))/7);
+    return x.getFullYear() + '-W' + wk;
+  }
+
+  function switchYoga(id, btn) {
+    document.querySelectorAll('.yoga-sub').forEach(s => s.classList.remove('active'));
+    document.getElementById('yoga-' + id).classList.add('active');
+    document.querySelectorAll('.yoga-seg-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ----- 時數：理論（日誌）+ 實踐（健身同步）-----
+  function yogaTheoryMins() {
+    return yogaLogs.filter(l => l.type === '理論').reduce((a,l) => a + (parseInt(l.mins)||0), 0);
+  }
+  function yogaPracticeMins() {
+    return workouts.filter(w => w.group === '瑜伽')
+      .reduce((a,w) => a + (parseInt(String(w.reps).replace(/[^0-9]/g,''))||0), 0);
+  }
+  function renderYogaHours() {
+    const tH = yogaTheoryMins()/60, pH = yogaPracticeMins()/60;
+    const tEl = document.getElementById('yogaTheoryHrs');
+    if (!tEl) return;
+    tEl.textContent = (Math.round(tH*10)/10);
+    document.getElementById('yogaPracticeHrs').textContent = (Math.round(pH*10)/10);
+    document.getElementById('yogaTheoryBar').style.width = Math.min(tH/150*100,100)+'%';
+    document.getElementById('yogaPracticeBar').style.width = Math.min(pH/100*100,100)+'%';
+    document.getElementById('yogaTotalHrs').textContent = (Math.round((tH+pH)*10)/10);
+    // 總覽卡同步
+    const ych = document.getElementById('yogaCardHrs');
+    if (ych) ych.textContent = '理論 ' + (Math.round(tH*10)/10) + 'h · 實踐 ' + (Math.round(pH*10)/10) + 'h';
+  }
+
+  // ----- 模組地圖 -----
+  function renderYogaModules() {
+    const wrap = document.getElementById('yogaModules');
+    if (!wrap) return;
+    wrap.innerHTML = YOGA_MODULES.map(m => {
+      const done = m.topics.filter((_,i) => yogaTopics[m.id+'_'+i]).length;
+      const pct = Math.round(done/m.topics.length*100);
+      const topics = m.topics.map((t,i) => {
+        const key = m.id+'_'+i;
+        const isDone = !!yogaTopics[key];
+        return '<div class="topic-item'+(isDone?' done':'')+'" onclick="toggleYogaTopic(\''+key+'\')"><span class="topic-box"></span><span class="topic-name">'+t+'</span></div>';
+      }).join('');
+      return '<div class="mod-card" id="mod-'+m.id+'">'+
+        '<div class="mod-head" onclick="toggleModOpen(\''+m.id+'\')">'+
+          '<div><div class="mod-name">'+m.name+'</div><div class="mod-sub">'+m.sub+'</div></div>'+
+          '<div class="mod-right"><span class="mod-count">'+done+' / '+m.topics.length+'</span><span class="mod-arrow">▶</span></div>'+
+        '</div>'+
+        '<div class="mod-bar"><div class="mod-bar-fill" style="width:'+pct+'%;"></div></div>'+
+        '<div class="mod-topics">'+topics+'</div>'+
+      '</div>';
+    }).join('');
+    // 整體
+    const allTopics = YOGA_MODULES.reduce((a,m) => a + m.topics.length, 0);
+    const allDone = YOGA_MODULES.reduce((a,m) => a + m.topics.filter((_,i) => yogaTopics[m.id+'_'+i]).length, 0);
+    document.getElementById('yogaAllCount').textContent = allDone + ' / ' + allTopics + ' 主題';
+    document.getElementById('yogaAllBar').style.width = (allDone/allTopics*100)+'%';
+    // 當前模組 = 第一個未完成
+    const cur = YOGA_MODULES.find(m => m.topics.some((_,i) => !yogaTopics[m.id+'_'+i])) || YOGA_MODULES[5];
+    const curDone = cur.topics.filter((_,i) => yogaTopics[cur.id+'_'+i]).length;
+    const curPct = Math.round(curDone/cur.topics.length*100);
+    document.getElementById('yogaModName').textContent = cur.name;
+    document.getElementById('yogaModSub').textContent = cur.sub;
+    document.getElementById('yogaModCount').textContent = curDone + ' / ' + cur.topics.length + ' 主題';
+    document.getElementById('yogaModPct').textContent = curPct + '%';
+    document.getElementById('yogaModRing').style.strokeDashoffset = 175.9 - (175.9*curPct/100);
+    const ycm = document.getElementById('yogaCardMod');
+    if (ycm) ycm.textContent = cur.name;
+    const ycb = document.getElementById('yogaCardBar');
+    if (ycb) ycb.style.width = (allDone/allTopics*100)+'%';
+  }
+  function toggleYogaTopic(key) {
+    yogaTopics[key] = !yogaTopics[key];
+    localStorage.setItem('zoe_yoga_topics', JSON.stringify(yogaTopics));
+    renderYogaModules();
+  }
+  function toggleModOpen(id) {
+    document.getElementById('mod-'+id).classList.toggle('open');
+  }
+
+  // ----- 每週打卡 -----
+  let yogaWeek = JSON.parse(localStorage.getItem('zoe_yoga_week_' + isoWeekKey(today)) || '{}');
+  function renderYogaWeek() {
+    const g = document.getElementById('yogaWeekGrid');
+    if (!g) return;
+    g.innerHTML = WEEK_ITEMS.map(w =>
+      '<div class="week-pill'+(yogaWeek[w.k]?' done':'')+'" onclick="toggleYogaWeek(\''+w.k+'\')">'+w.label+'<span class="wp-sub">'+w.sub+'</span></div>'
+    ).join('');
+    const n = WEEK_ITEMS.filter(w => yogaWeek[w.k]).length;
+    document.getElementById('yogaWeekBar').style.width = (n/WEEK_ITEMS.length*100)+'%';
+    document.getElementById('yogaWeekLabel').textContent = isoWeekKey(today) + ' · ' + n + ' / ' + WEEK_ITEMS.length + ' 完成';
+  }
+  function toggleYogaWeek(k) {
+    yogaWeek[k] = !yogaWeek[k];
+    localStorage.setItem('zoe_yoga_week_' + isoWeekKey(today), JSON.stringify(yogaWeek));
+    renderYogaWeek();
+  }
+
+  // ----- 日誌 -----
+  function addYogaLog() {
+    const content = document.getElementById('ylContent').value.trim();
+    const type = document.getElementById('ylType').value;
+    if (!content && type !== '理論') return;
+    yogaLogs.push({
+      date: dateStr, type,
+      module: document.getElementById('ylModule').value,
+      topic: document.getElementById('ylTopic').value || '',
+      mins: document.getElementById('ylMins').value || 0,
+      content: content, solved: false
+    });
+    localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
+    ['ylContent','ylTopic','ylMins'].forEach(id => document.getElementById(id).value = '');
+    renderYogaLogList(); renderYogaHours();
+  }
+  function delYogaLog(i) {
+    yogaLogs.splice(i,1);
+    localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
+    renderYogaLogList(); renderYogaHours();
+  }
+  function toggleYogaSolved(i) {
+    yogaLogs[i].solved = !yogaLogs[i].solved;
+    localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
+    renderYogaLogList();
+  }
+  function renderYogaLogList() {
+    const el = document.getElementById('yogaLog');
+    if (!el) return;
+    if (yogaLogs.length === 0) {
+      el.innerHTML = '<div class="ylog-item" style="color:var(--text-muted); text-align:center;">未有記錄</div>';
+      return;
+    }
+    const modName = id => (YOGA_MODULES.find(m => m.id === id) || {}).name || '';
+    el.innerHTML = yogaLogs.slice().reverse().map((l, ri) => {
+      const i = yogaLogs.length - 1 - ri;
+      const solvedCls = (l.type === '疑問' && l.solved) ? ' ylog-q-solved' : '';
+      const solvedHint = l.type === '疑問' ? ' · 撳我標記解決' : '';
+      return '<div class="ylog-item" onclick="'+(l.type==='疑問' ? 'toggleYogaSolved('+i+')' : '')+'" style="'+(l.type==='疑問'?'cursor:pointer;':'')+'">'+
+        '<div class="ylog-head"><span class="tag '+(TYPE_TAGS[l.type]||'tag-gray')+'">'+l.type+'</span>'+
+        (l.topic ? '<span style="font-size:11px; color:var(--text-muted);">'+l.topic+'</span>' : '')+
+        '<span class="ylog-date">'+l.date+'</span>'+
+        '<button class="log-del" onclick="event.stopPropagation(); delYogaLog('+i+')">×</button></div>'+
+        '<div class="ylog-content'+solvedCls+'">'+(l.content || '(只記時數)')+'</div>'+
+        '<div class="ylog-meta">'+modName(l.module)+(l.mins>0 ? ' · '+l.mins+' min' : '')+solvedHint+'</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // ----- Init yoga -----
+  renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList();
+
   // ===== Hash deep-linking（例如 #fitness 直接開健身 tab）=====
   const hashTab = location.hash.replace('#', '');
-  const validTabs = ['overview','study','fitness','web','finance','life'];
+  const validTabs = ['overview','study','fitness','yoga','web','finance','life'];
   if (validTabs.includes(hashTab) && hashTab !== 'overview') {
     document.querySelector('.tab-view.active')?.classList.remove('active');
     document.getElementById('tab-' + hashTab).classList.add('active');
