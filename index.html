@@ -816,6 +816,17 @@
       </section>
 
       <section>
+        <div class="card card-full">
+          <div class="card-label">檢視日期（翻查 / 補記其他日子）</div>
+          <div class="typing-input-wrap" style="margin-top:6px;">
+            <input type="date" class="typing-input input-text" id="dietDatePick" onchange="loadDietDate(this.value)">
+            <button class="typing-btn" onclick="goDietToday()">今日</button>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:8px;" id="dietDateLabel">檢視緊：今日</div>
+        </div>
+      </section>
+
+      <section>
         <p class="section-title">今日總計</p>
         <div class="bento">
           <div class="card">
@@ -887,8 +898,9 @@
               <div class="field-label-mini">脂肪 g</div>
               <input type="number" class="input-mini" id="mealF" placeholder="15">
             </div>
-            <div class="field-full">
-              <button class="typing-btn" style="width:100%;" onclick="addMeal()">＋ 記錄餐點</button>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addMeal()" id="mealBtn">＋ 記錄餐點</button>
+              <button class="quick-btn" id="mealCancel" onclick="cancelEdit('meal')" style="display:none;">取消</button>
             </div>
           </div>
           <div id="mealLog" style="margin-top:14px;">
@@ -902,7 +914,7 @@
             <div id="importBox" style="display:none;">
               <textarea id="importText" class="input-mini input-text" rows="5" placeholder="每行一餐，用｜分隔：&#10;食物｜時間｜kcal｜蛋白g｜碳水g｜脂肪g" style="width:100%; margin-top:8px; font-size:13px; line-height:1.6; resize:vertical;"></textarea>
               <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importMeals()">📥 匯入今日餐點</button>
-              <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">匯入會加喺現有記錄之後，唔會覆蓋 · 記入嘅係「今日」日期</div>
+              <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">匯入會加喺現有記錄之後，唔會覆蓋 · 記入嘅係「檢視緊」嗰日日期</div>
             </div>
           </div>
         </div>
@@ -1011,13 +1023,22 @@
                 <option value="瑜伽">瑜伽</option>
               </select>
             </div>
-            <div class="field-full">
-              <button class="typing-btn" style="width:100%;" onclick="addWorkout()">＋ 記錄動作</button>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addWorkout()" id="woBtn">＋ 記錄動作</button>
+              <button class="quick-btn" id="woCancel" onclick="cancelEdit('wo')" style="display:none;">取消</button>
             </div>
             <div class="field-full">
               <button class="quick-btn" style="width:100%; font-size:13px;" onclick="exportZoeData()">📤 複製數據俾 ZCode（餐點＋訓練＋體重）</button>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">訓練歷史（最近 20 筆）</p>
+        <div class="card card-full">
+          <div id="woHistory"><div class="log-item" style="color:var(--text-muted); text-align:center;">未有記錄</div></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">撳記錄＝編輯 · ×＝刪除</div>
         </div>
       </section>
 
@@ -1085,9 +1106,38 @@
         <div class="card card-full">
           <div class="typing-input-wrap" style="margin-top:0;">
             <input type="number" step="0.1" class="typing-input" id="weightInput" placeholder="輸入體重 kg">
-            <button class="typing-btn" onclick="addWeight()">記錄</button>
+            <button class="typing-btn" onclick="addWeight()" id="weightBtn">記錄</button>
+            <button class="quick-btn" id="weightCancel" onclick="cancelEdit('weight')" style="display:none;">取消</button>
           </div>
           <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">建議每週一空腹、去完廁所後量度</div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card card-full">
+          <div class="card-label">體重歷史</div>
+          <div id="weightHist"><div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄</span></div></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">睡眠記錄</p>
+        <div class="card card-full">
+          <div class="typing-input-wrap" style="margin-top:0;">
+            <input type="number" step="0.1" min="0" max="24" class="typing-input" id="sleepInput" placeholder="昨晚睡眠時數（例如 7.5）">
+            <button class="typing-btn" onclick="addSleep()" id="sleepBtn">記錄</button>
+          </div>
+          <div class="quick-btns" style="margin-top:12px;">
+            <button class="quick-btn" onclick="quickSleep(6)">6h</button>
+            <button class="quick-btn" onclick="quickSleep(7)">7h</button>
+            <button class="quick-btn" onclick="quickSleep(8)">8h</button>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="card-label">最近一晚 · 目標 7–9 小時</div>
+            <div class="progress-track" style="margin-top:6px; margin-bottom:0;"><div class="progress-fill" id="sleepBar" style="width:0%; background: var(--pale-blue-text);"></div></div>
+          </div>
+          <div id="sleepHist" style="margin-top:12px;"></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">PCOS 減脂關鍵：睡眠不足 6.5h 會降低胰島素敏感度</div>
         </div>
       </section>
 
@@ -1099,11 +1149,15 @@
             <div><div class="field-label-mini">臀圍 cm</div><input type="number" class="input-mini" id="mHip" placeholder="84"></div>
             <div><div class="field-label-mini">大腿 cm</div><input type="number" class="input-mini" id="mThigh" placeholder="52"></div>
             <div><div class="field-label-mini">手臂 cm</div><input type="number" class="input-mini" id="mArm" placeholder="26"></div>
-            <div class="field-full"><button class="typing-btn" style="width:100%;" onclick="addMeasurement()">＋ 記錄圍度</button></div>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addMeasurement()" id="msBtn">＋ 記錄圍度</button>
+              <button class="quick-btn" id="msCancel" onclick="cancelEdit('ms')" style="display:none;">取消</button>
+            </div>
           </div>
           <div id="measureTrend" style="margin-top:14px;">
             <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">未有圍度記錄</div>
           </div>
+          <div id="measureLog" style="margin-top:6px;"></div>
         </div>
       </section>
 
@@ -1113,12 +1167,14 @@
           <div class="card-label">記錄經期開始日</div>
           <div class="typing-input-wrap" style="margin-top:6px;">
             <input type="date" class="typing-input input-text" id="periodInput">
-            <button class="typing-btn" onclick="addPeriod()">記錄</button>
+            <button class="typing-btn" onclick="addPeriod()" id="pdBtn">記錄</button>
+            <button class="quick-btn" id="pdCancel" onclick="cancelEdit('pd')" style="display:none;">取消</button>
           </div>
           <div class="info-block" style="font-size:12px; margin-top:12px;">
             <p id="periodInfo" style="margin-bottom:0;">未有記錄</p>
           </div>
           <div id="periodTimeline"></div>
+          <div id="periodLog" style="margin-top:6px;"></div>
         </div>
       </section>
 
@@ -1300,8 +1356,9 @@
               <div class="field-label-mini">內容</div>
               <input class="input-mini input-text" id="ylContent" placeholder="學到咩 / 筆記 / 唔明嘅地方">
             </div>
-            <div class="field-full">
-              <button class="typing-btn" style="width:100%;" onclick="addYogaLog()">＋ 記錄</button>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addYogaLog()" id="ylBtn">＋ 記錄</button>
+              <button class="quick-btn" id="ylCancel" onclick="cancelEdit('yl')" style="display:none;">取消</button>
             </div>
           </div>
         </div>
@@ -1922,7 +1979,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.7 · 2026.08.18</span>
+  <span style="font-size:10px; opacity:0.5;">v2.8 · 2026.08.18</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -1990,6 +2047,8 @@
   let weightData = JSON.parse(localStorage.getItem('zoe_weight') || '[]');
   let meals = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
   let water = parseInt(localStorage.getItem('zoe_water_' + dateStr) || '0');
+  let viewDate = dateStr;            // 飲食 tab 檢視緊嘅日期（可翻查補記）
+  let editState = {};                // 編輯模式狀態
   let workouts = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
   let schedule = JSON.parse(localStorage.getItem('zoe_schedule') || '{}');
   let measurements = JSON.parse(localStorage.getItem('zoe_measurements') || '[]');
@@ -2062,8 +2121,12 @@
     document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
     const ab = document.getElementById(dayType==='training'?'dayBtnTraining':'dayBtnRest');
     if (ab) ab.classList.add('active');
+    const tm0 = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
+    const tt0 = tm0.reduce((a,m)=>({kcal:a.kcal+(parseFloat(m.kcal)||0), p:a.p+(parseFloat(m.p)||0)}),{kcal:0,p:0});
     const fct = document.getElementById('fitCardToday');
-    if (fct) fct.textContent = '今日 ' + Math.round(tot.kcal) + ' / ' + t.kcal + ' kcal · P' + Math.round(tot.p) + 'g';
+    if (fct) fct.textContent = '今日 ' + Math.round(tt0.kcal) + ' / ' + t.kcal + ' kcal · P' + Math.round(tt0.p) + 'g';
+    const dl = document.getElementById('dietDateLabel');
+    if (dl) dl.textContent = viewDate === dateStr ? '檢視緊：今日' : '檢視緊：' + viewDate + '（補記模式 · 記錄會存入呢一日）';
     renderMacro();
   }
 
@@ -2071,22 +2134,57 @@
   function addMeal() {
     const food = document.getElementById('mealFood').value.trim();
     if (!food) return;
-    meals.push({
-      food, time: document.getElementById('mealTime').value || dateStr.slice(5),
+    const entry = {
+      food, time: document.getElementById('mealTime').value || viewDate.slice(5),
       kcal: document.getElementById('mealKcal').value || 0,
       p: document.getElementById('mealP').value || 0,
       c: document.getElementById('mealC').value || 0,
       f: document.getElementById('mealF').value || 0
-    });
-    localStorage.setItem('zoe_meals_' + dateStr, JSON.stringify(meals));
-    ['mealFood','mealTime','mealKcal','mealP','mealC','mealF'].forEach(id => document.getElementById(id).value='');
+    };
+    if (editState.meal !== undefined) {
+      if (!confirm('確認修改呢條餐飲記錄？')) return;
+      meals[editState.meal] = entry;
+    } else {
+      meals.push(entry);
+    }
+    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
+    cancelEdit('meal');
     renderMeals(); renderDiet(); renderOverview();
+  }
+  function editMeal(i) {
+    const m = meals[i];
+    document.getElementById('mealFood').value = m.food;
+    document.getElementById('mealTime').value = m.time;
+    document.getElementById('mealKcal').value = m.kcal;
+    document.getElementById('mealP').value = m.p;
+    document.getElementById('mealC').value = m.c;
+    document.getElementById('mealF').value = m.f;
+    editState.meal = i;
+    setFormBtn('mealBtn','mealCancel',true,'💾 更新餐點');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function delMeal(i) {
+    if (!confirm('確認刪除「' + meals[i].food + '」？')) return;
     meals.splice(i,1);
-    localStorage.setItem('zoe_meals_' + dateStr, JSON.stringify(meals));
+    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
+    cancelEdit('meal');
     renderMeals(); renderDiet(); renderOverview();
   }
+  function renderMeals() {
+    const el = document.getElementById('mealLog');
+    if (meals.length === 0) {
+      el.innerHTML = '<div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">未有記錄</div>';
+      return;
+    }
+    el.innerHTML = meals.map((m,i) =>
+      '<div class="log-item" onclick="editMeal('+i+')" style="cursor:pointer;">'+
+      '<div class="log-item-head"><span class="log-item-title">'+m.food+'</span>'+
+      '<span><span class="log-item-time">'+m.time+'</span> <button class="log-del" onclick="event.stopPropagation(); delMeal('+i+')">×</button></span></div>'+
+      '<div class="log-item-meta">'+(m.kcal||0)+' kcal · P'+(m.p||0)+' C'+(m.c||0)+' F'+(m.f||0)+'</div></div>'
+    ).join('');
+  }
+
+  // ----- 匯入餐單（ZCode 分析結果）-----
   function toggleImport() {
     const box = document.getElementById('importBox');
     const show = box.style.display === 'none';
@@ -2102,7 +2200,7 @@
       if (parts.length === 5 && !/^\d{1,2}:\d{2}$/.test(parts[1])) parts.splice(1, 0, '');
       if (!parts[0] || parts.length < 5) { skip++; return; }
       meals.push({
-        food: parts[0], time: parts[1] || dateStr.slice(5),
+        food: parts[0], time: parts[1] || viewDate.slice(5),
         kcal: parseFloat(parts[2]) || 0,
         p: parseFloat(parts[3]) || 0,
         c: parseFloat(parts[4]) || 0,
@@ -2111,28 +2209,17 @@
       ok++;
     });
     if (!ok) { alert('格式唔啱：每行要係「食物｜時間｜kcal｜蛋白g｜碳水g｜脂肪g」'); return; }
-    localStorage.setItem('zoe_meals_' + dateStr, JSON.stringify(meals));
+    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
     document.getElementById('importText').value = '';
+    cancelEdit('meal');
     renderMeals(); renderDiet(); renderOverview();
-    alert('已匯入 ' + ok + ' 項餐點' + (skip ? '（略過 ' + skip + ' 行格式唔啱）' : '') + ' ✅');
-  }
-  function renderMeals() {
-    const el = document.getElementById('mealLog');
-    if (meals.length === 0) {
-      el.innerHTML = '<div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">未有記錄</div>';
-      return;
-    }
-    el.innerHTML = meals.map((m,i) =>
-      '<div class="log-item"><div class="log-item-head"><span class="log-item-title">'+m.food+'</span>'+
-      '<span><span class="log-item-time">'+m.time+'</span> <button class="log-del" onclick="delMeal('+i+')">×</button></span></div>'+
-      '<div class="log-item-meta">'+(m.kcal||0)+' kcal · P'+(m.p||0)+' C'+(m.c||0)+' F'+(m.f||0)+'</div></div>'
-    ).join('');
+    alert('已匯入 ' + ok + ' 項餐點到 ' + viewDate + (skip ? '（略過 ' + skip + ' 行格式唔啱）' : '') + ' ✅');
   }
 
   // ----- Water -----
   function addWater(ml) {
     water = Math.max(0, water + ml);
-    localStorage.setItem('zoe_water_' + dateStr, water);
+    localStorage.setItem('zoe_water_' + viewDate, water);
     renderWater(); renderOverview();
   }
   function renderWater() {
@@ -2142,19 +2229,116 @@
     document.getElementById('waterRing').style.strokeDashoffset = 175.9 - (175.9*pct/100);
   }
 
-  // ----- Overview -----
+  // ----- Sleep -----
+  let sleepData = JSON.parse(localStorage.getItem('zoe_sleep') || '[]');
+  function addSleep() {
+    const v = parseFloat(document.getElementById('sleepInput').value);
+    if (!v || v <= 0 || v > 24) { alert('請輸入有效時數（0-24小時）'); return; }
+    const i = sleepData.findIndex(s => s.date === dateStr);
+    if (i >= 0) sleepData[i].hours = v; else sleepData.push({ date: dateStr, hours: v });
+    localStorage.setItem('zoe_sleep', JSON.stringify(sleepData));
+    document.getElementById('sleepInput').value = '';
+    renderSleep();
+  }
+  function quickSleep(v) { document.getElementById('sleepInput').value = v; addSleep(); }
+  function renderSleep() {
+    const bar = document.getElementById('sleepBar');
+    const last = sleepData.length ? sleepData[sleepData.length-1] : null;
+    if (last) bar.style.width = Math.min(last.hours/8*100, 100) + '%';
+    const el = document.getElementById('sleepHist');
+    el.innerHTML = sleepData.slice(-7).reverse().map(s =>
+      '<div class="log-row"><span class="log-date">' + s.date + '</span><span class="log-value">' + s.hours + ' h' + (s.hours < 6.5 ? ' ⚠️' : ' ✅') + '</span></div>'
+    ).join('') || '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄</span></div>';
+  }
+
+  // ----- 複製數據俾 ZCode -----
+  function exportZoeData() {
+    const lines = [];
+    lines.push('【Zoe Dashboard 數據 ' + dateStr + '】');
+    lines.push('日型：' + (dayType==='training' ? '訓練日' : '休息日'));
+    lines.push('最新體重：' + (weightData.length ? (weightData[weightData.length-1].date||'') + ' ' + weightData[weightData.length-1].weight + 'kg' : '未有'));
+    lines.push('');
+    lines.push('— 餐點（' + viewDate + '）—');
+    if (meals.length) meals.forEach(m => lines.push(m.food+'｜'+m.time+'｜'+m.kcal+'kcal｜P'+m.p+' C'+m.c+' F'+m.f));
+    else lines.push('未有');
+    lines.push('');
+    lines.push('— 訓練記錄（最近60項）—');
+    if (workouts.length) workouts.slice(-60).forEach(w => lines.push(w.date+'｜'+w.exercise+'｜'+(w.weight||'')+'kg｜'+(w.reps||'')+'｜'+(w.group||'')));
+    else lines.push('未有');
+    lines.push('');
+    lines.push('— 睡眠（最近7晚）—');
+    if (sleepData.length) sleepData.slice(-7).forEach(s => lines.push(s.date+'｜'+s.hours+'h'));
+    else lines.push('未有');
+    const text = lines.join('\n');
+    const done = () => alert('已複製！直接貼俾 ZCode 就得 ✅');
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) { alert('複製失敗，請手動抄低'); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
+  }
+
+  // ----- Overview（永遠顯示今日數據）-----
   function renderOverview() {
     const t = dayTargets[dayType];
-    const tot = mealTotals();
+    const tm = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
+    const tot = tm.reduce((a,m)=>({kcal:a.kcal+(parseFloat(m.kcal)||0), p:a.p+(parseFloat(m.p)||0)}),{kcal:0,p:0});
+    const tw = parseInt(localStorage.getItem('zoe_water_' + dateStr) || '0');
     document.getElementById('ovKcalGoal').textContent = t.kcal;
     document.getElementById('ovProteinGoal').textContent = t.protein;
     document.getElementById('ovKcal').textContent = Math.round(tot.kcal);
     document.getElementById('ovProtein').textContent = Math.round(tot.p);
-    document.getElementById('ovWater').textContent = water;
+    document.getElementById('ovWater').textContent = tw;
     document.getElementById('ovKcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100)+'%';
     document.getElementById('ovProteinBar').style.width = Math.min(tot.p/t.protein*100,100)+'%';
-    document.getElementById('ovWaterBar').style.width = Math.min(water/WATER_GOAL*100,100)+'%';
+    document.getElementById('ovWaterBar').style.width = Math.min(tw/WATER_GOAL*100,100)+'%';
     document.getElementById('ovDayLabel').textContent = dayType==='training' ? '今日：訓練日' : '今日：休息日';
+  }
+
+  // ----- 通用：編輯模式按鈕 / 取消 / 日期揀選 -----
+  function setFormBtn(btnId, cancelId, editing, editLabel) {
+    const b = document.getElementById(btnId); if (!b) return;
+    b.textContent = editing ? editLabel : b.getAttribute('data-add') || b.textContent;
+    if (!b.getAttribute('data-add')) b.setAttribute('data-add', '＋ ' + (b.textContent.replace('＋ ','').replace('💾 更新','記錄')) || '記錄');
+    const cb = document.getElementById(cancelId); if (cb) cb.style.display = editing ? 'inline-block' : 'none';
+  }
+  function clearEdit(kind) { delete editState[kind]; }
+  function cancelEdit(kind) {
+    clearEdit(kind);
+    const resets = {
+      meal: ['mealFood','mealTime','mealKcal','mealP','mealC','mealF'],
+      wo: ['woExercise','woWeight','woReps'],
+      weight: ['weightInput'],
+      ms: ['mWaist','mHip','mThigh','mArm'],
+      pd: ['periodInput'],
+      yl: ['ylContent','ylTopic','ylMins']
+    };
+    (resets[kind]||[]).forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    const btns = { meal:['mealBtn','mealCancel','＋ 記錄餐點'], wo:['woBtn','woCancel','＋ 記錄動作'],
+      weight:['weightBtn','weightCancel','記錄'], ms:['msBtn','msCancel','＋ 記錄圍度'],
+      pd:['pdBtn','pdCancel','記錄'], yl:['ylBtn','ylCancel','＋ 記錄'] };
+    const conf = btns[kind];
+    if (conf) {
+      const b = document.getElementById(conf[0]); if (b) b.textContent = conf[2];
+      const cb = document.getElementById(conf[1]); if (cb) cb.style.display = 'none';
+    }
+  }
+  function loadDietDate(val) {
+    if (!val) return;
+    const key = val.replace(/-/g, '.');
+    if (key === viewDate) return;
+    viewDate = key;
+    cancelEdit('meal');
+    meals = JSON.parse(localStorage.getItem('zoe_meals_' + viewDate) || '[]');
+    water = parseInt(localStorage.getItem('zoe_water_' + viewDate) || '0');
+    renderMeals(); renderDiet(); renderWater();
+  }
+  function goDietToday() {
+    document.getElementById('dietDatePick').value = dateStr.replace(/\./g, '-');
+    loadDietDate(dateStr.replace(/\./g, '-'));
   }
 
   // ----- Weight -----
@@ -2179,65 +2363,124 @@
     const input = document.getElementById('weightInput');
     const val = parseFloat(input.value);
     if (!val || val<30 || val>100) return;
-    weightData.push({ date: dateStr, weight: val });
+    if (editState.weight !== undefined) {
+      if (!confirm('確認修改呢條體重記錄？')) return;
+      weightData[editState.weight].weight = val;
+    } else {
+      weightData.push({ date: dateStr, weight: val });
+    }
     localStorage.setItem('zoe_weight', JSON.stringify(weightData));
-    input.value=''; renderWeight();
+    cancelEdit('weight');
+    renderWeight(); renderWeightList();
+  }
+  function editWeight(i) {
+    document.getElementById('weightInput').value = weightData[i].weight;
+    editState.weight = i;
+    const b = document.getElementById('weightBtn'); if (b) b.textContent = '💾 更新';
+    const cb = document.getElementById('weightCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function delWeight(i) {
+    if (!confirm('確認刪除 ' + weightData[i].date + ' 嘅體重記錄？')) return;
+    weightData.splice(i,1);
+    localStorage.setItem('zoe_weight', JSON.stringify(weightData));
+    cancelEdit('weight');
+    renderWeight(); renderWeightList();
+  }
+  function renderWeightList() {
+    const el = document.getElementById('weightHist');
+    if (!el) return;
+    if (weightData.length === 0) {
+      el.innerHTML = '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄</span></div>';
+      return;
+    }
+    el.innerHTML = weightData.slice(-10).reverse().map((w, ri) => {
+      const i = weightData.length - 1 - ri;
+      const diff = i>0 ? w.weight - weightData[i-1].weight : 0;
+      const ds = i===0 ? '' : (diff<=0 ? '<span style="color:var(--pale-green-text);">'+diff.toFixed(1)+'</span>' : '<span style="color:var(--pale-red-text);">+'+diff.toFixed(1)+'</span>');
+      return '<div class="log-row" onclick="editWeight('+i+')" style="cursor:pointer;">'+
+        '<span class="log-date">'+w.date+'</span>'+
+        '<span><span class="log-value">'+w.weight.toFixed(1)+' kg '+ds+'</span> <button class="log-del" onclick="event.stopPropagation(); delWeight('+i+')">×</button></span></div>';
+    }).join('');
   }
 
   // ----- Workouts -----
-  function addWorkout() {
-    const ex = document.getElementById('woExercise').value.trim();
-    if (!ex) return;
-    workouts.push({
-      date: dateStr, exercise: ex,
+  function buildWoEntry() {
+    return {
+      exercise: document.getElementById('woExercise').value.trim(),
       weight: document.getElementById('woWeight').value||'',
       reps: document.getElementById('woReps').value||'',
       group: document.getElementById('woGroup').value
-    });
+    };
+  }
+  function fillWoForm(w) {
+    document.getElementById('woExercise').value = w.exercise;
+    document.getElementById('woWeight').value = w.weight;
+    document.getElementById('woReps').value = w.reps;
+    document.getElementById('woGroup').value = w.group;
+  }
+  function afterWoChange() {
+    renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderYogaHours(); renderWorkoutHistory();
+  }
+  function addWorkout() {
+    const entry = buildWoEntry();
+    if (!entry.exercise) return;
+    if (editState.wo !== undefined) {
+      if (!confirm('確認修改呢條訓練記錄？')) return;
+      const old = workouts[editState.wo];
+      workouts[editState.wo] = Object.assign({ date: old.date }, entry); // 保留原本日期
+    } else {
+      workouts.push(Object.assign({ date: dateStr }, entry));
+    }
     localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
-    document.getElementById('woExercise').value='';
-    document.getElementById('woWeight').value='';
-    document.getElementById('woReps').value='';
-    renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderYogaHours();
+    cancelEdit('wo');
+    afterWoChange();
+  }
+  function editWorkout(i) {
+    fillWoForm(workouts[i]);
+    editState.wo = i;
+    const b = document.getElementById('woBtn'); if (b) b.textContent = '💾 更新動作';
+    const cb = document.getElementById('woCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function delWorkout(i) {
+    if (!confirm('確認刪除「' + workouts[i].exercise + '」（' + workouts[i].date + '）？')) return;
+    workouts.splice(i,1);
+    localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
+    cancelEdit('wo');
+    afterWoChange();
   }
   function renderTodayWorkout() {
     const el = document.getElementById('todayWorkout');
-    const todays = workouts.filter(w => w.date === dateStr);
+    const todays = workouts.map((w,i)=>({w,i})).filter(x => x.w.date === dateStr);
     if (todays.length === 0) {
       el.innerHTML = '<div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">今日未有訓練記錄</div>';
       return;
     }
-    el.innerHTML = todays.map(w =>
-      '<div class="log-item"><div class="log-item-head"><span class="log-item-title">'+w.exercise+
-      ' <span class="tag tag-gray" style="margin-left:4px;">'+w.group+'</span></span>'+
-      '<span class="log-item-meta">'+w.weight+'kg · '+w.reps+'</span></div></div>'
+    el.innerHTML = todays.map(x =>
+      '<div class="log-item" onclick="editWorkout('+x.i+')" style="cursor:pointer;">'+
+      '<div class="log-item-head"><span class="log-item-title">'+x.w.exercise+
+      ' <span class="tag tag-gray" style="margin-left:4px;">'+x.w.group+'</span></span>'+
+      '<span><span class="log-item-meta">'+x.w.weight+'kg · '+x.w.reps+'</span> '+
+      '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div></div>'
     ).join('');
   }
-  function exportZoeData() {
-    const lines = [];
-    lines.push('【Zoe Dashboard 數據 ' + dateStr + '】');
-    lines.push('日型：' + (dayType==='training' ? '訓練日' : '休息日'));
-    lines.push('最新體重：' + (weightData.length ? (weightData[weightData.length-1].date||'') + ' ' + weightData[weightData.length-1].weight + 'kg' : '未有'));
-    lines.push('');
-    lines.push('— 今日餐點 —');
-    if (meals.length) meals.forEach(m => lines.push(m.food+'｜'+m.time+'｜'+m.kcal+'kcal｜P'+m.p+' C'+m.c+' F'+m.f));
-    else lines.push('未有');
-    lines.push('');
-    lines.push('— 訓練記錄（最近60項）—');
-    if (workouts.length) workouts.slice(-60).forEach(w => lines.push(w.date+'｜'+w.exercise+'｜'+(w.weight||'')+'kg｜'+(w.reps||'')+'｜'+(w.group||'')));
-    else lines.push('未有');
-    const text = lines.join('\n');
-    const done = () => alert('已複製！直接貼俾 ZCode 就得 ✅');
-    const fallback = () => {
-      const ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); done(); }
-      catch(e) { alert('複製失敗，請手動抄低'); }
-      document.body.removeChild(ta);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, fallback);
-    } else { fallback(); }
+  function renderWorkoutHistory() {
+    const el = document.getElementById('woHistory');
+    if (!el) return;
+    if (workouts.length === 0) {
+      el.innerHTML = '<div class="log-item" style="color:var(--text-muted); text-align:center;">未有記錄</div>';
+      return;
+    }
+    el.innerHTML = workouts.slice(-20).reverse().map((w, ri) => {
+      const i = workouts.length - 1 - ri;
+      return '<div class="log-item" onclick="editWorkout('+i+')" style="cursor:pointer;">'+
+        '<div class="log-item-head"><span class="log-item-title">'+w.exercise+
+        ' <span class="tag tag-gray" style="margin-left:4px;">'+w.group+'</span></span>'+
+        '<span><span class="log-item-meta">'+w.weight+'kg · '+w.reps+'</span> '+
+        '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+i+')">×</button></span></div>'+
+        '<div class="log-item-time" style="margin-top:2px;">'+w.date+'</div></div>';
+    }).join('');
   }
 
   // ----- Muscle distribution (this week) -----
@@ -2318,24 +2561,51 @@
   }
 
   // ----- Measurements -----
-  function addMeasurement() {
-    const m = {
-      date: dateStr,
+  function buildMs() {
+    return {
       waist: document.getElementById('mWaist').value||'',
       hip: document.getElementById('mHip').value||'',
       thigh: document.getElementById('mThigh').value||'',
       arm: document.getElementById('mArm').value||''
     };
+  }
+  function addMeasurement() {
+    const m = buildMs();
     if (!m.waist && !m.hip && !m.thigh && !m.arm) return;
-    measurements.push(m);
+    if (editState.ms !== undefined) {
+      if (!confirm('確認修改呢條圍度記錄？')) return;
+      const old = measurements[editState.ms];
+      measurements[editState.ms] = Object.assign({ date: old.date }, m);
+    } else {
+      measurements.push(Object.assign({ date: dateStr }, m));
+    }
     localStorage.setItem('zoe_measurements', JSON.stringify(measurements));
-    ['mWaist','mHip','mThigh','mArm'].forEach(id=>document.getElementById(id).value='');
+    cancelEdit('ms');
+    renderMeasurements();
+  }
+  function editMeasurement(i) {
+    const m = measurements[i];
+    document.getElementById('mWaist').value = m.waist;
+    document.getElementById('mHip').value = m.hip;
+    document.getElementById('mThigh').value = m.thigh;
+    document.getElementById('mArm').value = m.arm;
+    editState.ms = i;
+    const b = document.getElementById('msBtn'); if (b) b.textContent = '💾 更新圍度';
+    const cb = document.getElementById('msCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function delMeasurement(i) {
+    if (!confirm('確認刪除 ' + measurements[i].date + ' 嘅圍度記錄？')) return;
+    measurements.splice(i,1);
+    localStorage.setItem('zoe_measurements', JSON.stringify(measurements));
+    cancelEdit('ms');
     renderMeasurements();
   }
   function renderMeasurements() {
     const el = document.getElementById('measureTrend');
     if (measurements.length === 0) {
       el.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">未有圍度記錄</div>';
+      document.getElementById('measureLog').innerHTML = '';
       return;
     }
     const fields = [['waist','腰圍'],['hip','臀圍'],['thigh','大腿'],['arm','手臂']];
@@ -2351,6 +2621,14 @@
       }
       return '<div class="trend-row"><span>'+label+' '+(!isNaN(lv)?lv:'-')+' cm</span>'+delta+'</div>';
     }).join('') + '<div style="font-size:10px; color:var(--text-muted); margin-top:8px;">對比首次記錄</div>';
+    // 歷史列表
+    document.getElementById('measureLog').innerHTML = measurements.slice(-10).reverse().map((m, ri) => {
+      const i = measurements.length - 1 - ri;
+      const parts = [['waist','腰'],['hip','臀'],['thigh','腿'],['arm','手']].filter(([k])=>m[k]).map(([k,l])=>l+m[k]).join(' · ');
+      return '<div class="log-row" onclick="editMeasurement('+i+')" style="cursor:pointer;">'+
+        '<span class="log-date">'+m.date+' · '+parts+'</span>'+
+        '<span><button class="log-del" onclick="event.stopPropagation(); delMeasurement('+i+')">×</button></span></div>';
+    }).join('');
   }
 
   // ----- Period -----
@@ -2372,6 +2650,7 @@
     else status='已遲約 '+(daysSince-30)+' 日（PCOS 週期不規律）';
     infoEl.innerHTML = '<strong>上次開始：</strong>'+last+'<br><strong>狀態：</strong>'+status;
     renderPeriodTimeline();
+    renderPeriodLog();
   }
   function renderPeriodTimeline() {
     const el = document.getElementById('periodTimeline');
@@ -2397,9 +2676,40 @@
   function addPeriod() {
     const input = document.getElementById('periodInput');
     if (!input.value) return;
-    periodData.push({ date: input.value });
+    if (editState.pd !== undefined) {
+      if (!confirm('確認修改經期日期？')) return;
+      periodData[editState.pd].date = input.value;
+    } else {
+      periodData.push({ date: input.value });
+    }
     localStorage.setItem('zoe_period', JSON.stringify(periodData));
-    input.value=''; calcPeriodStatus();
+    cancelEdit('pd');
+    calcPeriodStatus();
+  }
+  function editPeriod(i) {
+    document.getElementById('periodInput').value = periodData[i].date;
+    editState.pd = i;
+    const b = document.getElementById('pdBtn'); if (b) b.textContent = '💾 更新';
+    const cb = document.getElementById('pdCancel'); if (cb) cb.style.display = 'inline-block';
+  }
+  function delPeriod(i) {
+    if (!confirm('確認刪除經期記錄 ' + periodData[i].date + '？')) return;
+    periodData.splice(i,1);
+    localStorage.setItem('zoe_period', JSON.stringify(periodData));
+    cancelEdit('pd');
+    calcPeriodStatus();
+  }
+  function renderPeriodLog() {
+    const el = document.getElementById('periodLog');
+    if (!el) return;
+    if (periodData.length === 0) { el.innerHTML = ''; return; }
+    const sorted = [...periodData].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    el.innerHTML = sorted.map(p => {
+      const i = periodData.indexOf(p);
+      return '<div class="log-row" onclick="editPeriod('+i+')" style="cursor:pointer;">'+
+        '<span class="log-date">🔴 '+p.date+'</span>'+
+        '<span><button class="log-del" onclick="event.stopPropagation(); delPeriod('+i+')">×</button></span></div>';
+    }).join('');
   }
 
   // ----- Daily status -----
@@ -2566,20 +2876,46 @@
     const content = document.getElementById('ylContent').value.trim();
     const type = document.getElementById('ylType').value;
     if (!content && type !== '理論') return;
-    yogaLogs.push({
-      date: dateStr, type,
-      module: document.getElementById('ylModule').value,
-      topic: document.getElementById('ylTopic').value || '',
-      mins: document.getElementById('ylMins').value || 0,
-      content: content, solved: false
-    });
+    if (editState.yl !== undefined) {
+      if (!confirm('確認修改呢條記錄？')) return;
+      const old = yogaLogs[editState.yl];
+      yogaLogs[editState.yl] = {
+        date: old.date, solved: old.solved, type,
+        module: document.getElementById('ylModule').value,
+        topic: document.getElementById('ylTopic').value || '',
+        mins: document.getElementById('ylMins').value || 0,
+        content: content
+      };
+    } else {
+      yogaLogs.push({
+        date: dateStr, type,
+        module: document.getElementById('ylModule').value,
+        topic: document.getElementById('ylTopic').value || '',
+        mins: document.getElementById('ylMins').value || 0,
+        content: content, solved: false
+      });
+    }
     localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
-    ['ylContent','ylTopic','ylMins'].forEach(id => document.getElementById(id).value = '');
+    cancelEdit('yl');
     renderYogaLogList(); renderYogaHours();
   }
+  function editYogaLog(i) {
+    const l = yogaLogs[i];
+    document.getElementById('ylType').value = l.type;
+    document.getElementById('ylModule').value = l.module;
+    document.getElementById('ylTopic').value = l.topic;
+    document.getElementById('ylMins').value = l.mins;
+    document.getElementById('ylContent').value = l.content;
+    editState.yl = i;
+    const b = document.getElementById('ylBtn'); if (b) b.textContent = '💾 更新';
+    const cb = document.getElementById('ylCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
   function delYogaLog(i) {
+    if (!confirm('確認刪除呢條瑜伽記錄？')) return;
     yogaLogs.splice(i,1);
     localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
+    cancelEdit('yl');
     renderYogaLogList(); renderYogaHours();
   }
   function toggleYogaSolved(i) {
@@ -2598,14 +2934,16 @@
     el.innerHTML = yogaLogs.slice().reverse().map((l, ri) => {
       const i = yogaLogs.length - 1 - ri;
       const solvedCls = (l.type === '疑問' && l.solved) ? ' ylog-q-solved' : '';
-      const solvedHint = l.type === '疑問' ? ' · 撳我標記解決' : '';
-      return '<div class="ylog-item" onclick="'+(l.type==='疑問' ? 'toggleYogaSolved('+i+')' : '')+'" style="'+(l.type==='疑問'?'cursor:pointer;':'')+'">'+
+      const solvedBtn = l.type === '疑問'
+        ? '<button class="quick-btn" style="padding:3px 10px; font-size:10px;" onclick="event.stopPropagation(); toggleYogaSolved('+i+')">'+(l.solved?'↺ 重開':'✓ 解決')+'</button>'
+        : '';
+      return '<div class="ylog-item" onclick="editYogaLog('+i+')" style="cursor:pointer;">'+
         '<div class="ylog-head"><span class="tag '+(TYPE_TAGS[l.type]||'tag-gray')+'">'+l.type+'</span>'+
         (l.topic ? '<span style="font-size:11px; color:var(--text-muted);">'+l.topic+'</span>' : '')+
-        '<span class="ylog-date">'+l.date+'</span>'+
+        '<span class="ylog-date">'+l.date+'</span>'+solvedBtn+
         '<button class="log-del" onclick="event.stopPropagation(); delYogaLog('+i+')">×</button></div>'+
         '<div class="ylog-content'+solvedCls+'">'+(l.content || '(只記時數)')+'</div>'+
-        '<div class="ylog-meta">'+modName(l.module)+(l.mins>0 ? ' · '+l.mins+' min' : '')+solvedHint+'</div>'+
+        '<div class="ylog-meta">'+modName(l.module)+(l.mins>0 ? ' · '+l.mins+' min' : '')+' · 撳我編輯</div>'+
       '</div>';
     }).join('');
   }
@@ -2627,7 +2965,8 @@
     try { history.replaceState(null, '', '#' + hashTab); } catch (e) {}
   }
 
-  renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight();
+  renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory(); renderSleep();
+  const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
 </script>
