@@ -2211,67 +2211,9 @@
     if (!ok) { alert('格式唔啱：每行要係「食物｜時間｜kcal｜蛋白g｜碳水g｜脂肪g」'); return; }
     localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
     document.getElementById('importText').value = '';
-    renderMeals(); renderDiet(); renderOverview();
-    alert('已匯入 ' + ok + ' 項餐點到 ' + viewDate + (skip ? '（略過 ' + skip + ' 行格式唔啱）' : '') + ' ✅');
-  }
-
-  // ----- 匯入 / 匯出（bccf3c8 功能，適配 viewDate）-----
-  function toggleImport() {
-    const box = document.getElementById('importBox');
-    const show = box.style.display === 'none';
-    box.style.display = show ? 'block' : 'none';
-    document.getElementById('importToggle').textContent = show ? '收起' : '展開';
-  }
-  function importMeals() {
-    const raw = document.getElementById('importText').value.trim();
-    if (!raw) { alert('請先貼上餐單'); return; }
-    let ok = 0, skip = 0;
-    raw.split(/\n+/).forEach(line => {
-      const parts = line.trim().split(/[|｜]/).map(s => s.trim());
-      if (parts.length === 5 && !/^\d{1,2}:\d{2}$/.test(parts[1])) parts.splice(1, 0, '');
-      if (!parts[0] || parts.length < 5) { skip++; return; }
-      meals.push({
-        food: parts[0], time: parts[1] || viewDate.slice(5),
-        kcal: parseFloat(parts[2]) || 0,
-        p: parseFloat(parts[3]) || 0,
-        c: parseFloat(parts[4]) || 0,
-        f: parseFloat(parts[5]) || 0
-      });
-      ok++;
-    });
-    if (!ok) { alert('格式唔啱：每行要係「食物｜時間｜kcal｜蛋白g｜碳水g｜脂肪g」'); return; }
-    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
-    document.getElementById('importText').value = '';
     cancelEdit('meal');
     renderMeals(); renderDiet(); renderOverview();
     alert('已匯入 ' + ok + ' 項餐點到 ' + viewDate + (skip ? '（略過 ' + skip + ' 行格式唔啱）' : '') + ' ✅');
-  }
-  function exportZoeData() {
-    const lines = [];
-    lines.push('【Zoe Dashboard 數據 ' + dateStr + '】');
-    lines.push('日型：' + (dayType==='training' ? '訓練日' : '休息日'));
-    lines.push('最新體重：' + (weightData.length ? (weightData[weightData.length-1].date||'') + ' ' + weightData[weightData.length-1].weight + 'kg' : '未有'));
-    lines.push('');
-    lines.push('— 今日餐點 —');
-    const tm = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
-    if (tm.length) tm.forEach(m => lines.push(m.food+'｜'+m.time+'｜'+m.kcal+'kcal｜P'+m.p+' C'+m.c+' F'+m.f));
-    else lines.push('未有');
-    lines.push('');
-    lines.push('— 訓練記錄（最近60項）—');
-    if (workouts.length) workouts.slice(-60).forEach(w => lines.push(w.date+'｜'+w.exercise+'｜'+(w.weight||'')+'kg｜'+(w.reps||'')+'｜'+(w.group||'')));
-    else lines.push('未有');
-    const text = lines.join('\n');
-    const done = () => alert('已複製！直接貼俾 ZCode 就得 ✅');
-    const fallback = () => {
-      const ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); done(); }
-      catch(e) { alert('複製失敗，請手動抄低'); }
-      document.body.removeChild(ta);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, fallback);
-    } else { fallback(); }
   }
 
   // ----- Water -----
