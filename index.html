@@ -1121,6 +1121,27 @@
       </section>
 
       <section>
+        <p class="section-title">睡眠記錄</p>
+        <div class="card card-full">
+          <div class="typing-input-wrap" style="margin-top:0;">
+            <input type="number" step="0.1" min="0" max="24" class="typing-input" id="sleepInput" placeholder="昨晚睡眠時數（例如 7.5）">
+            <button class="typing-btn" onclick="addSleep()" id="sleepBtn">記錄</button>
+          </div>
+          <div class="quick-btns" style="margin-top:12px;">
+            <button class="quick-btn" onclick="quickSleep(6)">6h</button>
+            <button class="quick-btn" onclick="quickSleep(7)">7h</button>
+            <button class="quick-btn" onclick="quickSleep(8)">8h</button>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="card-label">最近一晚 · 目標 7–9 小時</div>
+            <div class="progress-track" style="margin-top:6px; margin-bottom:0;"><div class="progress-fill" id="sleepBar" style="width:0%; background: var(--pale-blue-text);"></div></div>
+          </div>
+          <div id="sleepHist" style="margin-top:12px;"></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">PCOS 減脂關鍵：睡眠不足 6.5h 會降低胰島素敏感度</div>
+        </div>
+      </section>
+
+      <section>
         <p class="section-title">身體圍度記錄</p>
         <div class="card card-full">
           <div class="field-grid">
@@ -1958,7 +1979,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.7 · 2026.08.18</span>
+  <span style="font-size:10px; opacity:0.5;">v2.8 · 2026.08.18</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2163,6 +2184,37 @@
     ).join('');
   }
 
+  // ----- 匯入餐單（ZCode 分析結果）-----
+  function toggleImport() {
+    const box = document.getElementById('importBox');
+    const show = box.style.display === 'none';
+    box.style.display = show ? 'block' : 'none';
+    document.getElementById('importToggle').textContent = show ? '收起' : '展開';
+  }
+  function importMeals() {
+    const raw = document.getElementById('importText').value.trim();
+    if (!raw) { alert('請先貼上餐單'); return; }
+    let ok = 0, skip = 0;
+    raw.split(/\n+/).forEach(line => {
+      const parts = line.trim().split(/[|｜]/).map(s => s.trim());
+      if (parts.length === 5 && !/^\d{1,2}:\d{2}$/.test(parts[1])) parts.splice(1, 0, '');
+      if (!parts[0] || parts.length < 5) { skip++; return; }
+      meals.push({
+        food: parts[0], time: parts[1] || viewDate.slice(5),
+        kcal: parseFloat(parts[2]) || 0,
+        p: parseFloat(parts[3]) || 0,
+        c: parseFloat(parts[4]) || 0,
+        f: parseFloat(parts[5]) || 0
+      });
+      ok++;
+    });
+    if (!ok) { alert('格式唔啱：每行要係「食物｜時間｜kcal｜蛋白g｜碳水g｜脂肪g」'); return; }
+    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
+    document.getElementById('importText').value = '';
+    renderMeals(); renderDiet(); renderOverview();
+    alert('已匯入 ' + ok + ' 項餐點到 ' + viewDate + (skip ? '（略過 ' + skip + ' 行格式唔啱）' : '') + ' ✅');
+  }
+
   // ----- Water -----
   function addWater(ml) {
     water = Math.max(0, water + ml);
@@ -2174,6 +2226,58 @@
     const pct = Math.min(water/WATER_GOAL*100,100);
     document.getElementById('waterPct').textContent = Math.round(pct) + '%';
     document.getElementById('waterRing').style.strokeDashoffset = 175.9 - (175.9*pct/100);
+  }
+
+  // ----- Sleep -----
+  let sleepData = JSON.parse(localStorage.getItem('zoe_sleep') || '[]');
+  function addSleep() {
+    const v = parseFloat(document.getElementById('sleepInput').value);
+    if (!v || v <= 0 || v > 24) { alert('請輸入有效時數（0-24小時）'); return; }
+    const i = sleepData.findIndex(s => s.date === dateStr);
+    if (i >= 0) sleepData[i].hours = v; else sleepData.push({ date: dateStr, hours: v });
+    localStorage.setItem('zoe_sleep', JSON.stringify(sleepData));
+    document.getElementById('sleepInput').value = '';
+    renderSleep();
+  }
+  function quickSleep(v) { document.getElementById('sleepInput').value = v; addSleep(); }
+  function renderSleep() {
+    const bar = document.getElementById('sleepBar');
+    const last = sleepData.length ? sleepData[sleepData.length-1] : null;
+    if (last) bar.style.width = Math.min(last.hours/8*100, 100) + '%';
+    const el = document.getElementById('sleepHist');
+    el.innerHTML = sleepData.slice(-7).reverse().map(s =>
+      '<div class="log-row"><span class="log-date">' + s.date + '</span><span class="log-value">' + s.hours + ' h' + (s.hours < 6.5 ? ' ⚠️' : ' ✅') + '</span></div>'
+    ).join('') || '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄</span></div>';
+  }
+
+  // ----- 複製數據俾 ZCode -----
+  function exportZoeData() {
+    const lines = [];
+    lines.push('【Zoe Dashboard 數據 ' + dateStr + '】');
+    lines.push('日型：' + (dayType==='training' ? '訓練日' : '休息日'));
+    lines.push('最新體重：' + (weightData.length ? (weightData[weightData.length-1].date||'') + ' ' + weightData[weightData.length-1].weight + 'kg' : '未有'));
+    lines.push('');
+    lines.push('— 餐點（' + viewDate + '）—');
+    if (meals.length) meals.forEach(m => lines.push(m.food+'｜'+m.time+'｜'+m.kcal+'kcal｜P'+m.p+' C'+m.c+' F'+m.f));
+    else lines.push('未有');
+    lines.push('');
+    lines.push('— 訓練記錄（最近60項）—');
+    if (workouts.length) workouts.slice(-60).forEach(w => lines.push(w.date+'｜'+w.exercise+'｜'+(w.weight||'')+'kg｜'+(w.reps||'')+'｜'+(w.group||'')));
+    else lines.push('未有');
+    lines.push('');
+    lines.push('— 睡眠（最近7晚）—');
+    if (sleepData.length) sleepData.slice(-7).forEach(s => lines.push(s.date+'｜'+s.hours+'h'));
+    else lines.push('未有');
+    const text = lines.join('\n');
+    const done = () => alert('已複製！直接貼俾 ZCode 就得 ✅');
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) { alert('複製失敗，請手動抄低'); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
   }
 
   // ----- Overview（永遠顯示今日數據）-----
@@ -2860,7 +2964,7 @@
     try { history.replaceState(null, '', '#' + hashTab); } catch (e) {}
   }
 
-  renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory();
+  renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory(); renderSleep();
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
