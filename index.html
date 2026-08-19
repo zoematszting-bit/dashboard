@@ -1023,6 +1023,10 @@
                 <option value="瑜伽">瑜伽</option>
               </select>
             </div>
+            <div class="field-full">
+              <div class="field-label-mini">日期（補記用 · 唔揀就記今日）</div>
+              <input type="date" class="input-mini input-text" id="woDate">
+            </div>
             <div class="field-full" style="display:flex; gap:8px;">
               <button class="typing-btn" style="flex:1;" onclick="addWorkout()" id="woBtn">＋ 記錄動作</button>
               <button class="quick-btn" id="woCancel" onclick="cancelEdit('wo')" style="display:none;">取消</button>
@@ -2310,7 +2314,7 @@
     clearEdit(kind);
     const resets = {
       meal: ['mealFood','mealTime','mealKcal','mealP','mealC','mealF'],
-      wo: ['woExercise','woWeight','woReps'],
+      wo: ['woExercise','woWeight','woReps','woDate'],
       weight: ['weightInput'],
       ms: ['mWaist','mHip','mThigh','mArm'],
       pd: ['periodInput'],
@@ -2418,6 +2422,11 @@
     document.getElementById('woWeight').value = w.weight;
     document.getElementById('woReps').value = w.reps;
     document.getElementById('woGroup').value = w.group;
+    document.getElementById('woDate').value = (w.date || dateStr).replace(/\./g, '-');
+  }
+  function woFormDate() {
+    const v = document.getElementById('woDate').value; // YYYY-MM-DD
+    return v ? v.replace(/-/g, '.') : dateStr;
   }
   function afterWoChange() {
     renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderYogaHours(); renderWorkoutHistory();
@@ -2427,10 +2436,9 @@
     if (!entry.exercise) return;
     if (editState.wo !== undefined) {
       if (!confirm('確認修改呢條訓練記錄？')) return;
-      const old = workouts[editState.wo];
-      workouts[editState.wo] = Object.assign({ date: old.date }, entry); // 保留原本日期
+      workouts[editState.wo] = Object.assign({ date: woFormDate() }, entry); // 日期都可以改
     } else {
-      workouts.push(Object.assign({ date: dateStr }, entry));
+      workouts.push(Object.assign({ date: woFormDate() }, entry)); // 補記：揀咗日期就用嗰日
     }
     localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
     cancelEdit('wo');
