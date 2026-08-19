@@ -1983,7 +1983,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.8 · 2026.08.18</span>
+  <span style="font-size:10px; opacity:0.5;">v2.9 · 2026.08.19</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2046,6 +2046,30 @@
   };
   const SCHED_CYCLE = ['', '臀', '背', '胸', '肩', '腿', '有氧', '休息'];
   const DAY_NAMES = ['一','二','三','四','五','六','日'];
+
+  // ===== 餐點種子數據（ZCode 遠程更新用）=====
+  // 每次 Zoe 報飲食 → ZCode 更新呢度 + git push → Zoe refresh 就見到
+  // 機制：該日 localStorage 冇記錄先注入一次（打咗 marker 就唔會重複/翻注）
+  const SEED_MEALS = {
+    '2026.08.18': [
+      {food:'桃膠蓮子銀耳牛奶羹（低糖）', time:'08:30', kcal:200, p:4, c:38, f:3},
+      {food:'九陽純豆漿粉1條', time:'10:30', kcal:90, p:8, c:2.4, f:4.9},
+      {food:'全麥包炒蛋午餐肉', time:'12:30', kcal:360, p:19, c:19, f:21},
+      {food:'可可蛋白奶（奶150+粉30g）', time:'12:45', kcal:215, p:24, c:14, f:7}
+    ],
+    '2026.08.19': [
+      {food:'燕麥粥（1杯）', time:'08:30', kcal:115, p:4, c:19, f:2},
+      {food:'紅棗豆漿（條粉30g）', time:'08:30', kcal:121, p:3, c:21, f:2.5},
+      {food:'水煮蛋（1隻）', time:'08:30', kcal:78, p:6, c:1, f:5}
+    ]
+  };
+  Object.keys(SEED_MEALS).forEach(function(d) {
+    const k = 'zoe_meals_' + d, mk = 'zoe_meals_seeded_' + d;
+    if (localStorage.getItem(mk)) return;
+    const cur = JSON.parse(localStorage.getItem(k) || '[]');
+    if (cur.length === 0) localStorage.setItem(k, JSON.stringify(SEED_MEALS[d]));
+    localStorage.setItem(mk, '1');
+  });
 
   let dayType = localStorage.getItem('zoe_dayType') || 'training';
   let weightData = JSON.parse(localStorage.getItem('zoe_weight') || '[]');
