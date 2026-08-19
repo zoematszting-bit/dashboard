@@ -1223,6 +1223,22 @@
         </div>
       </section>
 
+      <section>
+        <p class="section-title">數據備份 · 跨入口同步</p>
+        <div class="card card-full">
+          <div class="info-block" style="font-size:11px; color:var(--text-muted);">
+            <p>⚠️ iOS 主畫面 icon 同 Safari 係兩個獨立儲存區，唔會自動同步。</p>
+            <p>用法：喺有數據嗰邊撳「匯出」→ 去另一邊貼上「匯入」。</p>
+            <p>建議每週匯出一次貼俾 ZCode 存檔，當後備 💾</p>
+          </div>
+          <button class="typing-btn" style="width:100%; margin-top:10px;" onclick="exportAllData()">📤 匯出全部數據（複製）</button>
+          <div class="field-label-mini" style="margin-top:14px;">📥 匯入數據（貼上匯出嘅文字）</div>
+          <textarea class="input-mini input-text" id="importAllText" rows="4" placeholder="貼上之前匯出嘅數據…" style="width:100%; resize:vertical;"></textarea>
+          <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importAllData()">📥 匯入（覆蓋合併）</button>
+          <div id="importAllResult" style="font-size:11px; color:var(--pale-green-text); text-align:center; margin-top:8px; display:none;"></div>
+        </div>
+      </section>
+
     </div>
 
   </div>
@@ -1983,7 +1999,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.11 · 2026.08.19</span>
+  <span style="font-size:10px; opacity:0.5;">v2.12 · 2026.08.19</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2991,6 +3007,42 @@
         '<div class="ylog-meta">'+modName(l.module)+(l.mins>0 ? ' · '+l.mins+' min' : '')+' · 撳我編輯</div>'+
       '</div>';
     }).join('');
+  }
+
+  // ----- 全數據備份 / 跨入口同步 -----
+  function exportAllData() {
+    const dump = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.indexOf('zoe_') === 0) dump[k] = localStorage.getItem(k);
+    }
+    const payload = JSON.stringify({ __zoeBackup: dateStr, keys: dump });
+    const done = () => alert('已複製全部數據（' + Object.keys(dump).length + ' 項）！去另一個入口貼入「匯入」就得 ✅');
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = payload; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) { alert('複製失敗，請手動抄低'); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload).then(done, fallback);
+    } else { fallback(); }
+  }
+  function importAllData() {
+    const raw = document.getElementById('importAllText').value.trim();
+    if (!raw) { alert('請先貼上匯出嘅數據'); return; }
+    let obj;
+    try { obj = JSON.parse(raw); } catch(e) { alert('格式唔啱：貼上嘅唔係有效備份'); return; }
+    const keys = obj && obj.keys && typeof obj.keys === 'object' ? obj.keys : null;
+    if (!keys) { alert('格式唔啱：搵唔到備份內容'); return; }
+    const names = Object.keys(keys).filter(k => k.indexOf('zoe_') === 0);
+    if (!names.length) { alert('備份入面冇 Zoe 數據'); return; }
+    if (!confirm('確認匯入 ' + names.length + ' 項數據？（相同項會被覆蓋）')) return;
+    names.forEach(k => localStorage.setItem(k, keys[k]));
+    const r = document.getElementById('importAllResult');
+    r.textContent = '已匯入 ' + names.length + ' 項 ✓ 重新載入中…';
+    r.style.display = 'block';
+    setTimeout(() => location.reload(), 900);
   }
 
   // ----- Init yoga -----
