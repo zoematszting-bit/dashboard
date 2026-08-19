@@ -1999,7 +1999,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.12 · 2026.08.19</span>
+  <span style="font-size:10px; opacity:0.5;">v2.13 · 2026.08.19</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2106,6 +2106,42 @@
   let water = parseInt(localStorage.getItem('zoe_water_' + dateStr) || '0');
   let viewDate = dateStr;            // 飲食 tab 檢視緊嘅日期（可翻查補記）
   let editState = {};                // 編輯模式狀態
+
+  // ===== 訓練種子數據（ZCode 遠程更新用，增量同步＋按 date|exercise|weight|reps 去重）=====
+  const SEED_WORKOUTS = [
+    {date:'2026.08.17', exercise:'肩前舉', weight:'2.5', reps:'15×4', group:'肩'},
+    {date:'2026.08.17', exercise:'飛鳥', weight:'2.5', reps:'15×4', group:'肩'},
+    {date:'2026.08.17', exercise:'招財貓', weight:'2.5', reps:'2×2', group:'肩'},
+    {date:'2026.08.17', exercise:'爬坡跑步', weight:'', reps:'30min', group:'有氧'},
+    {date:'2026.08.17', exercise:'山羊挺身', weight:'', reps:'12×4', group:'核心'},
+    {date:'2026.08.17', exercise:'臀推', weight:'30', reps:'12×4', group:'臀'},
+    {date:'2026.08.17', exercise:'硬拉', weight:'50', reps:'8×4', group:'臀'},
+    {date:'2026.08.17', exercise:'硬拉（輕組）', weight:'20', reps:'12×1', group:'臀'},
+    {date:'2026.08.17', exercise:'半蹲外展', weight:'52.5', reps:'12×4', group:'臀'},
+    {date:'2026.08.17', exercise:'前傾坐姿外展', weight:'52.5', reps:'12×4', group:'臀'},
+    {date:'2026.08.17', exercise:'坐姿外展（標準）', weight:'52.5', reps:'12×4', group:'臀'},
+    {date:'2026.08.18', exercise:'龍門架三頭', weight:'6.5', reps:'12×4', group:'手臂'},
+    {date:'2026.08.18', exercise:'面拉', weight:'6', reps:'12×3', group:'肩'},
+    {date:'2026.08.18', exercise:'蝴蝶機後束飛鳥', weight:'15', reps:'12×4', group:'肩'},
+    {date:'2026.08.18', exercise:'史密斯推肩', weight:'5', reps:'2×2', group:'肩'},
+    {date:'2026.08.18', exercise:'史密斯推肩', weight:'10', reps:'10×2', group:'肩'},
+    {date:'2026.08.18', exercise:'肩前舉', weight:'2.5', reps:'12×4', group:'肩'},
+    {date:'2026.08.18', exercise:'飛鳥', weight:'2.5', reps:'15×4', group:'肩'},
+    {date:'2026.08.18', exercise:'招財貓', weight:'2.5', reps:'2×2', group:'肩'}
+  ];
+  (function() {
+    const mk = 'zoe_workouts_seeded';
+    const prev = parseInt(localStorage.getItem(mk) || '0', 10) || 0;
+    if (prev !== SEED_WORKOUTS.length && prev < SEED_WORKOUTS.length) {
+      let cur = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
+      const key = function(w) { return w.date + '|' + w.exercise + '|' + w.weight + '|' + w.reps; };
+      const has = cur.map(key);
+      const add = SEED_WORKOUTS.slice(prev).filter(function(w) { return has.indexOf(key(w)) === -1; });
+      if (add.length) { cur = cur.concat(add); localStorage.setItem('zoe_workouts', JSON.stringify(cur)); }
+    }
+    if (prev !== SEED_WORKOUTS.length) localStorage.setItem(mk, String(SEED_WORKOUTS.length));
+  })();
+
   let workouts = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
   let schedule = JSON.parse(localStorage.getItem('zoe_schedule') || '{}');
   let measurements = JSON.parse(localStorage.getItem('zoe_measurements') || '[]');
