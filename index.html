@@ -2168,7 +2168,9 @@
     {date:'2026.08.18', exercise:'史密斯推肩', weight:'10', reps:'10×2', group:'肩'},
     {date:'2026.08.18', exercise:'肩前舉', weight:'2.5', reps:'12×4', group:'肩'},
     {date:'2026.08.18', exercise:'飛鳥', weight:'2.5', reps:'15×4', group:'肩'},
-    {date:'2026.08.18', exercise:'招財貓', weight:'2.5', reps:'2×2', group:'肩'}
+    {date:'2026.08.18', exercise:'招財貓', weight:'2.5', reps:'2×2', group:'肩'},
+    {date:'2026.08.18', exercise:'陰瑜伽 Yin Yoga', weight:'', reps:'45min', group:'瑜伽'},
+    {date:'2026.08.19', exercise:'Slimming Yoga', weight:'', reps:'45min', group:'瑜伽'}
   ];
   (function() {
     const mk = 'zoe_workouts_seeded';
@@ -2181,6 +2183,20 @@
       if (add.length) { cur = cur.concat(add); localStorage.setItem('zoe_workouts', JSON.stringify(cur)); }
     }
     if (prev !== SEED_WORKOUTS.length) localStorage.setItem(mk, String(SEED_WORKOUTS.length));
+  })();
+
+  // ===== 瑜伽週打卡種子（ZCode 遠程更新用：已上堂自動打勾）=====
+  (function() {
+    const SEED_YOGA_WEEKS = { '2026-W34': { p1: true, p2: true } }; // 8/18 Yin + 8/19 Slimming
+    Object.keys(SEED_YOGA_WEEKS).forEach(function(wk) {
+      const k = 'zoe_yoga_week_' + wk;
+      const cur = JSON.parse(localStorage.getItem(k) || '{}');
+      let changed = false;
+      Object.keys(SEED_YOGA_WEEKS[wk]).forEach(function(kk) {
+        if (!cur[kk]) { cur[kk] = SEED_YOGA_WEEKS[wk][kk]; changed = true; }
+      });
+      if (changed) localStorage.setItem(k, JSON.stringify(cur));
+    });
   })();
 
   let workouts = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
