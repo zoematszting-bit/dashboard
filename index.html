@@ -2035,7 +2035,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.18 · 2026.08.20</span>
+  <span style="font-size:10px; opacity:0.5;">v2.19 · 2026.08.20</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2143,6 +2143,29 @@
       if (add.length) { cur = cur.concat(add); localStorage.setItem(k, JSON.stringify(cur)); }
     }
     localStorage.setItem(mk, String(seed.length));
+  });
+
+  // ===== 種子修正（一次性：精確匹配舊數值先替換；Zoe 自己改過嘅記錄唔會被覆蓋）=====
+  const SEED_CORRECTIONS = [
+    { id: 'c1', date: '2026.08.20',
+      match: {food:'蒸貝貝南瓜（半個）', time:'08:30', kcal:150, p:2, c:33, f:0.5},
+      to:    {food:'蒸貝貝南瓜（半個）', time:'08:30', kcal:80,  p:1, c:18, f:0.5} }
+  ];
+  SEED_CORRECTIONS.forEach(function(c) {
+    const dk = 'zoe_seed_corr_' + c.id;
+    if (localStorage.getItem(dk)) return;
+    const k = 'zoe_meals_' + c.date;
+    const cur = JSON.parse(localStorage.getItem(k) || '[]');
+    let changed = false;
+    cur.forEach(function(m, i) {
+      if (m && m.food === c.match.food && m.time === c.match.time &&
+          parseFloat(m.kcal) === c.match.kcal && parseFloat(m.p) === c.match.p &&
+          parseFloat(m.c) === c.match.c && parseFloat(m.f) === c.match.f) {
+        cur[i] = c.to; changed = true;
+      }
+    });
+    if (changed) localStorage.setItem(k, JSON.stringify(cur));
+    localStorage.setItem(dk, '1');
   });
 
   let dayType = localStorage.getItem('zoe_dayType') || 'training';
