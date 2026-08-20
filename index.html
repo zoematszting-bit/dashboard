@@ -864,7 +864,20 @@
             <div class="card-unit">/ <span id="proteinGoal">110</span> g</div>
             <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="proteinBar" style="width:0%; background: var(--pale-green-text);"></div></div>
           </div>
+          <div class="card">
+            <div class="card-label">碳水</div>
+            <div class="card-value-sm serif"><span id="carbNow">0</span></div>
+            <div class="card-unit">/ <span id="carbGoal">200</span> g</div>
+            <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="carbBar" style="width:0%; background: var(--pale-yellow-text);"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-label">脂肪</div>
+            <div class="card-value-sm serif"><span id="fatNow">0</span></div>
+            <div class="card-unit">/ <span id="fatGoal">55</span> g</div>
+            <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="fatBar" style="width:0%; background: var(--pale-red-text);"></div></div>
+          </div>
         </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">目標隨日型切換：訓練日 1750/P110/C200/F55 · 休息日 1400/P100/C140/F50 · PCOS 宜低碳水集中日間</div>
       </section>
 
       <section>
@@ -889,7 +902,7 @@
               <div class="macro-row"><span class="macro-dot" style="background:var(--pale-red-text);"></span>脂肪<span class="macro-g" id="legFat">0g</span></div>
             </div>
           </div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">由每餐記錄自動計算 · 蛋白/碳水/脂肪理想約 30/45/25%</div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">由每餐記錄自動計算 · 目標比例約 碳水45-50%／蛋白25-30%／脂肪25-30%（依日型微調）</div>
         </div>
       </section>
 
@@ -2022,7 +2035,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.15 · 2026.08.20</span>
+  <span style="font-size:10px; opacity:0.5;">v2.16 · 2026.08.20</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2076,8 +2089,8 @@
   const GOAL_WEIGHT = 53;
   const WATER_GOAL = 2000;
   const dayTargets = {
-    training: { kcal: 1750, protein: 110 },
-    rest: { kcal: 1400, protein: 100 }
+    training: { kcal: 1750, protein: 110, carb: 200, fat: 55 },
+    rest: { kcal: 1400, protein: 100, carb: 140, fat: 50 }
   };
   const MUSCLE_COLORS = {
     '背':'#1F6C9F','胸':'#9F2F2D','肩':'#956400','臀':'#346538',
@@ -2239,6 +2252,14 @@
     document.getElementById('proteinNow').textContent = Math.round(tot.p);
     document.getElementById('kcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100) + '%';
     document.getElementById('proteinBar').style.width = Math.min(tot.p/t.protein*100,100) + '%';
+    const cn = document.getElementById('carbNow'), cg = document.getElementById('carbGoal'), cb = document.getElementById('carbBar');
+    if (cn) cn.textContent = Math.round(tot.c);
+    if (cg && t.carb) cg.textContent = t.carb;
+    if (cb && t.carb) cb.style.width = Math.min(tot.c/t.carb*100,100) + '%';
+    const fn = document.getElementById('fatNow'), fg = document.getElementById('fatGoal'), fb = document.getElementById('fatBar');
+    if (fn) fn.textContent = Math.round(tot.f);
+    if (fg && t.fat) fg.textContent = t.fat;
+    if (fb && t.fat) fb.style.width = Math.min(tot.f/t.fat*100,100) + '%';
     document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
     const ab = document.getElementById(dayType==='training'?'dayBtnTraining':'dayBtnRest');
     if (ab) ab.classList.add('active');
