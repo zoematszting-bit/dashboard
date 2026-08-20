@@ -2035,7 +2035,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.21 · 2026.08.20</span>
+  <span style="font-size:10px; opacity:0.5;">v2.22 · 2026.08.20</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2696,7 +2696,7 @@
     const max = Math.max(...entries.map(e=>e[1]));
     el.innerHTML = entries.map(([g,n]) => {
       const items = weekWos.filter(w => w.group === g).map(w =>
-        w.date.slice(5) + ' · ' + w.exercise + '｜' + (w.weight ? w.weight + 'kg' : '體重') + '｜' + (w.reps || ''));
+        w.date.slice(5) + ' · ' + w.exercise + '｜' + (w.weight ? w.weight + 'kg' : '—') + '｜' + (w.reps || ''));
       return '<div class="bar-row" style="cursor:pointer; border-radius:6px;" onclick="toggleMuscleDetail(this)">'+
       '<div class="bar-label-line"><span><span class="msc-arrow" style="display:inline-block; font-size:10px; transition:transform .2s;">▸</span> '+g+'</span><span style="font-family:JetBrains Mono,monospace; font-size:11px; color:var(--text-muted);">'+n+' 組</span></div>'+
       '<div class="bar-track-h"><div class="bar-fill-h" style="width:'+(n/max*100)+'%; background:'+(MUSCLE_COLORS[g]||'#1A1A1A')+';"></div></div>'+
