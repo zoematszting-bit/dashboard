@@ -614,7 +614,13 @@
 
     <!-- Urgent alerts -->
     <section>
-      <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15);">
+      <div class="alert-banner" style="background:var(--pale-blue-bg); border-color:rgba(31,108,159,0.18);">
+        <span class="alert-icon" style="color:var(--pale-blue-text);">📬</span>
+        <div class="alert-text" style="color:var(--pale-blue-text);">
+          <strong>ACO＋PSII 已報名（8.27）</strong>等公務員事務局 email 邀請技能測驗 · 記得查 spam
+        </div>
+      </div>
+      <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15); margin-top:8px;">
         <span class="alert-icon" style="color:var(--pale-green-text);">🎉</span>
         <div class="alert-text" style="color:var(--pale-green-text);">
           <strong>三張信用卡全部清零！</strong>零負債狀態
@@ -640,14 +646,14 @@
         <a class="card-link" href="#" onclick="switchTab('study', document.querySelector('.nav-btn[data-tab=study]'));return false;">
           <div class="card">
             <div class="card-label">備考</div>
-            <div class="card-value-sm serif">PSII</div>
+            <div class="card-value-sm serif">已報名 ✅</div>
             <div style="margin-top:10px;">
-              <span class="tag tag-yellow">第 1 週</span>
+              <span class="tag tag-green">ACO＋PSII</span>
             </div>
             <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
               <div class="progress-fill" style="width:20%;"></div>
             </div>
-            <div class="progress-num" style="margin-top:6px;">16 週計劃 · 20%</div>
+            <div class="progress-num" style="margin-top:6px;">8.27 遞交 · 等 email 測驗邀請</div>
           </div>
         </a>
 
@@ -1260,17 +1266,17 @@
       </section>
 
       <section>
-        <p class="section-title">數據備份 · 跨入口同步</p>
+        <p class="section-title">☁️ 跨裝置同步</p>
         <div class="card card-full">
           <div class="info-block" style="font-size:11px; color:var(--text-muted);">
-            <p>⚠️ iOS 主畫面 icon 同 Safari 係兩個獨立儲存區，唔會自動同步。</p>
-            <p>用法：喺有數據嗰邊撳「匯出」→ 去另一邊貼上「匯入」。</p>
-            <p>建議每週匯出一次貼俾 ZCode 存檔，當後備 💾</p>
+            <p>📱 iPhone／iPad／Mac 電腦各入口嘅儲存區係獨立嘅，唔會自動同步。</p>
+            <p><strong>用法：</strong>喺有數據嗰部撳「匯出」→ 去另一部貼上「匯入」。智能合併，唔會重複、唔會沖走另一部嘅記錄 ✅</p>
+            <p>💬 或者直接報俾 ZCode（飲食相、體重、訓練），ZCode 分析後推送，全部裝置 refresh 即見。</p>
           </div>
-          <button class="typing-btn" style="width:100%; margin-top:10px;" onclick="exportAllData()">📤 匯出全部數據（複製）</button>
-          <div class="field-label-mini" style="margin-top:14px;">📥 匯入數據（貼上匯出嘅文字）</div>
-          <textarea class="input-mini input-text" id="importAllText" rows="4" placeholder="貼上之前匯出嘅數據…" style="width:100%; resize:vertical;"></textarea>
-          <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importAllData()">📥 匯入（覆蓋合併）</button>
+          <button class="typing-btn" style="width:100%; margin-top:10px;" onclick="exportAllData()">📤 匯出同步碼（複製全部數據）</button>
+          <div class="field-label-mini" style="margin-top:14px;">📥 匯入同步碼（貼上另一裝置匯出嘅文字）</div>
+          <textarea class="input-mini input-text" id="importAllText" rows="4" placeholder="貼上同步碼…" style="width:100%; resize:vertical;"></textarea>
+          <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importAllData()">📥 匯入（智能合併）</button>
           <div id="importAllResult" style="font-size:11px; color:var(--pale-green-text); text-align:center; margin-top:8px; display:none;"></div>
         </div>
       </section>
@@ -1449,12 +1455,31 @@
     </section>
 
     <section>
+      <p class="section-title">申請狀態 · 2026.08.27</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">助理文書主任 ACO · C-5814060</span>
+          <span class="tag tag-green">已遞交 ✅</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">二級私人秘書 PSII · C-5814061</span>
+          <span class="tag tag-green">已遞交 ✅</span>
+        </div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">
+          📬 下一步：等公務員事務局 email 邀請技能測驗（記得查 spam）<br>
+          ⚠️ 測驗唔及格 3 個月內唔可以再申請 · 面試唔過 12 個月 · 唔好裸考
+        </div>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">目標</p>
       <div class="card card-full">
         <div class="info-block">
-          <p><strong>目標：</strong>2027 年中考入二級私人秘書（PSII）</p>
-          <p><strong>流程：</strong>報名 → 資格審核 → 技能測試 → 面試 → 聘書</p>
-          <p><strong>合格線：</strong>中文打字 20 wpm · 英文打字 40 wpm · Word/Excel 2016</p>
+          <p><strong>目標：</strong>2027 年中考入政府文職（PSII／ACO）</p>
+          <p><strong>流程：</strong>報名 ✅（8.27）→ 資格審核 → 技能測試 → 面試 → 聘書</p>
+          <p><strong>合格線：</strong>中打 20 wpm · 英打 ACO 30／PSII 40 wpm · Word/Excel 2016</p>
+          <p><strong>成績效期：</strong>技能測驗及格成績兩年內有效</p>
         </div>
       </div>
     </section>
@@ -1537,8 +1562,12 @@
           <span class="link-text">⌨️ 打字練習網站（即練）</span>
           <span class="link-arrow">→</span>
         </a>
+        <a class="link-item" href="https://www.csb.gov.hk/tc_chi/admin/grade/cs/2323.html" target="_blank">
+          <span class="link-text">🏛️ ACO 官方招聘頁（已報名）</span>
+          <span class="link-arrow">→</span>
+        </a>
         <a class="link-item" href="https://www.csb.gov.hk/tc_chi/admin/grade/cs/2689.html" target="_blank">
-          <span class="link-text">報名 PSII（公務員事務局）</span>
+          <span class="link-text">🏛️ PSII 官方招聘頁（已報名）</span>
           <span class="link-arrow">→</span>
         </a>
       </div>
@@ -2035,7 +2064,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.22 · 2026.08.20</span>
+  <span style="font-size:10px; opacity:0.5;">v2.23 · 2026.08.27</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -3173,19 +3202,77 @@
       navigator.clipboard.writeText(payload).then(done, fallback);
     } else { fallback(); }
   }
+  // ----- 智能合併（跨裝置同步 v2.23）-----
+  function zoeRecBucket(key, rec) {
+    if (rec && typeof rec === 'object') {
+      if (rec.id !== undefined) return 'id|' + rec.id;
+      if (key.indexOf('zoe_meals_') === 0) return 'meal|' + rec.food + '@' + (rec.time || '');
+      if (rec.date !== undefined) {
+        return 'date|' + rec.date + '|' + (rec.exercise || rec.module || rec.name || '');
+      }
+    }
+    return null; // 冇自然身份 → 用完整內容做 key
+  }
+  function mergeZoeValue(key, existingRaw, incomingRaw) {
+    if (existingRaw === null || existingRaw === undefined) return { raw: incomingRaw, stat: 'new' };
+    if (existingRaw === incomingRaw) return { raw: existingRaw, stat: 'same' };
+    if (/_seeded/.test(key)) { // 種子計數標記 → 取大（防止種子重複注入）
+      const a = parseInt(existingRaw, 10) || 0, b = parseInt(incomingRaw, 10) || 0;
+      return { raw: String(Math.max(a, b)), stat: 'merged' };
+    }
+    if (key.indexOf('zoe_water_') === 0 && !isNaN(parseFloat(existingRaw)) && !isNaN(parseFloat(incomingRaw))) {
+      return { raw: String(Math.max(parseFloat(existingRaw), parseFloat(incomingRaw))), stat: 'merged' }; // 每日水量 → 取大
+    }
+    let ev, iv;
+    try { ev = JSON.parse(existingRaw); } catch (e) { ev = existingRaw; }
+    try { iv = JSON.parse(incomingRaw); } catch (e) { iv = incomingRaw; }
+    if (Array.isArray(ev) && Array.isArray(iv)) {
+      // 記錄陣列 → 按身份分桶：新記錄加入；同身份唔同內容用貼上嗰邊（較新編輯）；
+      // 各變體保留最大出現次數（同一動作打多組都保得住）；完全相同唔會重複
+      const buckets = new Map();
+      const put = (side, arr) => arr.forEach(r => {
+        const id = zoeRecBucket(key, r) || 'json|' + JSON.stringify(r);
+        if (!buckets.has(id)) buckets.set(id, new Map());
+        const vars = buckets.get(id);
+        const j = JSON.stringify(r);
+        if (!vars.has(j)) vars.set(j, { rec: r, countInc: 0, countExc: 0 });
+        vars.get(j)[side === 'inc' ? 'countInc' : 'countExc']++;
+      });
+      put('exc', ev); put('inc', iv);
+      const out = [];
+      buckets.forEach(vars => {
+        const incVars = Array.from(vars.values()).filter(v => v.countInc > 0);
+        const use = incVars.length ? incVars : Array.from(vars.values());
+        use.forEach(v => {
+          const n = Math.max(v.countInc, v.countExc);
+          for (let i = 0; i < n; i++) out.push(v.rec);
+        });
+      });
+      return { raw: JSON.stringify(out), stat: 'merged' };
+    }
+    if (ev && iv && typeof ev === 'object' && typeof iv === 'object') {
+      return { raw: JSON.stringify(Object.assign({}, ev, iv)), stat: 'merged' }; // 物件 → 淺合併（貼上優先）
+    }
+    return { raw: incomingRaw, stat: 'merged' }; // 其他純量 → 貼上優先
+  }
   function importAllData() {
     const raw = document.getElementById('importAllText').value.trim();
-    if (!raw) { alert('請先貼上匯出嘅數據'); return; }
+    if (!raw) { alert('請先貼上同步碼'); return; }
     let obj;
-    try { obj = JSON.parse(raw); } catch(e) { alert('格式唔啱：貼上嘅唔係有效備份'); return; }
+    try { obj = JSON.parse(raw); } catch(e) { alert('格式唔啱：貼上嘅唔係有效同步碼'); return; }
     const keys = obj && obj.keys && typeof obj.keys === 'object' ? obj.keys : null;
-    if (!keys) { alert('格式唔啱：搵唔到備份內容'); return; }
+    if (!keys) { alert('格式唔啱：搵唔到數據內容'); return; }
     const names = Object.keys(keys).filter(k => k.indexOf('zoe_') === 0);
-    if (!names.length) { alert('備份入面冇 Zoe 數據'); return; }
-    if (!confirm('確認匯入 ' + names.length + ' 項數據？（相同項會被覆蓋）')) return;
-    names.forEach(k => localStorage.setItem(k, keys[k]));
+    if (!names.length) { alert('同步碼入面冇 Zoe 數據'); return; }
+    if (!confirm('智能合併 ' + names.length + ' 項數據？\n（新記錄會加入，相同記錄唔會重複，唔會沖走本機記錄）')) return;
+    let added = 0, merged = 0, same = 0;
+    names.forEach(k => {
+      const res = mergeZoeValue(k, localStorage.getItem(k), keys[k]);
+      localStorage.setItem(k, res.raw);
+      if (res.stat === 'new') added++; else if (res.stat === 'same') same++; else merged++;
+    });
     const r = document.getElementById('importAllResult');
-    r.textContent = '已匯入 ' + names.length + ' 項 ✓ 重新載入中…';
+    r.textContent = '✅ 合併完成 · 新增 ' + added + ' · 更新 ' + merged + ' · 相同 ' + same + ' · 重新載入中…';
     r.style.display = 'block';
     setTimeout(() => location.reload(), 900);
   }
