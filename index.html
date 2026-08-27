@@ -1473,6 +1473,60 @@
     </section>
 
     <section>
+      <p class="section-title">⌨️ 打字每日打卡 · 進度曲線</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">🔥 連續打卡</span>
+          <span class="tag tag-red" id="typStreakTag">0 天</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">⏱️ 累積練習</span>
+          <span class="tag tag-blue" id="typTotalTag">0 分鐘 · 0 節</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">📅 技能測驗日期</span>
+          <span class="tag tag-gray" id="examDateTag">未定（等 CSB）</span>
+        </div>
+        <input type="date" class="input-mini" id="examDatePick" style="margin-top:6px;" onchange="setExamDate(this.value)">
+        <div id="typChart" style="margin-top:12px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
+          <span style="color:var(--pale-blue-text); font-weight:500;">— 英打</span> ｜ <span style="color:var(--pale-green-text); font-weight:500;">— 中打</span> ｜ 虛線＝目標（中20 · 英30 ACO · 英40 PSII）
+        </div>
+        <div class="field-grid" style="margin-top:14px;">
+          <div>
+            <div class="field-label-mini">英打 wpm</div>
+            <input type="number" class="input-mini" id="typEn" placeholder="35">
+          </div>
+          <div>
+            <div class="field-label-mini">中打 wpm</div>
+            <input type="number" class="input-mini" id="typZh" placeholder="18">
+          </div>
+          <div>
+            <div class="field-label-mini">練習分鐘</div>
+            <input type="number" class="input-mini" id="typMin" placeholder="20">
+          </div>
+          <div class="field-full" style="display:flex; gap:8px;">
+            <button class="typing-btn" style="flex:1;" onclick="addTypingLog()">✅ 今日打卡</button>
+          </div>
+        </div>
+        <div id="typLogList" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📚 Office 每日一課（10:00）</p>
+      <div class="card card-full" id="todayLessonCard"></div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="progress-row">
+          <span class="progress-label">課程進度（測驗≥80%＝已掌握）</span>
+          <span class="tag tag-blue" id="officeProgTag">0 / 44</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="officeProgFill" style="width:0%;"></div></div>
+        <div id="officeList" style="margin-top:12px; max-height:280px; overflow-y:auto;"></div>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">目標</p>
       <div class="card card-full">
         <div class="info-block">
@@ -2064,7 +2118,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.23 · 2026.08.27</span>
+  <span style="font-size:10px; opacity:0.5;">v2.24 · 2026.08.27</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -3208,7 +3262,7 @@
       if (rec.id !== undefined) return 'id|' + rec.id;
       if (key.indexOf('zoe_meals_') === 0) return 'meal|' + rec.food + '@' + (rec.time || '');
       if (rec.date !== undefined) {
-        return 'date|' + rec.date + '|' + (rec.exercise || rec.module || rec.name || '');
+        return 'date|' + rec.date + '|' + (rec.exercise || rec.module || rec.name || '') + '|' + (rec.time || '');
       }
     }
     return null; // 冇自然身份 → 用完整內容做 key
@@ -3277,6 +3331,312 @@
     setTimeout(() => location.reload(), 900);
   }
 
+  // ===== ⌨️ 打字打卡（v2.24）=====
+  let typingLog = JSON.parse(localStorage.getItem('zoe_typing_log') || '[]');
+  // ZCode 推送種子：Zoe 報打字成績 → 加喺下面陣列 → push（marker 用長度）
+  const TYPING_SEED = [
+  ];
+  (function seedTyping() {
+    const mk = parseInt(localStorage.getItem('zoe_typing_seeded') || '0', 10);
+    if (TYPING_SEED.length > mk) {
+      TYPING_SEED.slice(mk).forEach(s => {
+        if (!typingLog.some(l => l.date === s.date && l.time === s.time)) typingLog.push(s);
+      });
+      typingLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+      localStorage.setItem('zoe_typing_seeded', String(TYPING_SEED.length));
+    }
+  })();
+  function addTypingLog() {
+    const en = parseFloat(document.getElementById('typEn').value);
+    const zh = parseFloat(document.getElementById('typZh').value);
+    const mins = parseFloat(document.getElementById('typMin').value);
+    if ((!en || en <= 0) && (!zh || zh <= 0)) { alert('英打或中打 wpm 至少填一項'); return; }
+    typingLog.push({ date: dateStr, time: new Date().toTimeString().slice(0, 5), en: en || 0, zh: zh || 0, mins: mins || 0 });
+    typingLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+    ['typEn', 'typZh', 'typMin'].forEach(id => document.getElementById(id).value = '');
+    renderTyping();
+  }
+  function delTypingLog(i) {
+    if (!confirm('刪除 ' + typingLog[i].date + ' 嘅打字記錄？')) return;
+    typingLog.splice(i, 1);
+    localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+    renderTyping();
+  }
+  function typingStreak() {
+    const days = new Set(typingLog.map(l => l.date));
+    if (!days.size) return 0;
+    const ds = d => d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+    let probe = days.has(ds(new Date())) ? new Date() : new Date(Date.now() - 86400000);
+    let n = 0;
+    while (days.has(ds(probe))) { n++; probe = new Date(probe.getTime() - 86400000); }
+    return n;
+  }
+  function renderTypingChart() {
+    const byDay = {};
+    typingLog.forEach(l => {
+      if (!byDay[l.date]) byDay[l.date] = { en: 0, zh: 0 };
+      if ((l.en || 0) > byDay[l.date].en) byDay[l.date].en = l.en;
+      if ((l.zh || 0) > byDay[l.date].zh) byDay[l.date].zh = l.zh;
+    });
+    const days = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(Date.now() - i * 86400000);
+      days.push(d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0'));
+    }
+    const W = 330, H = 132, pl = 24, pr = 8, pt = 10, pb = 18;
+    const maxV = Math.max(45, ...days.map(d => Math.max(byDay[d] ? byDay[d].en : 0, byDay[d] ? byDay[d].zh : 0))) + 5;
+    const X = i => (pl + (W - pl - pr) * (i / 13)).toFixed(1);
+    const Y = v => (pt + (H - pt - pb) * (1 - v / maxV)).toFixed(1);
+    const line = k => {
+      let d = '', pen = false;
+      days.forEach((dt, i) => {
+        const v = byDay[dt] ? byDay[dt][k] : 0;
+        if (v > 0) { d += (pen ? ' ' : '') + X(i) + ',' + Y(v); pen = true; } else pen = false;
+      });
+      return d;
+    };
+    const dots = (k, col) => days.map((dt, i) => {
+      const v = byDay[dt] ? byDay[dt][k] : 0;
+      return v > 0 ? '<circle cx="' + X(i) + '" cy="' + Y(v) + '" r="2.3" fill="' + col + '"/>' : '';
+    }).join('');
+    const tgt = (v, col) => '<line x1="' + pl + '" y1="' + Y(v) + '" x2="' + (W - pr) + '" y2="' + Y(v) + '" stroke="' + col + '" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>' +
+      '<text x="' + (pl - 3) + '" y="' + (+Y(v) + 3) + '" text-anchor="end" font-size="8" fill="' + col + '">' + v + '</text>';
+    const labels = days.map((dt, i) => i % 3 === 1 ? '<text x="' + X(i) + '" y="' + (H - 5) + '" text-anchor="middle" font-size="7.5" fill="var(--text-muted)">' + dt.slice(5) + '</text>' : '').join('');
+    document.getElementById('typChart').innerHTML =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%; height:auto; display:block;">' +
+      tgt(20, 'var(--pale-green-text)') + tgt(30, 'var(--pale-yellow-text)') + tgt(40, 'var(--pale-red-text)') + labels +
+      '<polyline points="' + line('en') + '" fill="none" stroke="var(--pale-blue-text)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<polyline points="' + line('zh') + '" fill="none" stroke="var(--pale-green-text)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      dots('en', 'var(--pale-blue-text)') + dots('zh', 'var(--pale-green-text)') + '</svg>';
+  }
+  function setExamDate(v) {
+    if (!v) return;
+    localStorage.setItem('zoe_exam_date', v);
+    renderExamDate();
+  }
+  function renderExamDate() {
+    const v = localStorage.getItem('zoe_exam_date');
+    const tag = document.getElementById('examDateTag');
+    const pick = document.getElementById('examDatePick');
+    if (pick && v) pick.value = v;
+    if (!v) return;
+    const d = new Date(v + 'T00:00:00');
+    const left = Math.ceil((d - new Date()) / 86400000);
+    tag.textContent = v + '（' + (left >= 0 ? '仲有 ' + left + ' 天' : '已考完 🎉') + '）';
+    tag.className = 'tag ' + (left >= 0 && left <= 14 ? 'tag-red' : 'tag-green');
+  }
+  function renderTyping() {
+    const streak = typingStreak();
+    const done = typingLog.some(l => l.date === dateStr);
+    document.getElementById('typStreakTag').textContent = streak + ' 天' + (done ? ' · 今日✅' : ' · 今日未打');
+    document.getElementById('typStreakTag').className = 'tag ' + (done ? 'tag-green' : 'tag-red');
+    const totalMin = typingLog.reduce((a, l) => a + (parseFloat(l.mins) || 0), 0);
+    document.getElementById('typTotalTag').textContent = Math.round(totalMin) + ' 分鐘 · ' + typingLog.length + ' 節';
+    renderExamDate();
+    renderTypingChart();
+    document.getElementById('typLogList').innerHTML = typingLog.slice(-10).reverse().map((l, ri) => {
+      const i = typingLog.length - 1 - ri;
+      return '<div class="log-row"><span class="log-date">' + l.date + ' ' + l.time + '</span>' +
+        '<span><span class="log-value">英 ' + l.en + ' · 中 ' + l.zh + (l.mins ? ' · ' + l.mins + 'm' : '') + '</span> ' +
+        '<button class="log-del" onclick="delTypingLog(' + i + ')">×</button></span></div>';
+    }).join('') || '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄 · 今日開始！</span></div>';
+  }
+
+  // ===== 📚 Office 每日一課（v2.24）=====
+  const OFFICE_SYLLABUS = [
+    { id: 1, s: 'W', t: '介面與檔案操作', p: ['功能區 Ribbon、索引標籤與群組導覽', '開新檔／儲存 Ctrl+S／另存新檔 F12', 'docx vs doc vs PDF 格式分別'], tasks: ['開新文件儲存成 test.docx，再另存為 PDF', '檢查 檔案＞選項＞儲存 嘅自動復原間隔'] },
+    { id: 2, s: 'W', t: '文字選取與編輯', p: ['滑鼠雙擊選字／三擊選段落', 'Shift＋方向鍵、Ctrl＋Shift＋Home', 'Ctrl+C／X／V、復原 Ctrl+Z、重做 Ctrl+Y'], tasks: ['用鍵盤選取成段文字並搬移', '測試自動校正（輸入 tehs → 自動更正）'] },
+    { id: 3, s: 'W', t: '字型格式', p: ['字型大小、粗斜底線、色彩、醒目提示', '上標下標（Ctrl+= / Ctrl+Shift+=）', '字元間距與縮放：進階字型對話框'], tasks: ['做一行「H₂O 同 X²」效果', '整句加黃色醒目提示'] },
+    { id: 4, s: 'W', t: '段落格式', p: ['五種對齊：左/中/右/左右對齊/分散', '縮排：首行/凸排/左右縮排', '行距 1.5／2.0 與段落前後間距'], tasks: ['設定首行縮排 2 字元', '全文行距 1.5 行'] },
+    { id: 5, s: 'W', t: '尋找與取代', p: ['Ctrl+F 尋找、Ctrl+H 取代', '取代「全部」與逐個確認', '特殊字元：段落標記^p、定位字元^t'], tasks: ['將文件全部「公司」改為「本局」', '練習移除多餘空行（^p^p→^p）'] },
+    { id: 6, s: 'W', t: '拼字與文法檢查', p: ['F7 拼字檢查、忽略/新增字典', '設定校對語言（中/英）', '紅綠波浪底線意思'], tasks: ['打一段故意有錯字嘅英文做檢查', '切換校對語言為英文(US)'] },
+    { id: 7, s: 'W', t: '項目符號與編號', p: ['項目符號清單／編號清單', '多層次清單：Tab 下一層、Shift+Tab 上一層', '自訂符號圖片與編號格式'], tasks: ['做一個三層大綱清單', '自訂符號做「■」'] },
+    { id: 8, s: 'W', t: '框線與網底', p: ['段落框線：方框/底線/上框線', '網底填色（段落 vs 字元）', '頁面框線（版面配置＞頁面框線）'], tasks: ['段落加 0.5pt 黑色方框', '段落網底設淺灰'] },
+    { id: 9, s: 'W', t: '定位點', p: ['靠左/置中/靠右/小數/分隔線定位點', '定位點位置精確輸入（段落對話框）', '前置字元：目錄式點線 ······'], tasks: ['用定位點做一行「章節………頁數」', '在小數定位點輸入金額對齊小數位'] },
+    { id: 10, s: 'W', t: '表格建立與編輯', p: ['插入表格：拖曳/插入表格對話框', 'Tab 跳下一格、加新列', '選取列/欄/整個表格（表格左上十字）'], tasks: ['做 3×4 表格並填資料', '用 Tab 喺表尾自動加新列'] },
+    { id: 11, s: 'W', t: '表格進階', p: ['合併/分割儲存格', '表格框線與網底（框線及網底按鈕）', '自動調整：內容/視窗/平均分配列欄'], tasks: ['合併第一列做標題列', '平均分配各欄寬'] },
+    { id: 12, s: 'W', t: '版面設定', p: ['邊界上下左右/裝訂邊', '直向橫向切換', '紙張大小 A4/Letter；多欄設定'], tasks: ['整頁轉橫向', '設定左右邊界 2.54cm'] },
+    { id: 13, s: 'W', t: '頁首頁尾頁碼', p: ['插入頁碼位置與格式', '首頁不同／奇偶頁不同', '頁首文字＋底線框線'], tasks: ['頁尾插入置中頁碼', '勾選首頁不同'] },
+    { id: 14, s: 'W', t: '分頁與分節', p: ['分頁符號 Ctrl+Enter vs 自動分頁', '分節符號（下一頁/接續本頁）用途', '同文件唔同節設唔同方向邊界'], tasks: ['喺第二頁插入分頁符號', '將某節獨立轉橫向'] },
+    { id: 15, s: 'W', t: '圖片與文繞圖', p: ['插入圖片/線上圖片', '文繞圖：矩形/緊密/文字在前/後', '裁剪、大小、鎖定比例'], tasks: ['插入圖片設「緊密」文繞圖', '等比例縮細至 50%'] },
+    { id: 16, s: 'W', t: '圖案、SmartArt、文字藝術師', p: ['插入圖案＋快速樣式', 'SmartArt 流程圖/階層圖', '文字藝術師樣式同文字效果'], tasks: ['畫簡單流程圖（開始→處理→結束）', '標題轉文字藝術師'] },
+    { id: 17, s: 'W', t: '樣式與格式刷', p: ['樣式：標題1/2、內文', '修改樣式＝全文件一次過改', '格式刷單擊/雙擊連續複製格式'], tasks: ['套用標題1並改其字型大小', '用格式刷將格式複製到三段'] },
+    { id: 18, s: 'W', t: '目錄', p: ['自動目錄：引用＞目錄', '標題樣式配合先入到目錄', '更新目錄（F9／右鍵更新）'], tasks: ['做三個標題再插入目錄', '加一個標題後更新目錄'] },
+    { id: 19, s: 'W', t: '合併列印', p: ['郵件＞啟動合併列印：信件/信封/標籤', '選取收件者（Excel 清單）', '插入合併欄位＋預覽結果＋完成合併'], tasks: ['用 3 人名單做合併信件', '預覽下一筆記錄'] },
+    { id: 20, s: 'W', t: '列印、校對與保護', p: ['預覽列印、列印範圍（頁1-3）、雙面', '追蹤修訂＋接受/拒絕變更', '註解、以密碼保護文件'], tasks: ['設定只列印第 1-2 頁', '開追蹤修訂改一句並接受'] },
+    { id: 21, s: 'E', t: '介面與儲存格', p: ['欄英文列數字：A1 位址觀念', '工作表：插入/重新命名/移動/複製/刪除', '名稱方塊直接跳位'], tasks: ['新增工作表改名「8月」', '用名稱方塊跳去 D100'] },
+    { id: 22, s: 'E', t: '資料輸入與填滿', p: ['輸入/編輯 F2/刪除', '自動填滿：數列、日期、星期', '自訂清單（選項＞進階）'], tasks: ['拖曳做 1-10 同星期一至日', '用 Ctrl 拖曳做複製而非數列'] },
+    { id: 23, s: 'E', t: '數字格式', p: ['通用/貨幣/百分比/日期格式', '小數位增減按鈕', '文字型數字（綠色三角）同轉換'], tasks: ['一欄金額設千分位貨幣格式', '輸入 001 保留為文字'] },
+    { id: 24, s: 'E', t: '儲存格格式', p: ['對齊：跨欄置中、自動換行', '框線（外框/內線/繪製框線）與網底', '格式刷、儲存格樣式'], tasks: ['標題列跨欄置中＋填色', '資料區加所有框線'] },
+    { id: 25, s: 'E', t: '資料驗證', p: ['下拉式選單（清單）', '整數/日期範圍限制', '錯誤提示訊息設定'], tasks: ['做性別下拉選單（男/女）', '限制分數只可以 0-100'] },
+    { id: 26, s: 'E', t: '公式與參照', p: ['公式以 = 開頭、運算子 + - * / ^', '相對參照 vs 絕對參照 $A$1', 'F4 循環切換參照類型'], tasks: ['寫 =B2*C2 再拖曳填滿', '將 B2 改 $B$2 觀察填滿分別'] },
+    { id: 27, s: 'E', t: 'SUM 與 AVERAGE', p: ['SUM 範圍寫法：=SUM(B2:B10)', 'AVERAGE 平均', '自動加總 Alt+= 與狀態列快速統計'], tasks: ['加總一欄金額', '計平均並比較狀態列數值'] },
+    { id: 28, s: 'E', t: 'MAX、MIN、COUNT', p: ['MAX/MIN 搵最高最低', 'COUNT 計數字格 vs COUNTA 計非空白', 'COUNTBLANK 空格數'], tasks: ['搵出最高分同最低分', '比較 COUNT 同 COUNTA 結果'] },
+    { id: 29, s: 'E', t: 'IF 函數', p: ['=IF(條件, 成立, 不成立)', '巢狀 IF：三段式判斷', 'AND/OR 配合 IF'], tasks: ['分數≥50 顯示及格否則不合格', '用 IF+AND 做「兩科都≥50 先及格」'] },
+    { id: 30, s: 'E', t: 'SUMIF 與 COUNTIF', p: ['=COUNTIF(範圍,"條件")', '=SUMIF(範圍,"條件",加總範圍)', '條件寫法：">60"、"*陳*"'], tasks: ['計「陳」姓人數', '加總某部門嘅薪金'] },
+    { id: 31, s: 'E', t: 'VLOOKUP', p: ['=VLOOKUP(找咩, 邊度, 第幾欄, 0)', '第4參數 0 = 精確符合', '找不到傳 #N/A 同 IFERROR 處理'], tasks: ['用編號自動帶出姓名', '用 IFERROR 將 #N/A 攌成「查無」'] },
+    { id: 32, s: 'E', t: '排序', p: ['單鍵排序 vs 多層排序（自訂排序）', '擴大選取範圍（成表一齊調）', '按色彩/自訂清單排序'], tasks: ['按總分降序再按姓名排序', '故意揀「繼續用目前選取範圍」睇後果'] },
+    { id: 33, s: 'E', t: '篩選', p: ['自動篩選：文字/數字/色彩/日期', '數字篩選：大於/前10項', '清除篩選 vs 關閉自動篩選'], tasks: ['篩選某部門所有記錄', '篩選金額前 10 項'] },
+    { id: 34, s: 'E', t: '進階篩選與移除重複', p: ['進階篩選：條件範圍寫法（同一列=及、唔同列=或）', '複製到其他位置', '資料＞移除重複'], tasks: ['用進階篩選抽兩個條件（OR）', '移除重複姓名'] },
+    { id: 35, s: 'E', t: '凍結窗格與分割', p: ['凍結首列／首欄／窗格', '捲動時標題列保持', '分割視窗對比'], tasks: ['凍結首列後捲動驗證', '取消凍結'] },
+    { id: 36, s: 'E', t: '小計與群組', p: ['資料＞小計：分組欄位＋彙總方式', '大綱 1/2/3 層級切換', '組成群組（資料＞群組）'], tasks: ['按部門做加總小計', '收合大綱睇總數'] },
+    { id: 37, s: 'E', t: '圖表', p: ['直條圖/橫條圖/圓形圖/折線圖選擇', '圖表元素：標題/圖例/資料標籤', '選取資料來源同切換列欄'], tasks: ['用季度數據畫直條圖', '加資料標籤同改圖表標題'] },
+    { id: 38, s: 'E', t: '圖表進階', p: ['新增/刪除數列', '變更圖表類型（組合圖）', '走勢線＋座標軸格式'], tasks: ['折線圖加線性走勢線', '改成「直條+折線」組合圖'] },
+    { id: 39, s: 'E', t: '版面與列印', p: ['列印範圍設定/清除', '列印標題：每頁重複頂端標題列', '寬度調成一頁、列印格線/標題'], tasks: ['設定每頁重複標題列', '將成表調成一頁寬預覽'] },
+    { id: 40, s: 'E', t: '保護與檔案', p: ['保護工作表（鎖定/解除鎖定儲存格）', '保護活頁簿結構、密碼', 'xlsx/csv/pdf 另存'], tasks: ['鎖定公式區只俾人改輸入格', '另存 CSV 睇分別'] },
+    { id: 41, s: 'X', t: '綜合實戰：Word 公文', p: ['政府通告格式排版全流程', '定位點/框線/頁首頁尾綜合運用', '計時 20 分鐘完成'], tasks: ['由空白文件起，排版一份通告', '核對：邊界/字體/頁碼'] },
+    { id: 42, s: 'X', t: '綜合實戰：Excel 數據表', p: ['資料驗證+函數+排序篩選一齊用', '小計+圖表輸出', '計時 25 分鐘完成'], tasks: ['起員工表：下拉+IF+VLOOKUP', '按部門小計＋畫圖'] },
+    { id: 43, s: 'X', t: '模擬測驗一（Word 計時）', p: ['15 題操作限時 30 分鐘', '覆蓋課 1-20 全部知識點', '記錄分數上 dashboard'], tasks: ['限時完成', '錯嘅題目記低翻查嗰課'] },
+    { id: 44, s: 'X', t: '模擬測驗二（Excel 計時）', p: ['15 題操作限時 30 分鐘', '覆蓋課 21-40 全部知識點', '記錄分數上 dashboard'], tasks: ['限時完成', '弱點課重做測驗'] }
+  ];
+  // 每日 10:00 ZCode 推送測驗種子（格式同第 1 課；10:00 cron 自動注入下一課）
+  const OFFICE_QUIZ_SEEDS = {
+    1: { quiz: [
+      { q: '喺 Word 2016 儲存新文件，預設檔案格式係？', options: ['.docx', '.doc', '.txt', '.pdf'], a: 0, e: 'Word 2007 起預設係 .docx（XML 格式）;.doc 係舊版 97-2003 相容格式。' },
+      { q: 'Ctrl+S 嘅作用係？', options: ['另存新檔', '立即儲存（覆蓋原檔）', '開新檔', '關閉文件'], a: 1, e: 'Ctrl+S 係直接儲存；另存新檔係 F12 或 檔案＞另存新檔，可以改名/格式/位置。' },
+      { q: '想對方冇 Word 都睇到文件、而且唔會被改內容，最好另存做？', options: ['.docx', '.dotx', '.pdf', '.txt'], a: 2, e: 'PDF 保留排版、跨平台、不易修改——實務上俾人睇嘅版本用 PDF。' },
+      { q: '「另存新檔」同「儲存」最大分別係？', options: ['另存可以改檔名、格式、位置，原本檔案保留', '另存會刪除原本檔案', '冇分別', '另存只可以存一次'], a: 0, e: '儲存＝覆蓋原檔；另存新檔＝開新一份，可揀格式同位置，原檔不動。' },
+      { q: '自動復原檔案嘅間隔喺邊度設定？', options: ['檔案＞選項＞儲存', '常用＞字型', '版面配置＞邊界', '校對＞拼字檢查'], a: 0, e: '檔案＞選項＞儲存：可設「儲存自動復原資訊時間間隔」（預設10分鐘）。' }
+    ] }
+  };
+  (function seedOfficeQuiz() {
+    let quizzes = JSON.parse(localStorage.getItem('zoe_office_quizzes') || '{}');
+    Object.keys(OFFICE_QUIZ_SEEDS).forEach(id => {
+      const mk = 'zoe_office_quiz_seeded_' + id;
+      if (localStorage.getItem(mk) === String(OFFICE_QUIZ_SEEDS[id].quiz.length)) return;
+      quizzes[id] = OFFICE_QUIZ_SEEDS[id].quiz;
+      localStorage.setItem('zoe_office_quizzes', JSON.stringify(quizzes));
+      localStorage.setItem(mk, String(OFFICE_QUIZ_SEEDS[id].quiz.length));
+    });
+  })();
+  const SYLLABUS_START = localStorage.getItem('zoe_syllabus_start') || '2026.08.28';
+  let officeProgress = JSON.parse(localStorage.getItem('zoe_office_progress') || '{}');
+  let officeQuizData = JSON.parse(localStorage.getItem('zoe_office_quizzes') || '{}');
+  function lessonOfDay() {
+    const p = SYLLABUS_START.split('.');
+    const start = new Date(+p[0], +p[1] - 1, +p[2]);
+    const now = new Date();
+    const diff = Math.floor((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - start) / 86400000) + 1;
+    return Math.max(1, Math.min(diff, OFFICE_SYLLABUS.length));
+  }
+  function officeSaveProgress() { localStorage.setItem('zoe_office_progress', JSON.stringify(officeProgress)); }
+  function officeLessonState(id) {
+    const st = officeProgress[id];
+    if (!st) return { label: '未開始', cls: 'tag-gray', mastered: false };
+    const tasksDone = (st.tasks || []).length && (st.tasks || []).every(Boolean);
+    const quiz = typeof st.quiz === 'number' ? st.quiz : 0;
+    if (quiz >= 80 && tasksDone) return { label: '已掌握 ✅', cls: 'tag-green', mastered: true };
+    if (quiz >= 80) return { label: '測驗達標 ' + quiz + '%', cls: 'tag-green', mastered: true };
+    if (quiz > 0) return { label: '測驗 ' + quiz + '%', cls: 'tag-yellow', mastered: false };
+    if (tasksDone) return { label: '任務完成', cls: 'tag-yellow', mastered: false };
+    return { label: '學習中', cls: 'tag-gray', mastered: false };
+  }
+  let curLessonId = null;
+  function renderTodayLesson(id) {
+    curLessonId = id;
+    const L = OFFICE_SYLLABUS.find(x => x.id === id);
+    const card = document.getElementById('todayLessonCard');
+    const isToday = id === lessonOfDay();
+    const st = officeProgress[id] || { tasks: [] };
+    const subTag = L.s === 'W' ? '<span class="tag tag-blue">Word</span>' : L.s === 'E' ? '<span class="tag tag-green">Excel</span>' : '<span class="tag tag-yellow">綜合</span>';
+    const state = officeLessonState(id);
+    card.innerHTML =
+      '<div class="progress-row"><span class="progress-label">' + (isToday ? '今日課堂 · 第 ' + id + ' 課' : '第 ' + id + ' 課（補課）') + '</span>' + subTag + '</div>' +
+      '<div class="card-value-sm serif" style="margin-top:6px;">' + L.t + '</div>' +
+      '<div style="margin-top:8px; font-size:12px; line-height:1.7;">' +
+        L.p.map(x => '📌 ' + x).join('<br>') +
+      '</div>' +
+      '<div class="field-label-mini" style="margin-top:12px;">🛠️ 實作任務（喺真 Word/Excel 做完打勾）</div>' +
+      L.tasks.map((t, ti) =>
+        '<div class="log-row" onclick="toggleOfficeTask(' + id + ',' + ti + ')" style="cursor:pointer;">' +
+        '<span style="font-size:12px;">' + ((st.tasks || [])[ti] ? '✅ ' : '⬜ ') + t + '</span></div>').join('') +
+      '<div class="field-label-mini" style="margin-top:12px;">🧠 練習測驗（80% 先算掌握）</div>' +
+      '<div id="officeQuizArea">' + quizAreaHTML(id) + '</div>' +
+      '<div style="margin-top:10px; text-align:right;"><span class="' + state.cls + '">' + state.label + '</span></div>';
+    if (quizState && quizState.id === id && !quizState.done) renderQuizQ();
+  }
+  function quizAreaHTML(id) {
+    const quiz = officeQuizData[id];
+    if (!quiz) return '<div style="font-size:11px; color:var(--text-muted);">⏳ 測驗每日 10:00 由 ZCode 推送。未有測驗前，先完成上面實作任務＋等 ZCode 教學文。</div>';
+    // 保留進行中/已完成嘅測驗畫面（renderTodayLesson 重畫時唔會沖走）
+    if (quizState && quizState.id === id && quizState.done) {
+      const pct = quizState.pct;
+      return '<div style="text-align:center; padding:14px 0;">' +
+        '<div class="card-value serif">' + pct + '%</div>' +
+        '<div style="font-size:12px; color:var(--text-muted); margin-top:4px;">' + quizState.score + ' / ' + quiz.length + ' 題</div>' +
+        '<div style="margin-top:8px;"><span class="tag ' + (pct >= 80 ? 'tag-green' : 'tag-yellow') + '">' + (pct >= 80 ? '🎉 已達掌握標準' : '未達 80%，撳重試') + '</span></div></div>' +
+        (pct >= 80 ? '' : '<button class="typing-btn" style="width:100%;" onclick="startOfficeQuiz(' + id + ')">🔁 重試</button>');
+    }
+    return '<button class="typing-btn" style="width:100%;" onclick="startOfficeQuiz(' + id + ')">▶ 開始測驗（' + quiz.length + ' 題）</button><div id="officeQuizBody"></div>';
+  }
+  function toggleOfficeTask(id, ti) {
+    const st = officeProgress[id] = officeProgress[id] || {};
+    st.tasks = st.tasks || [];
+    st.tasks[ti] = !st.tasks[ti];
+    officeSaveProgress();
+    renderTodayLesson(id); renderOfficeList();
+  }
+  let quizState = null;
+  function startOfficeQuiz(id) {
+    quizState = { id, i: 0, score: 0, answered: false, done: false };
+    renderQuizQ();
+  }
+  function renderQuizQ() {
+    const quiz = officeQuizData[quizState.id];
+    const q = quiz[quizState.i];
+    document.getElementById('officeQuizBody').innerHTML =
+      '<div style="font-size:11px; color:var(--text-muted); margin-top:10px;">第 ' + (quizState.i + 1) + ' / ' + quiz.length + ' 題</div>' +
+      '<div style="font-size:13px; font-weight:500; margin:6px 0 10px;">' + q.q + '</div>' +
+      q.options.map((o, oi) => '<button class="quick-btn" style="display:block; width:100%; text-align:left; margin-top:6px;" id="qo' + oi + '" onclick="answerOfficeQuiz(' + oi + ')">' + String.fromCharCode(65 + oi) + '. ' + o + '</button>').join('') +
+      '<div id="quizFeedback" style="margin-top:10px;"></div>';
+  }
+  function answerOfficeQuiz(oi) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+    const quiz = officeQuizData[quizState.id];
+    const q = quiz[quizState.i];
+    const ok = oi === q.a;
+    if (ok) quizState.score++;
+    document.getElementById('qo' + q.a).style.cssText += ';background:var(--pale-green-bg);color:var(--pale-green-text);border-color:var(--pale-green-text);';
+    if (!ok) document.getElementById('qo' + oi).style.cssText += ';background:var(--pale-red-bg);color:var(--pale-red-text);border-color:var(--pale-red-text);';
+    const next = quizState.i + 1 < quiz.length;
+    document.getElementById('quizFeedback').innerHTML =
+      '<div style="font-size:12px; ' + (ok ? 'color:var(--pale-green-text)' : 'color:var(--pale-red-text)') + ';">' + (ok ? '✅ 正確' : '❌ 唔啱，正確係 ' + String.fromCharCode(65 + q.a)) + ' — ' + q.e + '</div>' +
+      '<button class="typing-btn" style="width:100%; margin-top:8px;" onclick="nextOfficeQuiz()">' + (next ? '下一題 →' : '睇成績 📊') + '</button>';
+  }
+  function nextOfficeQuiz() {
+    const quiz = officeQuizData[quizState.id];
+    if (quizState.i + 1 < quiz.length) {
+      quizState.i++; quizState.answered = false; renderQuizQ();
+    } else {
+      const pct = Math.round(quizState.score / quiz.length * 100);
+      const st = officeProgress[quizState.id] = officeProgress[quizState.id] || {};
+      st.quiz = Math.max(st.quiz || 0, pct);
+      officeSaveProgress();
+      quizState.done = true; quizState.pct = pct;
+      renderTodayLesson(quizState.id); renderOfficeList();
+    }
+  }
+  function renderOfficeList() {
+    const total = OFFICE_SYLLABUS.length;
+    const mastered = OFFICE_SYLLABUS.filter(l => officeLessonState(l.id).mastered).length;
+    document.getElementById('officeProgTag').textContent = mastered + ' / ' + total;
+    document.getElementById('officeProgFill').style.width = (mastered / total * 100).toFixed(1) + '%';
+    const todayId = lessonOfDay();
+    document.getElementById('officeList').innerHTML = OFFICE_SYLLABUS.map(l => {
+      const state = officeLessonState(l.id);
+      const sub = l.s === 'W' ? 'W' : l.s === 'E' ? 'E' : '綜';
+      const hl = l.id === todayId ? 'background:var(--surface-2); border-radius:6px;' : '';
+      return '<div class="log-row" onclick="renderTodayLesson(' + l.id + ')" style="cursor:pointer; ' + hl + '">' +
+        '<span class="log-date">' + String(l.id).padStart(2, '0') + ' ' + sub + '</span>' +
+        '<span style="flex:1; font-size:12px; padding:0 6px;">' + l.t + (l.id === todayId ? ' 📍' : '') + '</span>' +
+        '<span class="' + state.cls + '">' + state.label + '</span></div>';
+    }).join('');
+  }
+  function renderOffice() { renderTodayLesson(lessonOfDay()); renderOfficeList(); }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList();
 
@@ -3298,6 +3658,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
+  renderTyping(); renderOffice();
 </script>
 
 </body>
