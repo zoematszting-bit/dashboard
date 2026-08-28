@@ -1578,37 +1578,21 @@
     </section>
 
     <section>
-      <p class="section-title">16 週計劃</p>
+      <p class="section-title">🗓️ 學習計劃 · 月→週→日</p>
       <div class="card card-full">
+        <div class="card-label" id="planMonthTitle">本月目標</div>
+        <div id="planGoals" style="margin-top:8px;"></div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
         <div class="progress-row">
-          <span class="progress-label">第 1-2 週 · 啟動</span>
-          <span class="tag tag-yellow">進行中</span>
+          <span class="progress-label" id="planWeekTitle">本週任務</span>
+          <span class="tag tag-blue" id="planWeekRange"></span>
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:30%;"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">第 3-6 週 · 打字攻堅</span>
-          <span class="tag tag-gray">未開始</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">第 7-10 週 · Word</span>
-          <span class="tag tag-gray">未開始</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">第 11-14 週 · Excel</span>
-          <span class="tag tag-gray">未開始</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">第 15-16 週 · 模考</span>
-          <span class="tag tag-gray">未開始</span>
-        </div>
-        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:0%;"></div></div>
+        <div id="planWeekTasks" style="margin-top:8px;"></div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">✅ 今日任務（撳一下打勾）</div>
+        <div id="planToday" style="margin-top:8px;"></div>
       </div>
     </section>
 
@@ -2125,7 +2109,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.25 · 2026.08.27</span>
+  <span style="font-size:10px; opacity:0.5;">v2.26 · 2026.08.28</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -3609,7 +3593,7 @@
   }
   function quizAreaHTML(id) {
     const quiz = officeQuizData[id];
-    if (!quiz) return '<div style="font-size:11px; color:var(--text-muted);">⏳ 測驗每日 10:00 由 ZCode 推送。未有測驗前，先完成上面實作任務＋等 ZCode 教學文。</div>';
+    if (!quiz) return '<div style="font-size:11px; color:var(--text-muted); line-height:1.6;">📂 每日10:00 ZCode 出實作練習檔：<br>Desktop/ZCode備考練習/（Word＋Excel，iCloud同步）<br>用弟弟 Windows 機做，擬真考試計時。<br>呢度嘅選擇題測驗只係輔助記憶。</div>';
     // 保留進行中/已完成嘅測驗畫面（renderTodayLesson 重畫時唔會沖走）
     if (quizState && quizState.id === id && quizState.done) {
       const pct = quizState.pct;
@@ -3687,6 +3671,70 @@
   }
   function renderOffice() { renderTodayLesson(lessonOfDay()); renderOfficeList(); }
 
+  // ===== 🗓️ 學習計劃（月→週→日，v2.26）=====
+  const PLAN_SEED = {
+    version: '2026-09-v1',
+    monthTitle: '9月目標 · 備考正規月（第1個月）',
+    goals: [
+      '弱點地圖：診斷完成，25個知識點全部有狀態',
+      '英打：以第1週基線每週+2~3 wpm，月底穩定≥35',
+      '中打：穩定≥18（終極目標20）',
+      'Office：weak知識點≤8個（最少17個✅）',
+      '習慣：打字打卡率≥85%，Office練習≥20日'
+    ],
+    weeks: [
+      { start: '2026-08-31', end: '2026-09-06', title: 'W1 診斷＋基線週', tasks: ['Word＋Excel弱點診斷＋回報自評', '打字基線：英/中各測3次報ZCode', '建立每晚習慣：練習→打卡→回報'] },
+      { start: '2026-09-07', end: '2026-09-13', title: 'W2 Word 格式基礎', tasks: ['字型格式／縮排行距／兩端對齊→✅', '項目符號／多層編號→✅', '打字每日：英15分＋中5分'] },
+      { start: '2026-09-14', end: '2026-09-20', title: 'W3 Word表格頁面＋Excel基礎', tasks: ['表格框線底色／版面設定／頁首頁尾頁碼→✅', '註腳／尋找取代→✅', 'Excel格式／SUM／AVERAGE→✅'] },
+      { start: '2026-09-21', end: '2026-09-27', title: 'W4 Excel函數＋圖表', tasks: ['IF／COUNTIF／SUMIF／MAX／MIN→✅', '排序／篩選／凍結／列印設定→✅', '簇狀直條圖→✅'] },
+      { start: '2026-09-28', end: '2026-09-30', title: 'W5 月結＋混合模擬', tasks: ['30分鐘混合模擬卷（Word＋Excel合卷）', '月結review＋10月計劃上dashboard'] }
+    ],
+    daily: [
+      '💻 Office實作檔（15分Word＋15分Excel，計時）',
+      '⌨️ 打字20分（英15＋中5）',
+      '📊 回報自評＋dashboard打卡'
+    ]
+  };
+  (function seedPlan() {
+    if (localStorage.getItem('zoe_plan_seeded') !== PLAN_SEED.version) {
+      localStorage.setItem('zoe_plan_data', JSON.stringify(PLAN_SEED));
+      localStorage.setItem('zoe_plan_seeded', PLAN_SEED.version);
+    }
+  })();
+  let planData = JSON.parse(localStorage.getItem('zoe_plan_data') || 'null') || PLAN_SEED;
+  function currentPlanWeek() {
+    const t = new Date();
+    const tn = new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime();
+    let cur = planData.weeks[0];
+    planData.weeks.forEach(w => {
+      const s = new Date(w.start + 'T00:00:00').getTime(), e = new Date(w.end + 'T23:59:59').getTime();
+      if (tn >= s && tn <= e) cur = w; else if (tn > e) cur = w; // 過咗嘅週都指住最後一週
+    });
+    return cur;
+  }
+  function renderPlan() {
+    document.getElementById('planMonthTitle').textContent = planData.monthTitle;
+    document.getElementById('planGoals').innerHTML = planData.goals.map(g =>
+      '<div class="log-row"><span style="font-size:12px;">🎯 ' + g + '</span></div>').join('');
+    const w = currentPlanWeek();
+    document.getElementById('planWeekTitle').textContent = w.title;
+    document.getElementById('planWeekRange').textContent = w.start.slice(5).replace('-', '/') + ' - ' + w.end.slice(5).replace('-', '/');
+    document.getElementById('planWeekTasks').innerHTML = w.tasks.map(t =>
+      '<div class="log-row"><span style="font-size:12px;">☐ ' + t + '</span></div>').join('');
+  }
+  function togglePlanTask(i) {
+    const k = 'zoe_plan_check_' + dateStr;
+    const st = JSON.parse(localStorage.getItem(k) || '{}');
+    st[i] = !st[i];
+    localStorage.setItem(k, JSON.stringify(st));
+    renderPlanToday();
+  }
+  function renderPlanToday() {
+    const st = JSON.parse(localStorage.getItem('zoe_plan_check_' + dateStr) || '{}');
+    document.getElementById('planToday').innerHTML = planData.daily.map((t, i) =>
+      '<div class="log-row" onclick="togglePlanTask(' + i + ')" style="cursor:pointer;"><span style="font-size:12px;">' + (st[i] ? '✅' : '⬜') + ' ' + t + '</span></div>').join('');
+  }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList();
 
@@ -3708,7 +3756,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
-  renderTyping(); renderOffice();
+  renderTyping(); renderOffice(); renderPlan(); renderPlanToday();
 </script>
 
 </body>
