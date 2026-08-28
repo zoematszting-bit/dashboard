@@ -1499,7 +1499,9 @@
         <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
           <span style="color:var(--pale-blue-text); font-weight:500;">— 英打</span> ｜ <span style="color:var(--pale-green-text); font-weight:500;">— 中打</span> ｜ 虛線＝目標（中20 · 英30 ACO · 英40 PSII）
         </div>
-        <div class="field-grid" style="margin-top:14px;">
+        <div class="field-label-mini" style="margin-top:14px;">打卡日期（預設今日，漏記可以補）</div>
+        <input type="date" class="input-mini" id="typDate" style="margin-top:4px;">
+        <div class="field-grid" style="margin-top:8px;">
           <div>
             <div class="field-label-mini">英打 wpm</div>
             <input type="number" class="input-mini" id="typEn" placeholder="35">
@@ -1513,7 +1515,7 @@
             <input type="number" class="input-mini" id="typMin" placeholder="20">
           </div>
           <div class="field-full" style="display:flex; gap:8px;">
-            <button class="typing-btn" style="flex:1;" onclick="addTypingLog()">✅ 今日打卡</button>
+            <button class="typing-btn" style="flex:1;" onclick="addTypingLog()">✅ 打卡</button>
           </div>
         </div>
         <div id="typLogList" style="margin-top:12px;"></div>
@@ -1521,11 +1523,11 @@
     </section>
 
     <section>
-      <p class="section-title">📚 Office 每日一課（10:00）</p>
+      <p class="section-title">📚 Office 知識點清單（輔助測驗）</p>
       <div class="card card-full" id="todayLessonCard"></div>
       <div class="card card-full" style="margin-top:10px;">
         <div class="progress-row">
-          <span class="progress-label">課程進度（測驗≥80%＝已掌握）</span>
+          <span class="progress-label">輔助測驗進度（該課測驗≥80%＝✅；主線係每日實作練習檔）</span>
           <span class="tag tag-blue" id="officeProgTag">0 / 44</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="officeProgFill" style="width:0%;"></div></div>
@@ -1593,6 +1595,7 @@
       <div class="card card-full" style="margin-top:10px;">
         <div class="card-label">✅ 今日任務（撳一下打勾）</div>
         <div id="planToday" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">📂 Office 練習檔：Desktop/ZCode備考練習/Word＋Excel（弟弟 Windows 機做，iCloud 同步）</div>
       </div>
     </section>
 
@@ -2109,7 +2112,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.26 · 2026.08.28</span>
+  <span style="font-size:10px; opacity:0.5;">v2.27 · 2026.08.28</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -3386,7 +3389,9 @@
     const zh = parseFloat(document.getElementById('typZh').value);
     const mins = parseFloat(document.getElementById('typMin').value);
     if ((!en || en <= 0) && (!zh || zh <= 0)) { alert('英打或中打 wpm 至少填一項'); return; }
-    typingLog.push({ date: dateStr, time: new Date().toTimeString().slice(0, 5), en: en || 0, zh: zh || 0, mins: mins || 0 });
+    const dpick = document.getElementById('typDate').value; // YYYY-MM-DD
+    const logDate = dpick ? dpick.replace(/-/g, '.') : dateStr;
+    typingLog.push({ date: logDate, time: new Date().toTimeString().slice(0, 5), en: en || 0, zh: zh || 0, mins: mins || 0 });
     typingLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
     localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
     ['typEn', 'typZh', 'typMin'].forEach(id => document.getElementById(id).value = '');
@@ -3462,6 +3467,8 @@
     tag.className = 'tag ' + (left >= 0 && left <= 14 ? 'tag-red' : 'tag-green');
   }
   function renderTyping() {
+    const dp = document.getElementById('typDate');
+    if (dp && !dp.value) dp.value = dateStr.replace(/\./g, '-');
     const streak = typingStreak();
     const done = typingLog.some(l => l.date === dateStr);
     document.getElementById('typStreakTag').textContent = streak + ' 天' + (done ? ' · 今日✅' : ' · 今日未打');
@@ -3577,7 +3584,7 @@
     const subTag = L.s === 'W' ? '<span class="tag tag-blue">Word</span>' : L.s === 'E' ? '<span class="tag tag-green">Excel</span>' : '<span class="tag tag-yellow">綜合</span>';
     const state = officeLessonState(id);
     card.innerHTML =
-      '<div class="progress-row"><span class="progress-label">' + (isToday ? '今日課堂 · 第 ' + id + ' 課' : '第 ' + id + ' 課（補課）') + '</span>' + subTag + '</div>' +
+      '<div class="progress-row"><span class="progress-label">' + (isToday ? '知識點速覽 · 第 ' + id + ' 課' : '第 ' + id + ' 課（回顧）') + '</span>' + subTag + '</div>' +
       '<div class="card-value-sm serif" style="margin-top:6px;">' + L.t + '</div>' +
       '<div style="margin-top:8px; font-size:12px; line-height:1.7;">' +
         L.p.map(x => '📌 ' + x).join('<br>') +
@@ -3720,7 +3727,7 @@
     document.getElementById('planWeekTitle').textContent = w.title;
     document.getElementById('planWeekRange').textContent = w.start.slice(5).replace('-', '/') + ' - ' + w.end.slice(5).replace('-', '/');
     document.getElementById('planWeekTasks').innerHTML = w.tasks.map(t =>
-      '<div class="log-row"><span style="font-size:12px;">☐ ' + t + '</span></div>').join('');
+      '<div class="log-row"><span style="font-size:12px;">▸ ' + t + '</span></div>').join('');
   }
   function togglePlanTask(i) {
     const k = 'zoe_plan_check_' + dateStr;

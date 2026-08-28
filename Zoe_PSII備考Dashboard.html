@@ -484,9 +484,9 @@
 <!-- ============ HEADER ============ -->
 <header>
   <div class="container">
-    <span class="eyebrow" id="headerEyebrow">備考作戰室</span>
-    <h1 class="serif" id="headerTitle">PSII 二級私人秘書</h1>
-    <p class="subtitle" id="headerSubtitle">Zoe 嘅 16 週備考計劃</p>
+    <span class="eyebrow" id="headerEyebrow">備考支援 · 知識庫</span>
+    <h1 class="serif" id="headerTitle">ACO＋PSII 備考詳情</h1>
+    <p class="subtitle" id="headerSubtitle">每日任務喺主 Dashboard · 呢頁係知識庫＋打字輔助</p>
     <p class="date" id="todayDate">2026.08.06</p>
   </div>
 </header>
@@ -494,6 +494,15 @@
 <!-- ============ TAB: 總覽 ============ -->
 <div class="tab-view active" id="tab-overview">
   <div class="container">
+
+    <section>
+      <div class="card card-full">
+        <a class="link-item" href="index.html">
+          <span class="link-text">🏠 返主 Dashboard（每日任務＋打卡＋學習計劃）</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
 
     <!-- Countdown -->
     <section>
@@ -553,7 +562,7 @@
           <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
             <div class="progress-fill" style="width:0%;"></div>
           </div>
-          <div class="progress-num" style="margin-top:6px;">第 7 週開始</div>
+          <div class="progress-num" style="margin-top:6px;">實作練習進行中（每日10:00練習檔）</div>
         </div>
 
         <div class="card card-full">
@@ -575,7 +584,7 @@
       <p class="section-title">關鍵目標</p>
       <div class="card card-full">
         <div class="progress-row">
-          <span class="progress-label">英文打字</span>
+          <span class="progress-label">英文打字（ACO 30／PSII 40）</span>
           <span class="tag tag-yellow">40 wpm</span>
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:10%;" id="targetTyping"></div></div>
@@ -607,11 +616,18 @@
 <div class="tab-view" id="tab-week">
   <div class="container">
     <section>
-      <p class="section-title">本週任務 · 啟動階段（第 1-2 週）</p>
+      <p class="section-title">起步清單（8月 · 雜項記錄）</p>
+
+      <div class="card card-full" style="margin-bottom:14px; background:rgba(31,108,159,0.06);">
+        <div class="info-block" style="font-size:12px;">
+          <p>📋 <strong>每日／每週任務已升級</strong>：主 Dashboard「備考」tab →「🗓️ 學習計劃」區（自動選本週任務＋今日任務打卡）。</p>
+          <p>下面清單係 8 月起步雜項，做完勾返做記錄就得。</p>
+        </div>
+      </div>
 
       <div class="card card-full">
         <div class="checklist-item">
-          <input type="checkbox" id="t1"><label for="t1">去 csb.gov.hk 報名 PSII</label>
+          <input type="checkbox" id="t1"><label for="t1">報名 ACO＋PSII（8.27 已遞交 ✅ 勾返做記錄）</label>
         </div>
         <div class="checklist-item">
           <input type="checkbox" id="t2"><label for="t2">手機系統語言轉做英文</label>
@@ -694,8 +710,11 @@
       <!-- Input new score -->
       <div class="card card-full" style="margin-top:12px;">
         <div class="card-label">記錄今日成績</div>
+        <div class="info-block" style="font-size:11px; color:var(--text-muted);">
+          <p>☁️ 數據同主 Dashboard 打卡共享（zoe_typing_log）；舊 psii_wpm 記錄已自動遷移。中打成績喺主 Dashboard 打卡到。</p>
+        </div>
         <div class="typing-input-wrap">
-          <input type="number" class="typing-input" id="wpmInput" placeholder="輸入 wpm" min="0" max="100">
+          <input type="number" class="typing-input" id="wpmInput" placeholder="輸入英打 wpm" min="0" max="100">
           <button class="typing-btn" onclick="addWpm()">記錄</button>
         </div>
       </div>
@@ -712,6 +731,10 @@
 
       <div class="card card-full" style="margin-top:12px;">
         <div class="card-label">打字練習資源</div>
+        <a class="link-item" href="https://zoematszting-bit.github.io/typing-trainer/" target="_blank">
+          <span class="link-text">⌨️ 打字練習網站（Gov Docs 擬真公文＋Exam Mode）</span>
+          <span class="link-arrow">→</span>
+        </a>
         <a class="link-item" href="https://caacotyping.com/" target="_blank">
           <span class="link-text">CAACO Typing（免費，專為政府工）</span>
           <span class="link-arrow">→</span>
@@ -889,7 +912,7 @@
 <script>
   // ===== Per-tab branding (header + title + footer) =====
   const tabBranding = {
-    overview:  { eyebrow:'備考作戰室', title:'PSII 二級私人秘書', sub:'Zoe 嘅 16 週備考計劃', footer:'堅持每日進步少少，好過一星期爆衝一次' },
+    overview:  { eyebrow:'備考支援 · 知識庫', title:'ACO＋PSII 備考詳情', sub:'每日任務喺主 Dashboard · 呢頁係知識庫＋打字輔助', footer:'堅持每日進步少少，好過一星期爆衝一次' },
     week:      { eyebrow:'備考作戰室', title:'本週任務', sub:'PSII 備考計劃', footer:'堅持每日進步少少，好過一星期爆衝一次' },
     typing:    { eyebrow:'備考作戰室', title:'打字訓練', sub:'PSII 技能測試', footer:'打字靠日積月累，每日 15 分鐘就得' },
     knowledge: { eyebrow:'備考作戰室', title:'職系知識', sub:'PSII 面試準備', footer:'知識要反覆溫習，先記得牢' },
@@ -947,10 +970,31 @@
     });
   });
 
-  // ===== Typing WPM log (localStorage) =====
-  let wpmData = JSON.parse(localStorage.getItem('psii_wpm') || '[]');
+  // ===== Typing WPM log（與主 dashboard 共享 zoe_typing_log；舊 psii_wpm 自動遷移）=====
+  function zoeTypingLog() {
+    return JSON.parse(localStorage.getItem('zoe_typing_log') || '[]');
+  }
+  (function migrateOldWpm() {
+    if (localStorage.getItem('psii_wpm_migrated_v1')) return;
+    const old = JSON.parse(localStorage.getItem('psii_wpm') || '[]');
+    if (old.length) {
+      const log = zoeTypingLog();
+      old.forEach(e => {
+        if (!log.some(l => l.date === e.date && (l.en || 0) === e.wpm)) {
+          log.push({ date: e.date, time: '00:00', en: e.wpm, zh: 0, mins: 0 });
+        }
+      });
+      log.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      localStorage.setItem('zoe_typing_log', JSON.stringify(log));
+    }
+    localStorage.setItem('psii_wpm_migrated_v1', '1');
+  })();
+  function typingEntries() {
+    return zoeTypingLog().filter(l => (l.en || 0) > 0).map(l => ({ date: l.date, wpm: l.en }));
+  }
 
   function renderWpm() {
+    const wpmData = typingEntries();
     const logEl = document.getElementById('wpmLog');
     const latestEl = document.getElementById('latestWpm');
     const barEl = document.getElementById('typingBar');
@@ -991,8 +1035,10 @@
     const input = document.getElementById('wpmInput');
     const val = parseInt(input.value);
     if (!val || val < 0) return;
-    wpmData.push({ date: dateStr, wpm: val });
-    localStorage.setItem('psii_wpm', JSON.stringify(wpmData));
+    const log = zoeTypingLog();
+    log.push({ date: dateStr, time: new Date().toTimeString().slice(0, 5), en: val, zh: 0, mins: 0 });
+    log.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_typing_log', JSON.stringify(log));
     input.value = '';
     renderWpm();
     updateProgress();
@@ -1008,8 +1054,9 @@
 
     // Typing progress (up to 30%)
     let typingPct = 0;
-    if (wpmData.length > 0) {
-      const latest = wpmData[wpmData.length - 1].wpm;
+    const entries = typingEntries();
+    if (entries.length > 0) {
+      const latest = entries[entries.length - 1].wpm;
       typingPct = Math.min((latest / 40) * 30, 30);
     }
 
