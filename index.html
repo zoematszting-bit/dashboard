@@ -1081,7 +1081,7 @@
       </section>
 
       <section>
-        <p class="section-title">訓練歷史（最近 20 筆）</p>
+        <p class="section-title">訓練歷史</p>
         <div class="card card-full">
           <div id="woHistory"><div class="log-item" style="color:var(--text-muted); text-align:center;">未有記錄</div></div>
           <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">撳記錄＝編輯 · ×＝刪除</div>
@@ -1097,11 +1097,18 @@
       </section>
 
       <section>
-        <p class="section-title">肌群訓練分佈（本週）</p>
+        <p class="section-title">肌群分佈 · 週回顧</p>
         <div class="card card-full">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+            <button class="quick-btn" onclick="shiftMuscleWeek(1)">‹ 上一週</button>
+            <span id="muscleWeekLabel" style="font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--text-muted);"></span>
+            <button class="quick-btn" id="mwNext" onclick="shiftMuscleWeek(-1)">下一週 ›</button>
+          </div>
           <div id="muscleDist">
             <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">記錄訓練後顯示分佈</div>
           </div>
+        </div>
+          <div id="weekWoList" style="margin-top:16px; border-top:1px solid var(--border); padding-top:12px;"></div>
         </div>
       </section>
 
@@ -2118,7 +2125,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.24 · 2026.08.27</span>
+  <span style="font-size:10px; opacity:0.5;">v2.25 · 2026.08.27</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2696,7 +2703,7 @@
     return v ? v.replace(/-/g, '.') : dateStr;
   }
   function afterWoChange() {
-    renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderYogaHours(); renderWorkoutHistory();
+    renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderYogaHours(); renderWorkoutHistory();
   }
   function addWorkout() {
     const entry = buildWoEntry();
@@ -2740,6 +2747,8 @@
       '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div></div>'
     ).join('');
   }
+  let woHistShowAll = false;
+  function toggleWoHist() { woHistShowAll = !woHistShowAll; renderWorkoutHistory(); }
   function renderWorkoutHistory() {
     const el = document.getElementById('woHistory');
     if (!el) return;
@@ -2747,7 +2756,12 @@
       el.innerHTML = '<div class="log-item" style="color:var(--text-muted); text-align:center;">未有記錄</div>';
       return;
     }
-    el.innerHTML = workouts.slice(-20).reverse().map((w, ri) => {
+    const total = workouts.length;
+    const shown = woHistShowAll ? workouts.slice().reverse() : workouts.slice(-20).reverse();
+    const moreBtn = total > 20
+      ? '<div style="text-align:center; margin-top:10px;"><button class="quick-btn" onclick="toggleWoHist()">'+(woHistShowAll ? '收起（只顯示最近 20 筆）' : '顯示全部 '+total+' 筆紀錄 ▾')+'</button></div>'
+      : '';
+    el.innerHTML = shown.map((w, ri) => {
       const i = workouts.length - 1 - ri;
       return '<div class="log-item" onclick="editWorkout('+i+')" style="cursor:pointer;">'+
         '<div class="log-item-head"><span class="log-item-title">'+w.exercise+
@@ -2755,20 +2769,30 @@
         '<span><span class="log-item-meta">'+w.weight+'kg · '+w.reps+'</span> '+
         '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+i+')">×</button></span></div>'+
         '<div class="log-item-time" style="margin-top:2px;">'+w.date+'</div></div>';
-    }).join('');
+    }).join('') + moreBtn;
   }
 
-  // ----- Muscle distribution (this week) -----
+  // ----- Muscle distribution（週回顧，可翻過往週）-----
+  let muscleWeekOffset = 0;
   function startOfWeek(d) {
     const x = new Date(d);
     const day = (x.getDay()+6)%7; // Mon=0
     x.setDate(x.getDate()-day); x.setHours(0,0,0,0);
     return x;
   }
+  function shiftMuscleWeek(delta) {
+    muscleWeekOffset = Math.max(0, muscleWeekOffset + delta);
+    renderMuscleDist(); renderWeekWoList();
+  }
   function renderMuscleDist() {
     const el = document.getElementById('muscleDist');
-    const ws = startOfWeek(today);
-    const weekWos = workouts.filter(w => new Date(w.date.replace(/\./g,'-')) >= ws);
+    const ws = startOfWeek(new Date(today.getTime() - muscleWeekOffset*7*86400000));
+    const we = new Date(ws.getTime() + 7*86400000);
+    const weekWos = workouts.filter(w => { const d = new Date(w.date.replace(/\./g,'-')); return d >= ws && d < we; });
+    const wl = document.getElementById('muscleWeekLabel');
+    if (wl) wl.textContent = (muscleWeekOffset === 0 ? '本週' : '前 '+muscleWeekOffset+' 週') + ' · ' + isoWeekKey(ws);
+    const nx = document.getElementById('mwNext');
+    if (nx) nx.style.visibility = muscleWeekOffset === 0 ? 'hidden' : 'visible';
     const counts = {};
     weekWos.forEach(w => counts[w.group] = (counts[w.group]||0)+1);
     const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
@@ -2795,6 +2819,32 @@
     const show = d.style.display === 'none';
     d.style.display = show ? 'block' : 'none';
     if (a) a.style.transform = show ? 'rotate(90deg)' : 'rotate(0deg)';
+  }
+
+  // ----- 該週訓練記錄（跟隨肌群分佈週導航）-----
+  function renderWeekWoList() {
+    const el = document.getElementById('weekWoList');
+    if (!el) return;
+    const ws = startOfWeek(new Date(today.getTime() - muscleWeekOffset*7*86400000));
+    const we = new Date(ws.getTime() + 7*86400000);
+    const weekWos = workouts.filter(w => { const d = new Date(w.date.replace(/\./g,'-')); return d >= ws && d < we; });
+    if (weekWos.length === 0) {
+      el.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:6px 0;">該週未有訓練記錄</div>';
+      return;
+    }
+    const byDate = {};
+    weekWos.forEach(w => { (byDate[w.date] = byDate[w.date] || []).push(w); });
+    const dates = Object.keys(byDate).sort().reverse();
+    el.innerHTML = '<div class="card-label" style="margin-bottom:8px;">該週訓練記錄（'+weekWos.length+' 筆）</div>' +
+      dates.map(d =>
+        '<div style="margin-bottom:10px;">'+
+        '<div style="font-size:11px; color:var(--text-muted); font-family:JetBrains Mono,monospace; margin-bottom:4px;">'+d+'</div>'+
+        byDate[d].map(w =>
+          '<div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-bottom:1px solid var(--border);">'+
+          '<span>'+w.exercise+' <span class="tag tag-gray">'+w.group+'</span></span>'+
+          '<span style="color:var(--text-muted); font-family:JetBrains Mono,monospace; font-size:11px;">'+(w.weight?w.weight+'kg · ':'')+(w.reps||'')+'</span></div>'
+        ).join('')+'</div>'
+      ).join('');
   }
 
   // ----- Strength progress -----
@@ -3656,7 +3706,7 @@
 
   renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory(); renderSleep();
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
-  renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderSchedule();
+  renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
   renderTyping(); renderOffice();
 </script>
