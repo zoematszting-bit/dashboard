@@ -3384,6 +3384,37 @@
       localStorage.setItem('zoe_typing_seeded', String(TYPING_SEED.length));
     }
   })();
+  // ===== ⌨️ typing-trainer 自動同步（v2.28）=====
+  // 讀取同 origin 打字網站嘅 typing_trainer_history，自動轉換做 zoe_typing_log
+  // 兩個 tab 同時開住時 BroadcastChannel 即時通知；分開開就 load 時補同步
+  function syncTypingTrainer(){
+    let auto = [];
+    try{ auto = JSON.parse(localStorage.getItem('typing_trainer_history') || '[]'); }catch(e){ return; }
+    if(!auto.length) return;
+    const lastSync = parseInt(localStorage.getItem('zoe_typing_synced') || '0', 10);
+    const fresh = auto.filter(r => r.date > lastSync);
+    if(!fresh.length) return;
+    fresh.forEach(r => {
+      const d = new Date(r.date);
+      const ds = d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
+      const ts = String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+      if(!typingLog.some(l => l.date === ds && l.time === ts && l.en === r.wpm)){
+        typingLog.push({ date: ds, time: ts, en: r.wpm, zh: 0,
+          mins: Math.round((r.dur || 60) / 60 * 10) / 10,
+          src: 'auto', acc: r.acc });
+      }
+    });
+    typingLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+    localStorage.setItem('zoe_typing_synced', String(Math.max.apply(null, auto.map(r => r.date))));
+    renderTyping();
+  }
+  syncTypingTrainer();
+  try{
+    const _ttBc = new BroadcastChannel('typing_trainer_sync');
+    _ttBc.onmessage = () => syncTypingTrainer();
+  }catch(e){}
+
   function addTypingLog() {
     const en = parseFloat(document.getElementById('typEn').value);
     const zh = parseFloat(document.getElementById('typZh').value);
@@ -3479,8 +3510,9 @@
     renderTypingChart();
     document.getElementById('typLogList').innerHTML = typingLog.slice(-10).reverse().map((l, ri) => {
       const i = typingLog.length - 1 - ri;
-      return '<div class="log-row"><span class="log-date">' + l.date + ' ' + l.time + '</span>' +
-        '<span><span class="log-value">英 ' + l.en + ' · 中 ' + l.zh + (l.mins ? ' · ' + l.mins + 'm' : '') + '</span> ' +
+      const tag = l.src === 'auto' ? '⌨️ ' : '';
+      return '<div class="log-row"><span class="log-date">' + tag + l.date + ' ' + l.time + '</span>' +
+        '<span><span class="log-value">英 ' + l.en + ' · 中 ' + l.zh + (l.acc != null ? ' · ' + l.acc + '%' : '') + (l.mins ? ' · ' + l.mins + 'm' : '') + '</span> ' +
         '<button class="log-del" onclick="delTypingLog(' + i + ')">×</button></span></div>';
     }).join('') || '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄 · 今日開始！</span></div>';
   }
