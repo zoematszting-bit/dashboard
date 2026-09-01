@@ -1357,8 +1357,9 @@
               <div class="field-label-mini">日期（補記用）</div>
               <input type="date" class="input-mini input-text" id="ycDate">
             </div>
-            <div class="field-full">
-              <button class="typing-btn" style="width:100%;" onclick="addYogaClass()">＋ 記錄瑜伽課</button>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addYogaClass()" id="ycBtn">＋ 記錄瑜伽課</button>
+              <button class="quick-btn" id="ycCancel" onclick="cancelEdit('yc')" style="display:none;">取消</button>
             </div>
           </div>
           <div id="yogaClassLog" style="margin-top:14px;"></div>
@@ -2162,7 +2163,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.28 · 2026.08.28</span>
+  <span style="font-size:10px; opacity:0.5;">v2.29 · 2026.09.01</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2634,12 +2635,13 @@
       weight: ['weightInput'],
       ms: ['mWaist','mHip','mThigh','mArm'],
       pd: ['periodInput'],
-      yl: ['ylContent','ylTopic','ylMins']
+      yl: ['ylContent','ylTopic','ylMins'],
+      yc: ['ycMins','ycDate']
     };
     (resets[kind]||[]).forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     const btns = { meal:['mealBtn','mealCancel','＋ 記錄餐點'], wo:['woBtn','woCancel','＋ 記錄動作'],
       weight:['weightBtn','weightCancel','記錄'], ms:['msBtn','msCancel','＋ 記錄圍度'],
-      pd:['pdBtn','pdCancel','記錄'], yl:['ylBtn','ylCancel','＋ 記錄'] };
+      pd:['pdBtn','pdCancel','記錄'], yl:['ylBtn','ylCancel','＋ 記錄'], yc:['ycBtn','ycCancel','＋ 記錄瑜伽課'] };
     const conf = btns[kind];
     if (conf) {
       const b = document.getElementById(conf[0]); if (b) b.textContent = conf[2];
@@ -3856,12 +3858,27 @@
     if (!mins || mins <= 0) { alert('請輸入時長（分鐘）'); return; }
     const dv = document.getElementById('ycDate').value;
     const date = dv ? dv.replace(/-/g, '.') : dateStr;
-    workouts.push({ date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' });
+    if (editState.yc !== undefined) {
+      if (!confirm('確認修改呢堂瑜伽課？')) return;
+      workouts[editState.yc] = { date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' };
+    } else {
+      workouts.push({ date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' });
+    }
+    const wasEdit = editState.yc !== undefined;
     localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
-    document.getElementById('ycMins').value = '';
-    document.getElementById('ycDate').value = '';
+    cancelEdit('yc');
     afterWoChange(); renderYogaTypeStats(); renderYoga1000();
-    alert('已記錄 ' + type + ' ' + mins + ' 分鐘（' + date + '）✅\n同步至：實踐時數 / 1000小時計劃 / 肌群分佈 / 週回顧');
+    alert((wasEdit ? '✅ 已更新 ' : '✅ 已記錄 ') + type + ' ' + mins + ' 分鐘（' + date + '）\n同步至：實踐時數 / 1000小時計劃 / 肌群分佈 / 週回顧');
+  }
+  function editYogaClass(i) {
+    const w = workouts[i];
+    document.getElementById('ycType').value = YOGA_TYPES.indexOf(w.exercise) >= 0 ? w.exercise : '其他瑜伽';
+    document.getElementById('ycMins').value = parseInt(String(w.reps).replace(/[^0-9]/g, '')) || '';
+    document.getElementById('ycDate').value = (w.date || dateStr).replace(/\./g, '-');
+    editState.yc = i;
+    const b = document.getElementById('ycBtn'); if (b) b.textContent = '💾 更新瑜伽課';
+    const cb = document.getElementById('ycCancel'); if (cb) cb.style.display = 'inline-block';
+    document.getElementById('ycType').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
   function renderYogaTypeStats() {
     const el = document.getElementById('yogaTypeStats');
@@ -3893,9 +3910,9 @@
         logEl.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:6px 0;">未有記錄</div>';
       } else {
         logEl.innerHTML = yAll.slice(-8).reverse().map(x =>
-          '<div class="log-row" onclick="editWorkout('+x.i+')" style="cursor:pointer;">'+
+          '<div class="log-row" onclick="editYogaClass('+x.i+')" style="cursor:pointer;">'+
           '<span class="log-date">'+x.w.date+' · '+yogaTypeOf(x.w.exercise)+'</span>'+
-          '<span><span class="log-value">'+(parseInt(String(x.w.reps).replace(/[^0-9]/g,''))||0)+' min</span> '+
+          '<span><span class="log-value">'+(parseInt(String(x.w.reps).replace(/[^0-9]/g,''))||0)+' min · 撳我編輯</span> '+
           '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div>'
         ).join('');
       }
