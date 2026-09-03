@@ -1631,6 +1631,17 @@
     </section>
 
     <section>
+      <p class="section-title">🔄 弱點複習室（出題重點）</p>
+      <div class="card card-full">
+        <div class="card-label" id="reviewSubtitle">Zoe 問過／批改發現嘅唔識位</div>
+        <div id="reviewList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">
+          出題會著重呢啲位，換場景反覆操——連續全對先變綠；每日練習就係為咗食碎嚼爛佢
+        </div>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">🗓️ 學習計劃 · 月→週→日</p>
       <div class="card card-full">
         <div class="card-label" id="planMonthTitle">本月目標</div>
@@ -2163,7 +2174,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.29 · 2026.09.01</span>
+  <span style="font-size:10px; opacity:0.5;">v2.30 · 2026.09.03</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -3932,6 +3943,41 @@
       : '已達成 1000 小時 🎉 傳奇達成';
   }
 
+  // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
+  const REVIEW_SEED = {
+    version: '2026-09-03-v1',
+    subtitle: 'Zoe 問過／批改發現嘅唔識位（更新至 9/3）',
+    items: [
+      { id: 'rv1', point: '多層次編號（一級＋二級）', symptom: '8/29卷未做＋9/2主動問完整教學', fix: '揀行＞編號掣(1.2.3.圖示)；子項撳Tab降級、Shift+Tab升級；千祈唔好自己打「1.」字', status: 'weak', asked: '2026-09-02' },
+      { id: 'rv2', point: '項目符號（•掣係切換掣）', symptom: '8/29卷撳多一下被取消，•冇出現', fix: '撳完望螢幕每點前面有•＋掣着藍燈；撳多一下會熄', status: 'weak' },
+      { id: 'rv3', point: '表格（框線／底色／置中）', symptom: '8/29卷未做（夜晚時間唔夠）', fix: '插入＞表格拖4x4＞揀成表(左上十字)＞設計＞全部框線；標題列粗體＋網底淺色；常用＞置中', status: 'weak' },
+      { id: 'rv4', point: '紙張A4（Letter陷阱）', symptom: '8/29卷用咗Letter 21.6x27.9cm', fix: '版面配置＞大小＞A4；開檔第一件事望【大小】掣寫咩', status: 'weak' },
+      { id: 'rv5', point: '標題粗體 Ctrl+B', symptom: '8/28暖身漏粗體 → 8/29卷已自行修正', fix: '每設一個格式，望一眼按鈕有着燈', status: 'fixed' },
+      { id: 'rv6', point: 'Excel 全面未開張', symptom: '仲未做過第一份Excel', fix: '迷你卷4任務8分鐘（標題列/貨幣/SUM/MAX）——首勝等緊你', status: 'todo' }
+    ]
+  };
+  (function seedReview() {
+    if (localStorage.getItem('zoe_review_seeded') !== REVIEW_SEED.version) {
+      localStorage.setItem('zoe_review_data', JSON.stringify(REVIEW_SEED));
+      localStorage.setItem('zoe_review_seeded', REVIEW_SEED.version);
+    }
+  })();
+  let reviewData = JSON.parse(localStorage.getItem('zoe_review_data') || 'null') || REVIEW_SEED;
+  function renderReview() {
+    document.getElementById('reviewSubtitle').textContent = reviewData.subtitle;
+    const tag = s => s === 'weak' ? '<span class="tag tag-red">未攻破</span>'
+      : s === 'fixed' ? '<span class="tag tag-green">已改正</span>'
+      : s === 'mastered' ? '<span class="tag tag-green">已掌握</span>'
+      : '<span class="tag tag-gray">未開始</span>';
+    document.getElementById('reviewList').innerHTML = reviewData.items.map(it =>
+      '<div class="log-item" style="cursor:default;">' +
+      '<div class="log-item-head"><span class="log-item-title">' + it.point + '</span>' + tag(it.status) + '</div>' +
+      '<div class="log-item-meta" style="text-align:left;">🩺 ' + it.symptom + '</div>' +
+      '<div class="log-item-meta" style="text-align:left; color:var(--text); font-size:11px;">💊 ' + it.fix + '</div>' +
+      (it.asked ? '<div class="log-item-meta" style="text-align:left;">❓ 問過：' + it.asked + '</div>' : '') +
+      '</div>').join('');
+  }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
 
@@ -3953,7 +3999,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
-  renderTyping(); renderOffice(); renderPlan(); renderPlanToday();
+  renderTyping(); renderOffice(); renderPlan(); renderPlanToday(); renderReview();
 </script>
 
 </body>
