@@ -495,6 +495,13 @@
 
   /* ===== Schedule grid ===== */
   .sched-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .sched-select {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 2px; font-size: 9px; min-height: 42px; text-align: center; text-align-last: center;
+    color: var(--text); font-family: 'Noto Sans HK', sans-serif;
+    -webkit-appearance: none; appearance: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .sched-select.sel-on { background: var(--pale-green-bg); border-color: var(--pale-green-text); color: var(--pale-green-text); font-weight: 500; }
   .sched-day { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; text-align: center; }
   .sched-box {
     background: var(--surface-2); border-radius: 6px; padding: 8px 2px; font-size: 9px; min-height: 42px;
@@ -1089,10 +1096,14 @@
       </section>
 
       <section>
-        <p class="section-title">訓練排程（點選切換）</p>
+        <p class="section-title">訓練排程 · 每週計劃</p>
         <div class="card card-full">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+            <span id="schedWeekLabel" style="font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--text-muted);"></span>
+            <button class="quick-btn" id="schedCopyBtn" onclick="copyPrevSched()" style="display:none;">📋 複製上週</button>
+          </div>
           <div class="sched-grid" id="schedGrid"></div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">點格仔循環切換：臀→背→胸→肩→腿→核心→手臂→瑜伽→有氧→休息→空</div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">撥格仔 → 滾輪拉動揀部位 · 每週自動重置 · 上週一模一樣就撳「複製上週」</div>
         </div>
       </section>
 
@@ -2174,7 +2185,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.30 · 2026.09.03</span>
+  <span style="font-size:10px; opacity:0.5;">v2.31 · 2026.09.03</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2937,20 +2948,51 @@
   }
 
   // ----- Schedule -----
+  // 訓練排程：按週儲存（每週自動重置）+ 滾輪揀選
+  function schedWeekKey(off) {
+    return 'zoe_schedule_' + isoWeekKey(new Date(today.getTime() - (off||0)*7*86400000));
+  }
+  function getSched(off) {
+    return JSON.parse(localStorage.getItem(schedWeekKey(off)) || '{}');
+  }
+  (function migrateSched() {
+    // 一次性：舊 zoe_schedule 遷移到本週 key
+    const old = localStorage.getItem('zoe_schedule');
+    if (old && !localStorage.getItem(schedWeekKey(0))) {
+      localStorage.setItem(schedWeekKey(0), old);
+    }
+  })();
   function renderSchedule() {
     const el = document.getElementById('schedGrid');
+    if (!el) return;
+    const cur = getSched(0);
+    const opts = SCHED_CYCLE.filter(x => x !== '').map(x =>
+      '<option value="'+x+'">'+x+'</option>').join('');
     el.innerHTML = DAY_NAMES.map((d,i)=>{
-      const key = 'd'+i;
-      const v = schedule[key]||'';
-      return '<div><div class="sched-day">'+d+'</div><div class="sched-box'+(v?' active':'')+'" onclick="toggleSched('+i+')">'+(v||'-')+'</div></div>';
+      const v = cur['d'+i]||'';
+      return '<div><div class="sched-day">'+d+'</div>'+
+        '<select class="sched-select'+(v?' sel-on':'')+'" onchange="setSched('+i+', this.value)">'+
+        '<option value=""'+(v?'':' selected')+'>–</option>'+
+        opts.replace('value="'+v+'"', 'value="'+v+'" selected')+
+        '</select></div>';
     }).join('');
+    const wl = document.getElementById('schedWeekLabel');
+    if (wl) wl.textContent = '本週 · ' + isoWeekKey(today);
+    const prev = getSched(1);
+    const cb = document.getElementById('schedCopyBtn');
+    if (cb) cb.style.display = Object.keys(prev).length > 0 ? 'inline-block' : 'none';
   }
-  function toggleSched(i) {
-    const key='d'+i;
-    const cur = schedule[key]||'';
-    const idx = SCHED_CYCLE.indexOf(cur);
-    schedule[key] = SCHED_CYCLE[(idx+1)%SCHED_CYCLE.length];
-    localStorage.setItem('zoe_schedule', JSON.stringify(schedule));
+  function setSched(i, val) {
+    const cur = getSched(0);
+    if (val) cur['d'+i] = val; else delete cur['d'+i];
+    localStorage.setItem(schedWeekKey(0), JSON.stringify(cur));
+    renderSchedule();
+  }
+  function copyPrevSched() {
+    const prev = getSched(1);
+    if (Object.keys(prev).length === 0) { alert('上週未有排程'); return; }
+    if (!confirm('複製上週排程到本週？')) return;
+    localStorage.setItem(schedWeekKey(0), JSON.stringify(prev));
     renderSchedule();
   }
 
