@@ -2185,7 +2185,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.31 · 2026.09.03</span>
+  <span style="font-size:10px; opacity:0.5;">v2.32 · 2026.09.03</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -3987,14 +3987,14 @@
 
   // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
   const REVIEW_SEED = {
-    version: '2026-09-03-v1',
-    subtitle: 'Zoe 問過／批改發現嘅唔識位（更新至 9/3）',
+    version: '2026-09-03-v2',
+    subtitle: 'Zoe 問過／批改發現嘅唔識位（9/3 16:01批改後）',
     items: [
-      { id: 'rv1', point: '多層次編號（一級＋二級）', symptom: '8/29卷未做＋9/2主動問完整教學', fix: '揀行＞編號掣(1.2.3.圖示)；子項撳Tab降級、Shift+Tab升級；千祈唔好自己打「1.」字', status: 'weak', asked: '2026-09-02' },
-      { id: 'rv2', point: '項目符號（•掣係切換掣）', symptom: '8/29卷撳多一下被取消，•冇出現', fix: '撳完望螢幕每點前面有•＋掣着藍燈；撳多一下會熄', status: 'weak' },
-      { id: 'rv3', point: '表格（框線／底色／置中）', symptom: '8/29卷未做（夜晚時間唔夠）', fix: '插入＞表格拖4x4＞揀成表(左上十字)＞設計＞全部框線；標題列粗體＋網底淺色；常用＞置中', status: 'weak' },
-      { id: 'rv4', point: '紙張A4（Letter陷阱）', symptom: '8/29卷用咗Letter 21.6x27.9cm', fix: '版面配置＞大小＞A4；開檔第一件事望【大小】掣寫咩', status: 'weak' },
-      { id: 'rv5', point: '標題粗體 Ctrl+B', symptom: '8/28暖身漏粗體 → 8/29卷已自行修正', fix: '每設一個格式，望一眼按鈕有着燈', status: 'fixed' },
+      { id: 'rv1', point: '多層次編號（一級＋二級）', symptom: '9/3 第1次全對✨（3+2結構、Tab降級正確）——再1次全對升綠', fix: '子項刪走「包括」等贅字更完美；繼續用：編號掣＋Tab降級', status: 'almost', asked: '2026-09-02' },
+      { id: 'rv2', point: '項目符號（•掣係切換掣）', symptom: '9/3 第1次全對✨（5/5真•生效）——上次被取消，今次識check着燈', fix: '繼續：撳完望每點前面有•；再1次全對升綠', status: 'almost' },
+      { id: 'rv3', point: '表格（框線／底色／置中）', symptom: '9/3：4x4起咗✅置中✅＋用咗表格樣式；欠標題粗體＋指定淺綠底＋直接框線', fix: '考試正路＝直接格式：揀成表＞設計＞全部框線；標題列Ctrl+B＋網底揀淺綠（樣式藍色未必合參考成品）', status: 'weak' },
+      { id: 'rv4', point: '紙張A4（Letter陷阱）', symptom: '連續兩次用咗Letter（21.6x27.9）', fix: '版面配置＞大小＞A4；開檔第一件事望【大小】掣寫咩', status: 'weak' },
+      { id: 'rv5', point: '標題粗體 Ctrl+B', symptom: '8/28漏→8/29修正→9/3再驗證持續全對（連續2次達標）', fix: '已食碎嚼爛✅ 望按鈕着燈習慣keep住', status: 'mastered' },
       { id: 'rv6', point: 'Excel 全面未開張', symptom: '仲未做過第一份Excel', fix: '迷你卷4任務8分鐘（標題列/貨幣/SUM/MAX）——首勝等緊你', status: 'todo' }
     ]
   };
@@ -4010,6 +4010,7 @@
     const tag = s => s === 'weak' ? '<span class="tag tag-red">未攻破</span>'
       : s === 'fixed' ? '<span class="tag tag-green">已改正</span>'
       : s === 'mastered' ? '<span class="tag tag-green">已掌握</span>'
+      : s === 'almost' ? '<span class="tag tag-yellow">差一步·再1次升綠</span>'
       : '<span class="tag tag-gray">未開始</span>';
     document.getElementById('reviewList').innerHTML = reviewData.items.map(it =>
       '<div class="log-item" style="cursor:default;">' +
