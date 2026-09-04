@@ -1688,6 +1688,17 @@
     </section>
 
     <section>
+      <p class="section-title">📂 練習檔案進度</p>
+      <div class="card card-full">
+        <div class="card-label" id="practiceSummary">—</div>
+        <div id="practiceList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">
+          勾=該檔案內該題已驗證做對（ZCode讀檔批改）· 每次批改後自動更新
+        </div>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">🗓️ 學習計劃 · 月→週→日</p>
       <div class="card card-full">
         <div class="card-label" id="planMonthTitle">本月目標</div>
@@ -4149,6 +4160,37 @@
       '</div>').join('');
   }
 
+  // ===== 📂 練習檔案進度（v2.38：批改後自動同步）=====
+  const PRACTICE_SEED = {
+    version: '2026-09-04-v1',
+    summary: '已完成 6 份｜29 題驗證 21 題全對｜知識點 6/25 綠',
+    files: [
+      { name: '8/28 Word 格式暖身', status: 'done', score: '3/4（粗體其後已修正）' },
+      { name: '8/28 Word 弱點診斷', status: 'done', score: '8/10' },
+      { name: '8/29 Word 表格清單', status: 'done', score: '3/5（表格A4其後攻破）' },
+      { name: '8/30 Word 頁首頁尾取代', status: 'done', score: '3/5' },
+      { name: '8/31 Word 複習卷', status: 'done', score: '4/5（表格🎉取代🎉升綠）' },
+      { name: '9/3 Excel 迷你二連勝', status: 'done', score: '4/4 🎉Excel首勝' },
+      { name: '9/4 Word 頁首頁尾攻堅卷', status: 'todo', score: '今日主攻：頁尾三步鐵律＋首頁不同' },
+      { name: '9/4 Excel 衝綠卷', status: 'todo', score: '4項衝綠＋AVERAGE新朋友' },
+      { name: 'Excel 弱點診斷 E1-E10', status: 'todo', score: 'W1 週日收官前目標' }
+    ]
+  };
+  (function seedPractice() {
+    if (localStorage.getItem('zoe_practice_seeded') !== PRACTICE_SEED.version) {
+      localStorage.setItem('zoe_practice_data', JSON.stringify(PRACTICE_SEED));
+      localStorage.setItem('zoe_practice_seeded', PRACTICE_SEED.version);
+    }
+  })();
+  let practiceData = JSON.parse(localStorage.getItem('zoe_practice_data') || 'null') || PRACTICE_SEED;
+  function renderPractice() {
+    document.getElementById('practiceSummary').textContent = practiceData.summary;
+    document.getElementById('practiceList').innerHTML = practiceData.files.map(f =>
+      '<div class="log-row"><span class="log-date">' + (f.status === 'done' ? '✅' : '⬜') + '</span>' +
+      '<span style="flex:1; font-size:12px; padding:0 4px;">' + f.name + '</span>' +
+      '<span style="font-size:11px; color:var(--text-muted); text-align:right;">' + f.score + '</span></div>').join('');
+  }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
 
@@ -4171,7 +4213,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
-  renderTyping(); renderOffice(); renderPlan(); renderPlanToday(); renderReview();
+  renderTyping(); renderOffice(); renderPlan(); renderPlanToday(); renderReview(); renderPractice();
 </script>
 
 </body>
