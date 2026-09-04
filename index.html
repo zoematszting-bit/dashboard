@@ -4123,8 +4123,8 @@
 
   // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
   const REVIEW_SEED = {
-    version: '2026-09-04-v1',
-    subtitle: 'Zoe 弱點地圖（9/3 23:00）｜Excel首勝🎉 4綠8黃',
+    version: '2026-09-04-v2',
+    subtitle: 'Zoe 弱點地圖（9/4）｜Excel E6-E10已教🎯 等實做驗證',
     items: [
       { id: 'rv1', point: '多層次編號（一級＋二級）', symptom: '9/3 第1次全對✨（3+2結構、Tab降級正確）——再1次全對升綠', fix: '子項刪走「包括」等贅字；繼續：編號掣＋Tab降級', status: 'almost', asked: '2026-09-02' },
       { id: 'rv2', point: '項目符號（•掣）', symptom: '連續2次全對（8/29卷＋診斷5/5）', fix: '已食碎嚼爛✅ 撳完望有•嘅習慣keep住', status: 'mastered' },
@@ -4136,7 +4136,12 @@
       { id: 'rv10', point: '尋找與取代', symptom: '連續2次全對（8/30卷＋8/31複習卷，0殘留）', fix: '已食碎嚼爛✅（9/3晚升mastered🎉）', status: 'mastered' },
       { id: 'rv11', point: '另存PDF', symptom: '連續2次成功（診斷＋8/30卷）', fix: '已食碎嚼爛✅ 記住：揀咗PDF類型就唔使自己打.pdf（8/30打咗.pdf.pdf已修正）', status: 'mastered' },
       { id: 'rv9', point: '註腳／插圖', symptom: '9/3診斷兩樣第1次全對✨（K2註腳＋5cm圖置中）', fix: '再1次全對升綠——已經好近', status: 'almost' },
-      { id: 'rv6', point: 'Excel 首勝🎉（4知識點）', symptom: '9/3晚迷你卷4/4全對＋勾選自評100%準確：標題列/貨幣HK$/SUM/MAX全部首勝✨', fix: '再1次全對升綠；小執漏：B9/B10公式隔籬要打標籤（合計/最高單筆）；E1-E10診斷仲未做', status: 'almost' }
+      { id: 'rv6', point: 'Excel 基礎四式（E1-E5已✅）', symptom: '9/3晚迷你卷4/4全對＋勾選自評100%準確；8/28診斷E1-E5自評全部✅', fix: '再1次全對升綠；小執漏：公式隔籬要打標籤（合計/最高單筆）', status: 'almost' },
+      { id: 'rv12', point: 'IF 公式（E6）🆕已教', symptom: '9/4 Zoe回報掌握唔到→已完整教學：IF(條件,"大額","一般")＋雙擊填滿控點', fix: '實做驗證：F2打=IF(D2>=2000,"大額","一般")→雙擊填滿；陷阱=英文引號逗號、2100都算大額(≥含等於)', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv13', point: 'COUNTIF／SUMIF（E7）🆕已教', symptom: '9/4 已教：COUNTIF(範圍,"行政")=數筆數；SUMIF(搵邊度,條件,加邊度)=條件加總', fix: '實做驗證：H5打=COUNTIF(B2:B14,"行政")應該出4；E9圖表前置SUMIF部門表', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv14', point: '多層排序（E8）🆕已教', symptom: '9/4 已教：點一格→資料→排序→勾有標題→部門A-Z→新增層級→金額最大到最小', fix: '實做驗證：排完第1行=人力員工培訓6800；陷阱=唔好自己揀range、唔好用A→Z快速掣', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv15', point: '簇狀直條圖（E9）🆕已教', symptom: '9/4 已教：先H7:I11起SUMIF部門小統計表→揀兩欄→插入→簇狀（第一個）→點標題打「各部門總開支」', fix: '實做驗證：資訊15580最高嗰條柱；陷阱=唔好揀堆疊/立體', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv16', point: '頁面設定＋凍結（E10）🆕已教', symptom: '9/4 已教：口訣「版面配置三樣嘢，凍結要去檢視度」——橫向/列印標題$1:$1/1頁寬+高度自動｜檢視→凍結首列', fix: '實做驗證：Ctrl+P預覽橫向1頁；捲動時第1列唔郁；陷阱=高度要自動、揀「凍結首列」唔好揀第一項', status: 'weak', asked: '2026-09-04' }
     ]
   };
   (function seedReview() {
