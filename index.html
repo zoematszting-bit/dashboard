@@ -657,7 +657,7 @@
 
     <!-- Four pillars -->
     <section>
-      <p class="section-title">六大板塊</p>
+      <p class="section-title">七大板塊</p>
       <div class="bento">
 
         <a class="card-link" href="#" onclick="switchTab('study', document.querySelector('.nav-btn[data-tab=study]'));return false;">
@@ -743,6 +743,20 @@
               <div class="progress-fill" style="width:50%;"></div>
             </div>
             <div class="progress-num" style="margin-top:6px;">補習社 · 行程</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('agent', document.querySelector('.nav-btn[data-tab=agent]'));return false;" style="grid-column:1/-1;">
+          <div class="card">
+            <div class="card-label">AI課</div>
+            <div class="card-value-sm serif">Agent 產品導師</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-yellow" id="agCardStage">階段 1/10 · 第1課</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" id="agCardBar" style="width:10%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">商業化AI產品 0→1 · 作品集打造</div>
           </div>
         </a>
 
@@ -2253,12 +2267,103 @@
   </div>
 </div>
 
+<!-- ============ AGENT COURSE TAB（v2.42）============ -->
+<div class="tab-view" id="tab-agent">
+  <div class="container">
+
+    <section>
+      <p class="section-title">🤖 AI Agent 產品導師課程</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">課程版本</span>
+          <span class="tag tag-blue" id="agVersion">v2.0</span>
+        </div>
+        <div class="progress-row" style="margin-top:8px;">
+          <span class="progress-label">當前進度</span>
+          <span class="tag tag-yellow" id="agStageTag">階段 1 / 10</span>
+        </div>
+        <div class="progress-track" style="margin-top:10px;">
+          <div class="progress-fill" id="agStageBar" style="width:10%;"></div>
+        </div>
+        <div class="info-block" style="margin-top:12px;">
+          <p><strong>📘 當前課堂：</strong><span id="agLesson">—</span></p>
+          <p><strong>✍️ 作業：</strong><span id="agHomework">—</span></p>
+          <p style="margin-bottom:0;"><strong>📋 狀態：</strong><span id="agHwStatus">—</span></p>
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">
+          📂 課程檔案：Zoe工作输出/Agent課程/ · 指令 v2.0 已定版（2026.09.04）
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">⏱️ 每日學習打卡</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">🔥 連續學習</span>
+          <span class="tag tag-red" id="agStreakTag">0 天</span>
+        </div>
+        <div class="progress-row" style="margin-top:8px;">
+          <span class="progress-label">📚 累積學習</span>
+          <span class="tag tag-blue" id="agTotalTag">0 分鐘 · 0 次</span>
+        </div>
+        <div class="field-label-mini" style="margin-top:12px;">日期（預設今日，可補記）</div>
+        <input type="date" class="input-mini" id="agDate" style="margin-top:4px;">
+        <div class="field-grid" style="margin-top:8px;">
+          <div>
+            <div class="field-label-mini">學習分鐘</div>
+            <input type="number" class="input-mini" id="agMin" placeholder="30">
+          </div>
+          <div>
+            <div class="field-label-mini">今日環節</div>
+            <select class="input-mini" id="agType">
+              <option value="📘 睇課文">📘 睇課文</option>
+              <option value="✍️ 做作業">✍️ 做作業</option>
+              <option value="📊 市場調研">📊 市場調研</option>
+              <option value="🔄 複習鞏固">🔄 複習鞏固</option>
+            </select>
+          </div>
+          <div class="field-full" style="display:flex; gap:8px;">
+            <button class="typing-btn" style="flex:1;" onclick="addAgentLog()">✅ 打卡</button>
+          </div>
+        </div>
+        <div id="agLogList" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">💬 學習成果留言</p>
+      <div class="card card-full">
+        <textarea class="input-mini input-text" id="agNoteText" rows="4" placeholder="記低你嘅學習成果、體會、領悟…&#10;例如：今日學識五層方案階梯，明白考試系統出題用第1層Prompt就夠" style="width:100%; resize:vertical; font-size:13px; line-height:1.6;"></textarea>
+        <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="addAgentNote()">💾 記錄成果</button>
+        <div id="agNoteList" style="margin-top:12px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">記錄存喺手機（隨「匯出同步碼」備份）· 寫得好的心得 ZCode 會幫你整理入作品集</div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">🗺️ 十大階段</p>
+      <div class="card card-full">
+        <div id="agStages"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📖 課程日誌（ZCode 更新）</p>
+      <div class="card card-full">
+        <div id="agCourseLog"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
 <div class="spacer"></div>
 
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.41 · 2026.09.04</span>
+  <span style="font-size:10px; opacity:0.5;">v2.42 · 2026.09.04</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2270,6 +2375,7 @@
   <button class="nav-btn" data-tab="web" onclick="switchTab('web', this)">網站</button>
   <button class="nav-btn" data-tab="finance" onclick="switchTab('finance', this)">財庫</button>
   <button class="nav-btn" data-tab="life" onclick="switchTab('life', this)">安排</button>
+  <button class="nav-btn" data-tab="agent" onclick="switchTab('agent', this)">Agent</button>
 </nav>
 
 <script>
@@ -4315,12 +4421,128 @@
       '<div class="log-row"><span class="log-date">' + l.d + '</span><span style="flex:1; font-size:12px;">' + l.t + '</span></div>').join('');
   }
 
+  // ===== 🤖 Agent 課程（v2.42：課程進度＋每日打卡＋學習成果留言）=====
+  const AGENT_SEED = {
+    version: '2026-09-04-v1',
+    course: 'v2.0',
+    currentStage: 1,
+    totalStages: 10,
+    currentLesson: '第1課｜LLM基礎名詞＋五層方案階梯',
+    homework: '6個產品方案配對＋市場直覸（｜分隔，每產品一行）',
+    homeworkStatus: '待提交',
+    stages: [
+      { n: 1, name: '基礎認知＆五層方案決策框架', status: 'active' },
+      { n: 2, name: 'Prompt工程→上下文工程', status: 'todo' },
+      { n: 3, name: 'RAG完整產品設計', status: 'todo' },
+      { n: 4, name: 'Function Calling＆MCP工具調用', status: 'todo' },
+      { n: 5, name: 'Agent三大核心模塊', status: 'todo' },
+      { n: 6, name: 'Agent主流架構（單vs多）', status: 'todo' },
+      { n: 7, name: '效果評測＋低成本需求驗證', status: 'todo' },
+      { n: 8, name: '小型迭代實戰MVP', status: 'todo' },
+      { n: 9, name: '完整商業專案（小說→影片）', status: 'todo' },
+      { n: 10, name: '作品集＋面試pitch', status: 'todo' }
+    ],
+    log: [
+      { d: '9/4', t: '課程指令v2.0定版（Zoe確認）＋第1課派發，作業待提交' },
+      { d: '9/4', t: 'Dashboard「Agent」tab上線：每日打卡＋學習成果留言' }
+    ]
+  };
+  (function seedAgent() {
+    if (localStorage.getItem('zoe_agent_seeded') !== AGENT_SEED.version) {
+      localStorage.setItem('zoe_agent_data', JSON.stringify(AGENT_SEED));
+      localStorage.setItem('zoe_agent_seeded', AGENT_SEED.version);
+    }
+  })();
+  let agentData = JSON.parse(localStorage.getItem('zoe_agent_data') || 'null') || AGENT_SEED;
+  let agentLog = JSON.parse(localStorage.getItem('zoe_agent_log') || '[]');
+  let agentNotes = JSON.parse(localStorage.getItem('zoe_agent_notes') || '[]');
+
+  function agentStreak() {
+    const days = new Set(agentLog.map(l => l.date));
+    if (!days.size) return 0;
+    const ds = d => d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+    let probe = days.has(ds(new Date())) ? new Date() : new Date(Date.now() - 86400000);
+    let n = 0;
+    while (days.has(ds(probe))) { n++; probe = new Date(probe.getTime() - 86400000); }
+    return n;
+  }
+  const escAgent = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  function addAgentLog() {
+    const mins = parseFloat(document.getElementById('agMin').value);
+    if (!mins || mins <= 0) { alert('填返學習咗幾多分鐘先'); return; }
+    const dpick = document.getElementById('agDate').value;
+    const logDate = dpick ? dpick.replace(/-/g, '.') : dateStr;
+    const type = document.getElementById('agType').value;
+    agentLog.push({ date: logDate, time: new Date().toTimeString().slice(0, 5), mins: mins, type: type });
+    agentLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_agent_log', JSON.stringify(agentLog));
+    document.getElementById('agMin').value = '';
+    renderAgent();
+  }
+  function addAgentNote() {
+    const txt = document.getElementById('agNoteText').value.trim();
+    if (!txt) { alert('寫低少少成果先啦 😊'); return; }
+    agentNotes.unshift({ date: dateStr, time: new Date().toTimeString().slice(0, 5), text: txt, id: Date.now() });
+    localStorage.setItem('zoe_agent_notes', JSON.stringify(agentNotes));
+    document.getElementById('agNoteText').value = '';
+    renderAgent();
+  }
+  function delAgentNote(id) {
+    agentNotes = agentNotes.filter(n => n.id !== id);
+    localStorage.setItem('zoe_agent_notes', JSON.stringify(agentNotes));
+    renderAgent();
+  }
+  function renderAgent() {
+    // 課程現況（ZCode push 更新）
+    document.getElementById('agVersion').textContent = agentData.course;
+    document.getElementById('agStageTag').textContent = '階段 ' + agentData.currentStage + ' / ' + agentData.totalStages;
+    const pct = Math.round(agentData.currentStage / agentData.totalStages * 100);
+    document.getElementById('agStageBar').style.width = pct + '%';
+    document.getElementById('agCardStage').textContent = '階段 ' + agentData.currentStage + '/' + agentData.totalStages + ' · ' + agentData.currentLesson.split('｜')[0];
+    document.getElementById('agCardBar').style.width = pct + '%';
+    document.getElementById('agLesson').textContent = agentData.currentLesson;
+    document.getElementById('agHomework').textContent = agentData.homework;
+    const hw = agentData.homeworkStatus;
+    document.getElementById('agHwStatus').innerHTML = hw === '已過關'
+      ? '<span class="tag tag-green">✅ 已過關</span>'
+      : hw === '已提交' ? '<span class="tag tag-blue">📥 已提交 · 待ZCode點評</span>'
+      : '<span class="tag tag-yellow">✍️ 待提交</span>';
+    // 每日打卡（Zoe本地）
+    const streak = agentStreak();
+    const done = agentLog.some(l => l.date === dateStr);
+    document.getElementById('agStreakTag').textContent = streak + ' 天' + (done ? ' · 今日✅' : ' · 今日未學');
+    const totalMin = agentLog.reduce((s, l) => s + (l.mins || 0), 0);
+    document.getElementById('agTotalTag').textContent = totalMin + ' 分鐘 · ' + agentLog.length + ' 次';
+    const dpick = document.getElementById('agDate'); if (dpick && !dpick.value) dpick.value = dateStr.replace(/\./g, '-');
+    document.getElementById('agLogList').innerHTML = agentLog.slice(-10).reverse().map(l =>
+      '<div class="log-row"><span class="log-date">' + l.date.slice(5) + '</span><span style="flex:1; font-size:12px;">' + l.type + ' · ' + l.mins + ' 分</span></div>'
+    ).join('') || '<div style="font-size:11px; color:var(--text-muted);">未有打卡記錄——學完嘢記得嚟打卡 🔥</div>';
+    // 學習成果留言（Zoe本地）
+    document.getElementById('agNoteList').innerHTML = agentNotes.map(n =>
+      '<div class="log-item" style="cursor:default;">' +
+      '<div class="log-item-head"><span class="log-item-title">' + n.date + ' ' + n.time + '</span>' +
+      '<button onclick="delAgentNote(' + n.id + ')" style="background:none;border:none;color:var(--text-muted);font-size:14px;padding:0 4px;cursor:pointer;">✕</button></div>' +
+      '<div class="log-item-meta" style="text-align:left; white-space:pre-wrap; font-size:12px; color:var(--text); line-height:1.6;">' + escAgent(n.text) + '</div></div>'
+    ).join('') || '<div style="font-size:11px; color:var(--text-muted);">仲未有留言——學完第一課記低你嘅領悟 💬</div>';
+    // 十大階段
+    const stTag = s => s === 'done' ? '<span class="tag tag-green">✅ 完成</span>' : s === 'active' ? '<span class="tag tag-blue">🔵 進行中</span>' : '<span class="tag tag-gray">⚪ 未開始</span>';
+    document.getElementById('agStages').innerHTML = agentData.stages.map(s =>
+      '<div class="progress-row" style="margin:8px 0;">' +
+      '<span class="progress-label">' + s.n + '｜' + s.name + '</span>' + stTag(s.status) + '</div>'
+    ).join('');
+    // 課程日誌
+    document.getElementById('agCourseLog').innerHTML = agentData.log.map(l =>
+      '<div class="log-row"><span class="log-date">' + l.d + '</span><span style="flex:1; font-size:12px;">' + l.t + '</span></div>'
+    ).join('');
+  }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
 
   // ===== Hash deep-linking（例如 #fitness 直接開健身 tab）=====
   const hashTab = location.hash.replace('#', '');
-  const validTabs = ['overview','study','fitness','yoga','web','finance','life'];
+  const validTabs = ['overview','study','fitness','yoga','web','finance','life','agent'];
   if (validTabs.includes(hashTab) && hashTab !== 'overview') {
     document.querySelector('.tab-view.active')?.classList.remove('active');
     document.getElementById('tab-' + hashTab).classList.add('active');
@@ -4337,7 +4559,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
-  renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice(); renderReal();
+  renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice(); renderReal(); renderAgent();
 </script>
 
 </body>
