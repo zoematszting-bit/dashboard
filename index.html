@@ -494,6 +494,8 @@
   .train-item { border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 10px; padding: 11px 12px; margin-top: 10px; background: var(--surface); }
   .train-item.red { border-left-color: var(--pale-red-text); }
   .train-item.yellow { border-left-color: var(--pale-yellow-text); }
+  .train-item.green { border-left-color: var(--pale-green-text); }
+  .train-item.gray { border-left-color: var(--text-muted); }
   .train-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .train-title { font-size: 13px; font-weight: 600; }
   .train-how { font-size: 11.5px; line-height: 1.65; color: var(--text); opacity: .88; margin-top: 7px; }
@@ -2377,7 +2379,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.45 · 2026.09.04</span>
+  <span style="font-size:10px; opacity:0.5;">v2.46 · 2026.09.05</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -4313,13 +4315,17 @@
       : s === 'mastered' ? '<span class="tag tag-green">已掌握</span>'
       : s === 'almost' ? '<span class="tag tag-yellow">差一步·再1次升綠</span>'
       : '<span class="tag tag-gray">未開始</span>';
+    const bar = s => s === 'weak' ? 'red' : s === 'almost' ? 'yellow'
+      : (s === 'mastered' || s === 'fixed') ? 'green' : 'gray';
     document.getElementById('reviewList').innerHTML = reviewData.items.map(it =>
-      '<div class="log-item" style="cursor:default;">' +
-      '<div class="log-item-head"><span class="log-item-title">' + it.point + '</span>' + tag(it.status) + '</div>' +
-      '<div class="log-item-meta" style="text-align:left;">🩺 ' + it.symptom + '</div>' +
-      '<div class="log-item-meta" style="text-align:left; color:var(--text); font-size:11px;">💊 ' +
+      '<div class="train-item ' + bar(it.status) + '">' +
+      '<div style="font-size:13px; font-weight:600; line-height:1.5;">' + it.point + '</div>' +
+      '<div style="margin-top:6px;">' + tag(it.status) + '</div>' +
+      '<div style="font-size:11px; color:var(--text-muted); margin-top:7px;">🩺 病徵' +
+      vlines(it.symptom).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      '<div style="font-size:11.5px; margin-top:7px; padding-top:7px; border-top:1px dashed var(--border);">💊 修正' +
       vlines(it.fix).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
-      (it.asked ? '<div class="log-item-meta" style="text-align:left;">❓ 問過：' + it.asked + '</div>' : '') +
+      (it.asked ? '<div style="font-size:11px; color:var(--text-muted); margin-top:5px;">❓ 問過：' + it.asked + '</div>' : '') +
       '</div>').join('');
   }
 
