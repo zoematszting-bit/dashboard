@@ -485,6 +485,16 @@
   .lib-cat:first-child { margin-top: 0; }
   .food-tag { display: inline-block; font-size: 11px; padding: 5px 11px; border-radius: 6px; background: var(--surface-2); margin: 0 4px 6px 0; color: var(--text); }
 
+  /* ===== Diet check chips ===== */
+  .dc-chip { display: inline-block; font-size: 11px; padding: 6px 12px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); margin: 0 4px 6px 0; color: var(--text); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s ease; }
+  .dc-chip.on { border-color: var(--pale-red-text); color: var(--pale-red-text); background: var(--pale-red-bg); font-weight: 600; }
+  .dc-chip:active { transform: scale(0.95); }
+  .dc-day { flex: 1; text-align: center; padding: 8px 2px 6px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .dc-day.cur { border-color: var(--text); }
+  .dc-day-emoji { font-size: 15px; line-height: 1.2; }
+  .dc-day-num { font-size: 11px; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .dc-day-wd { font-size: 9px; color: var(--text-muted); }
+
   /* ===== Period timeline ===== */
   .timeline { position: relative; margin: 12px 8px 28px; }
   .timeline-line { height: 6px; background: var(--surface-2); border-radius: 3px; position: relative; }
@@ -859,6 +869,31 @@
             <button class="typing-btn" onclick="goDietToday()">今日</button>
           </div>
           <div style="font-size:10px; color:var(--text-muted); margin-top:8px;" id="dietDateLabel">檢視緊：今日</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">飲食監測</p>
+        <div class="card card-full">
+          <div class="card-label">今日飲食達標？（記入「檢視緊」嗰日）</div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button class="day-btn" onclick="setDietCheck('pass')" id="dcBtnPass">✅ 達標</button>
+            <button class="day-btn" onclick="setDietCheck('fail')" id="dcBtnFail">❌ 未達標</button>
+          </div>
+          <div id="dcFailBox" style="display:none; margin-top:12px; border-top:1px solid var(--border); padding-top:12px;">
+            <div class="field-label-mini">犯咗啲乜？（可多選）</div>
+            <div id="dcFailChips" style="margin-top:8px;"></div>
+            <div style="display:flex; gap:8px; margin-top:6px;">
+              <input class="input-mini input-text" id="dcCustomInput" placeholder="自訂項目，例如：下午茶薯片" style="flex:1;">
+              <button class="quick-btn" onclick="addDcCustom()">＋加入</button>
+            </div>
+          </div>
+          <div style="margin-top:12px; font-size:12px;" id="dcStatusLine">未記錄</div>
+        </div>
+        <div class="card card-full" style="margin-top:10px;">
+          <div class="card-label">最近 7 日達標情況（撳日期可翻查）</div>
+          <div id="dcWeekStrip" style="display:flex; gap:6px; margin-top:8px;"></div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:10px;" id="dcMonthRate">本月達標率：未有記錄</div>
         </div>
       </section>
 
@@ -2638,7 +2673,8 @@
     document.getElementById('ovKcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100)+'%';
     document.getElementById('ovProteinBar').style.width = Math.min(tot.p/t.protein*100,100)+'%';
     document.getElementById('ovWaterBar').style.width = Math.min(tw/WATER_GOAL*100,100)+'%';
-    document.getElementById('ovDayLabel').textContent = dayType==='training' ? '今日：訓練日' : '今日：休息日';
+    const dcs = dcheckOf(dateStr).status;
+    document.getElementById('ovDayLabel').textContent = (dayType==='training' ? '今日：訓練日' : '今日：休息日') + (dcs === 'pass' ? ' · 飲食✅' : dcs === 'fail' ? ' · 飲食❌' : '');
   }
 
   // ----- 通用：編輯模式按鈕 / 取消 / 日期揀選 -----
@@ -2678,11 +2714,98 @@
     cancelEdit('meal');
     meals = JSON.parse(localStorage.getItem('zoe_meals_' + viewDate) || '[]');
     water = parseInt(localStorage.getItem('zoe_water_' + viewDate) || '0');
-    renderMeals(); renderDiet(); renderWater();
+    renderMeals(); renderDiet(); renderWater(); renderDcheck(); renderDcheckWeek();
   }
   function goDietToday() {
     document.getElementById('dietDatePick').value = dateStr.replace(/\./g, '-');
     loadDietDate(dateStr.replace(/\./g, '-'));
+  }
+
+  // ----- Diet compliance（飲食監測達標勾選）-----
+  const DC_FAIL_OPTIONS = ['🍗 炸雞','🧋 奶茶','🍰 甜品','🍟 零食','🍞 精緻碳水','🍚 澱粉過量','🌙 夜食9點後','🧂 重口味','🍺 酒精'];
+  function dcheckOf(d) {
+    try { return JSON.parse(localStorage.getItem('zoe_dcheck_' + d) || 'null') || { status: '', fails: [] }; }
+    catch (e) { return { status: '', fails: [] }; }
+  }
+  function saveDcheck(d, dc) { localStorage.setItem('zoe_dcheck_' + d, JSON.stringify(dc)); }
+  function setDietCheck(status) {
+    const dc = dcheckOf(viewDate);
+    dc.status = (dc.status === status) ? '' : status;   // 再撳同一個掣＝取消記錄
+    if (dc.status === 'pass') dc.fails = [];
+    saveDcheck(viewDate, dc);
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function toggleDcFail(opt) {
+    const dc = dcheckOf(viewDate);
+    const i = dc.fails.indexOf(opt);
+    if (i === -1) dc.fails.push(opt); else dc.fails.splice(i, 1);
+    if (dc.fails.length > 0) dc.status = 'fail';   // 揀咗犯規項會自動標記未達標
+    saveDcheck(viewDate, dc);
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function addDcCustom() {
+    const inp = document.getElementById('dcCustomInput');
+    const v = inp.value.trim();
+    if (!v) return;
+    const dc = dcheckOf(viewDate);
+    if (dc.fails.indexOf(v) === -1) { dc.fails.push(v); dc.status = 'fail'; }
+    saveDcheck(viewDate, dc);
+    inp.value = '';
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function renderDcheck() {
+    const dc = dcheckOf(viewDate);
+    const bp = document.getElementById('dcBtnPass'), bf = document.getElementById('dcBtnFail');
+    if (bp) bp.classList.toggle('active', dc.status === 'pass');
+    if (bf) bf.classList.toggle('active', dc.status === 'fail');
+    const box = document.getElementById('dcFailBox');
+    if (box) box.style.display = dc.status === 'fail' ? 'block' : 'none';
+    const chipsEl = document.getElementById('dcFailChips');
+    if (chipsEl) {
+      const all = DC_FAIL_OPTIONS.concat(dc.fails.filter(f => DC_FAIL_OPTIONS.indexOf(f) === -1));
+      chipsEl.innerHTML = all.map(f => {
+        const esc = f.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        return '<span class="dc-chip' + (dc.fails.indexOf(f) > -1 ? ' on' : '') + '" onclick="toggleDcFail(\'' + esc + '\')">' + f + '</span>';
+      }).join('');
+    }
+    const sl = document.getElementById('dcStatusLine');
+    if (sl) {
+      if (!dc.status) sl.innerHTML = '<span style="color:var(--text-muted);">未記錄 · 撳上面揀今日達唔達標</span>';
+      else if (dc.status === 'pass') sl.innerHTML = '<span style="color:var(--pale-green-text);">✅ 今日達標，keep 住！</span>';
+      else sl.innerHTML = '<span style="color:var(--pale-red-text);">❌ 未達標：' + dc.fails.join('、') + '</span>';
+    }
+  }
+  function renderDcheckWeek() {
+    const strip = document.getElementById('dcWeekStrip');
+    if (!strip) return;
+    let html = '';
+    for (let i = 6; i >= 0; i--) {
+      const dt = new Date(today.getTime() - i * 86400000);
+      const key = dt.getFullYear() + '.' + String(dt.getMonth() + 1).padStart(2, '0') + '.' + String(dt.getDate()).padStart(2, '0');
+      const dc = dcheckOf(key);
+      const wd = ['日','一','二','三','四','五','六'][dt.getDay()];
+      const icon = dc.status === 'pass' ? '✅' : dc.status === 'fail' ? '❌' : '·';
+      html += '<div class="dc-day' + (key === viewDate ? ' cur' : '') + '" onclick="jumpDcDate(\'' + key + '\')">' +
+        '<div class="dc-day-emoji">' + icon + '</div><div class="dc-day-num">' + dt.getDate() + '</div><div class="dc-day-wd">' + wd + '</div></div>';
+    }
+    strip.innerHTML = html;
+    const ym = dateStr.slice(0, 7);
+    let pass = 0, fail = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.indexOf('zoe_dcheck_') === 0 && k.slice(11, 18) === ym) {
+        const s = dcheckOf(k.slice(11)).status;
+        if (s === 'pass') pass++; else if (s === 'fail') fail++;
+      }
+    }
+    const mr = document.getElementById('dcMonthRate');
+    if (mr) mr.textContent = (pass + fail) > 0
+      ? '本月達標：' + pass + ' 日 ✅ / ' + fail + ' 日 ❌（達標率 ' + Math.round(pass / (pass + fail) * 100) + '%）'
+      : '本月達標率：未有記錄';
+  }
+  function jumpDcDate(key) {
+    document.getElementById('dietDatePick').value = key.replace(/\./g, '-');
+    loadDietDate(key.replace(/\./g, '-'));
   }
 
   // ----- Weight -----
@@ -4044,6 +4167,7 @@
   }
 
   renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory(); renderSleep();
+  renderDcheck(); renderDcheckWeek();
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
