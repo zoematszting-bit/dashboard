@@ -2374,7 +2374,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.43 · 2026.09.04</span>
+  <span style="font-size:10px; opacity:0.5;">v2.44 · 2026.09.04</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -4314,7 +4314,8 @@
       '<div class="log-item" style="cursor:default;">' +
       '<div class="log-item-head"><span class="log-item-title">' + it.point + '</span>' + tag(it.status) + '</div>' +
       '<div class="log-item-meta" style="text-align:left;">🩺 ' + it.symptom + '</div>' +
-      '<div class="log-item-meta" style="text-align:left; color:var(--text); font-size:11px;">💊 ' + it.fix + '</div>' +
+      '<div class="log-item-meta" style="text-align:left; color:var(--text); font-size:11px;">💊 ' +
+      vlines(it.fix).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
       (it.asked ? '<div class="log-item-meta" style="text-align:left;">❓ 問過：' + it.asked + '</div>' : '') +
       '</div>').join('');
   }
@@ -4375,13 +4376,16 @@
     }
   })();
   let trainData = JSON.parse(localStorage.getItem('zoe_train_data') || 'null') || TRAIN_SEED;
+  // 豎列工具：將「；」分隔嘅步驟拆做一行一行（v2.44）
+  function vlines(s) { return String(s).split('；').map(x => x.trim()).filter(Boolean); }
+
   function renderTrain() {
     document.getElementById('trainSummary').textContent = trainData.summary;
     const tag = l => l === 'red' ? '<span class="tag tag-red">未攻破</span>' : '<span class="tag tag-yellow">差一步</span>';
     document.getElementById('trainList').innerHTML = trainData.items.map(it =>
       '<div class="train-item ' + it.lvl + '">' +
       '<div class="train-head"><span class="train-title">' + it.point + '</span>' + tag(it.lvl) + '</div>' +
-      '<div class="train-how">🛠️ ' + it.howto + '</div>' +
+      '<div class="train-how">' + vlines(it.howto).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
       '<div class="train-file">📄 ' + it.file + '</div>' +
       '</div>').join('') +
       (trainData.updated ? '<div class="train-updated">🕐 最後更新：' + trainData.updated + '</div>' : '');
@@ -4392,12 +4396,12 @@
 
   // ===== 📈 我的實際訓練＋進度條（v2.41）=====
   const REAL_SEED = {
-    version: '2026-09-04-v1',
+    version: '2026-09-04-v2',
     today: { date: '2026.09.04', items: [
-      '📘 Word ×6：攻堅卷(4/5·首頁不同首做成)／8/28診斷redo(頁尾全對)／8/30 redo(5/5)／9/3變奏(5/6)／9/2三合一(5/5)／9/1鞏固',
-      '📗 Excel ×1：弱點診斷E1-E10首測（IF/COUNTIF/SUMIF全對；發現公式範圍紀律問題）',
-      '📖 教學 ×3：插圖+PDF步驟／移除空行^p／頁尾共用觀念',
-      '🏆 4個知識點升綠（A4／標題細明體／Excel標題列／Excel貨幣）'
+      { h: '📘 Word ×6', lines: ['攻堅卷 4/5（首頁不同首做成）', '8/28診斷redo（頁尾全對）', '8/30 redo 5/5', '9/3變奏 5/6', '9/2三合一 5/5', '9/1鞏固 完成'] },
+      { h: '📗 Excel ×1', lines: ['弱點診斷E1-E10首測', 'IF／COUNTIF／SUMIF 全對', '發現公式範圍紀律問題'] },
+      { h: '📖 教學 ×3', lines: ['插圖＋PDF步驟', '移除空行 ^p', '頁尾共用觀念'] },
+      { h: '🏆 4個知識點升綠', lines: ['A4紙張', '標題細明體', 'Excel標題列', 'Excel貨幣'] }
     ]},
     word: { mastered: 8, total: 13 },
     excel: { mastered: 2, total: 12 },
@@ -4420,7 +4424,8 @@
   function renderReal() {
     const today = realData.today && realData.today.date === dateStr ? realData.today : null;
     document.getElementById('realToday').innerHTML = today
-      ? today.items.map(i => '<div class="log-row"><span style="font-size:12px; flex:1;">' + i + '</span></div>').join('')
+      ? today.items.map(i => '<div class="train-item yellow" style="border-left-color:var(--pale-blue-text);"><div class="train-title">' + i.h + '</div>' +
+          i.lines.map(l => '<div style="font-size:11.5px; margin-top:4px;">▸ ' + l + '</div>').join('') + '</div>').join('')
       : '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">今日未有記錄——做完練習或問完ZCode就會出現</span></div>';
     // 今日打字（live讀打卡數據）
     const tToday = typingLog.filter(l => l.date === dateStr);
