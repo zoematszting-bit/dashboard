@@ -1620,15 +1620,17 @@
     </section>
 
     <section>
-      <p class="section-title">📚 Office 知識點清單（輔助測驗）</p>
-      <div class="card card-full" id="todayLessonCard"></div>
-      <div class="card card-full" style="margin-top:10px;">
-        <div class="progress-row">
-          <span class="progress-label">輔助測驗進度（該課測驗≥80%＝✅；主線係每日實作練習檔）</span>
-          <span class="tag tag-blue" id="officeProgTag">0 / 44</span>
+      <p class="section-title">🎯 弱點訓練台（今日要練）</p>
+      <div class="card card-full">
+        <div class="card-label" id="trainSummary">—</div>
+        <div id="trainList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">
+          📂 檔案喺 Desktop/ZCode備考練習/（iCloud同步·弟弟Windows機做）· 做完撳勾，ZCode讀檔批改後更新呢區
         </div>
-        <div class="progress-track"><div class="progress-fill" id="officeProgFill" style="width:0%;"></div></div>
-        <div id="officeList" style="margin-top:12px; max-height:280px; overflow-y:auto;"></div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">🟢 已吃碎嚼爛（連續2次全對）</div>
+        <div id="trainMastered" style="margin-top:8px;"></div>
       </div>
     </section>
 
@@ -2231,7 +2233,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.36 · 2026.09.04</span>
+  <span style="font-size:10px; opacity:0.5;">v2.39 · 2026.09.04</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -4191,6 +4193,40 @@
       '<span style="font-size:11px; color:var(--text-muted); text-align:right;">' + f.score + '</span></div>').join('');
   }
 
+  // ===== 🎯 弱點訓練台（v2.39：由弱點數據驅動，連住實際練習檔）=====
+  const TRAIN_SEED = {
+    version: '2026-09-04-v1',
+    summary: '今日 5 項（2 未攻破優先＋3 衝綠）· 每項連住練習檔案',
+    items: [
+      { lvl: 'red', point: '頁尾頁碼三步鐵律', howto: '插一次＞Ctrl+E置中＞望一眼（一組啱，兩組刪一組）', file: '9/4 Word頁首頁尾攻堅卷 D1' },
+      { lvl: 'red', point: '首頁不同', howto: '雙擊頁首＞【設計】＞【選項】＞剔「首頁不同」→第1頁頁首清空', file: '9/4 Word頁首頁尾攻堅卷 D3' },
+      { lvl: 'yellow', point: 'Excel 4項衝綠＋AVERAGE', howto: '標題列/貨幣/SUM/MAX今日再全對＝4盞一齊綠；新朋友=AVERAGE(B2:B7)；記得打標籤', file: '9/4 Excel衝綠卷 F1-F5' },
+      { lvl: 'yellow', point: '移除空行 ^p^p→^p', howto: 'Ctrl+H：搵^p^p→換^p→全部取代到0（取代為必須打^p）', file: '聽日卷實戰題（今日教學文先睇）' },
+      { lvl: 'yellow', point: '多層編號＋標題字體MingLiU＋註腳插圖', howto: '編號掣＋Tab降級／字體跟指定名打MingLiU／等下批卷驗證', file: '下批卷（每日10:00）' }
+    ],
+    mastered: ['縮排行距', '段落對齊', '項目符號', '表格', '尋找與取代', '另存PDF']
+  };
+  (function seedTrain() {
+    if (localStorage.getItem('zoe_train_seeded') !== TRAIN_SEED.version) {
+      localStorage.setItem('zoe_train_data', JSON.stringify(TRAIN_SEED));
+      localStorage.setItem('zoe_train_seeded', TRAIN_SEED.version);
+    }
+  })();
+  let trainData = JSON.parse(localStorage.getItem('zoe_train_data') || 'null') || TRAIN_SEED;
+  function renderTrain() {
+    document.getElementById('trainSummary').textContent = trainData.summary;
+    const tag = l => l === 'red' ? '<span class="tag tag-red">未攻破</span>' : '<span class="tag tag-yellow">差一步</span>';
+    document.getElementById('trainList').innerHTML = trainData.items.map(it =>
+      '<div class="log-item" style="cursor:default;">' +
+      '<div class="log-item-head"><span class="log-item-title">' + it.point + '</span>' + tag(it.lvl) + '</div>' +
+      '<div class="log-item-meta" style="text-align:left;">🛠️ ' + it.howto + '</div>' +
+      '<div class="log-item-meta" style="text-align:left; color:var(--text); font-size:11px;">📄 ' + it.file + '</div>' +
+      '</div>').join('');
+    document.getElementById('trainMastered').innerHTML =
+      trainData.mastered.map(m => '<span class="tag tag-green" style="margin:2px 4px 2px 0; display:inline-block;">✅ ' + m + '</span>').join('') +
+      '<div style="font-size:10px; color:var(--text-muted); margin-top:6px;">連續2次（唔同場景）全對先入呢度</div>';
+  }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
 
@@ -4213,7 +4249,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
-  renderTyping(); renderOffice(); renderPlan(); renderPlanToday(); renderReview(); renderPractice();
+  renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice();
 </script>
 
 </body>
