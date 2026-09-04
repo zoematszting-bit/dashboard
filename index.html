@@ -1718,6 +1718,31 @@
         <div id="planToday" style="margin-top:8px;"></div>
         <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">📂 Office 練習檔：Desktop/ZCode備考練習/Word＋Excel（弟弟 Windows 機做，iCloud 同步）</div>
       </div>
+
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">📈 我的實際訓練（今日）</div>
+        <div id="realToday" style="margin-top:8px;"></div>
+        <div class="field-label-mini" style="margin-top:12px;">⌨️ 今日打字</div>
+        <div id="realTyping" style="font-size:12px; color:var(--text);"></div>
+      </div>
+
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">📊 掌握進度條</div>
+        <div style="margin-top:10px;">
+          <div class="progress-row"><span class="progress-label">📘 Word</span><span class="tag tag-blue" id="barWordTag">—</span></div>
+          <div class="progress-track"><div class="progress-fill" id="barWord" style="width:0%; background:var(--pale-blue-text);"></div></div>
+          <div class="progress-row" style="margin-top:10px;"><span class="progress-label">📗 Excel</span><span class="tag tag-green" id="barExcelTag">—</span></div>
+          <div class="progress-track"><div class="progress-fill" id="barExcel" style="width:0%;"></div></div>
+        </div>
+        <div class="field-label-mini" style="margin-top:14px;">🧭 未學／學習中</div>
+        <div id="unlearnedList" style="margin-top:6px;"></div>
+      </div>
+
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">🗓️ 最近訓練日誌</div>
+        <div id="trainLog" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">Zoe 做完／問完 → ZCode 教學＋批改＋即時記錄呢區</div>
+      </div>
     </section>
 
     <section>
@@ -2233,7 +2258,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.40 · 2026.09.04</span>
+  <span style="font-size:10px; opacity:0.5;">v2.41 · 2026.09.04</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -4237,6 +4262,59 @@
       '<div style="font-size:10px; color:var(--text-muted); margin-top:6px;">連續2次（唔同場景）全對先入呢度</div>';
   }
 
+  // ===== 📈 我的實際訓練＋進度條（v2.41）=====
+  const REAL_SEED = {
+    version: '2026-09-04-v1',
+    today: { date: '2026.09.04', items: [
+      '📘 Word ×6：攻堅卷(4/5·首頁不同首做成)／8/28診斷redo(頁尾全對)／8/30 redo(5/5)／9/3變奏(5/6)／9/2三合一(5/5)／9/1鞏固',
+      '📗 Excel ×1：弱點診斷E1-E10首測（IF/COUNTIF/SUMIF全對；發現公式範圍紀律問題）',
+      '📖 教學 ×3：插圖+PDF步驟／移除空行^p／頁尾共用觀念',
+      '🏆 4個知識點升綠（A4／標題細明體／Excel標題列／Excel貨幣）'
+    ]},
+    word: { mastered: 8, total: 13 },
+    excel: { mastered: 2, total: 12 },
+    unlearned: ['圖片文繞圖（Word）', '合併列印（Word）', '自動篩選（Excel）'],
+    learning: ['頁首頁尾（置中習慣）', '註腳', '插圖', '多層排序', '公式範圍紀律（SUM/MAX/MIN）', 'IF/COUNTIF/AVERAGE鞏固', '圖表', '凍結欄列', '列印設定'],
+    log: [
+      { d: '9/4', t: '大爆發：8份檔案＋3教學＋4升綠（Word 6卷＋Excel診斷）' },
+      { d: '9/3', t: '3份卷（8/30＋Excel迷你4/4首勝＋8/31複習）＋弱點複習室設立' },
+      { d: '9/2', t: '表格清單卷＋多層編號教學＋Excel基礎練習檔' },
+      { d: '9/1', t: '格式暖身批改（首次）＋縮排行距對齊重溫' }
+    ]
+  };
+  (function seedReal() {
+    if (localStorage.getItem('zoe_real_seeded') !== REAL_SEED.version) {
+      localStorage.setItem('zoe_real_data', JSON.stringify(REAL_SEED));
+      localStorage.setItem('zoe_real_seeded', REAL_SEED.version);
+    }
+  })();
+  let realData = JSON.parse(localStorage.getItem('zoe_real_data') || 'null') || REAL_SEED;
+  function renderReal() {
+    const today = realData.today && realData.today.date === dateStr ? realData.today : null;
+    document.getElementById('realToday').innerHTML = today
+      ? today.items.map(i => '<div class="log-row"><span style="font-size:12px; flex:1;">' + i + '</span></div>').join('')
+      : '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">今日未有記錄——做完練習或問完ZCode就會出現</span></div>';
+    // 今日打字（live讀打卡數據）
+    const tToday = typingLog.filter(l => l.date === dateStr);
+    document.getElementById('realTyping').textContent = tToday.length
+      ? tToday.map(l => '英' + l.en + '／中' + l.zh + ' wpm' + (l.mins ? '（' + l.mins + '分）' : '')).join('  ｜  ')
+      : '今日未打卡（下方⌨️打字打卡區輸入）';
+    // 進度條
+    const wp = Math.round(realData.word.mastered / realData.word.total * 100);
+    const ep = Math.round(realData.excel.mastered / realData.excel.total * 100);
+    document.getElementById('barWord').style.width = wp + '%';
+    document.getElementById('barWordTag').textContent = realData.word.mastered + '/' + realData.word.total + '（' + wp + '%）';
+    document.getElementById('barExcel').style.width = ep + '%';
+    document.getElementById('barExcelTag').textContent = realData.excel.mastered + '/' + realData.excel.total + '（' + ep + '%）';
+    // 未學／學習中
+    document.getElementById('unlearnedList').innerHTML =
+      realData.unlearned.map(u => '<span class="tag tag-gray" style="margin:2px 4px 2px 0; display:inline-block;">⚪ ' + u + '</span>').join('') +
+      realData.learning.map(l => '<span class="tag tag-yellow" style="margin:2px 4px 2px 0; display:inline-block;">🟡 ' + l + '</span>').join('');
+    // 日誌
+    document.getElementById('trainLog').innerHTML = realData.log.map(l =>
+      '<div class="log-row"><span class="log-date">' + l.d + '</span><span style="flex:1; font-size:12px;">' + l.t + '</span></div>').join('');
+  }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
 
@@ -4259,7 +4337,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
-  renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice();
+  renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice(); renderReal();
 </script>
 
 </body>
