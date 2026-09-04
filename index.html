@@ -4123,8 +4123,8 @@
 
   // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
   const REVIEW_SEED = {
-    version: '2026-09-04-v3',
-    subtitle: 'Zoe 弱點地圖（9/4晚）｜E6-E8已完成✨ E9起表已補教',
+    version: '2026-09-04-v4',
+    subtitle: 'Zoe 弱點地圖（9/4深夜）｜E6-E10批改完：3對+1差步+1三缺',
     items: [
       { id: 'rv1', point: '多層次編號（一級＋二級）', symptom: '9/3 第1次全對✨（3+2結構、Tab降級正確）——再1次全對升綠', fix: '子項刪走「包括」等贅字；繼續：編號掣＋Tab降級', status: 'almost', asked: '2026-09-02' },
       { id: 'rv2', point: '項目符號（•掣）', symptom: '連續2次全對（8/29卷＋診斷5/5）', fix: '已食碎嚼爛✅ 撳完望有•嘅習慣keep住', status: 'mastered' },
@@ -4136,12 +4136,13 @@
       { id: 'rv10', point: '尋找與取代', symptom: '連續2次全對（8/30卷＋8/31複習卷，0殘留）', fix: '已食碎嚼爛✅（9/3晚升mastered🎉）', status: 'mastered' },
       { id: 'rv11', point: '另存PDF', symptom: '連續2次成功（診斷＋8/30卷）', fix: '已食碎嚼爛✅ 記住：揀咗PDF類型就唔使自己打.pdf（8/30打咗.pdf.pdf已修正）', status: 'mastered' },
       { id: 'rv9', point: '註腳／插圖', symptom: '9/3診斷兩樣第1次全對✨（K2註腳＋5cm圖置中）', fix: '再1次全對升綠——已經好近', status: 'almost' },
-      { id: 'rv6', point: 'Excel 基礎四式（E1-E5已✅）', symptom: '9/3晚迷你卷4/4全對＋勾選自評100%準確；8/28診斷E1-E5自評全部✅', fix: '再1次全對升綠；小執漏：公式隔籬要打標籤（合計/最高單筆）', status: 'almost' },
-      { id: 'rv12', point: 'IF 公式（E6）✅待驗證', symptom: '9/4教學後Zoe照步驟完成（弟弟電腦做，檔案未同步返Mac讀唔到）', fix: '同步檔案返嚟→ZCode讀檔驗證→對答案版效果先升級；陷阱記住：英文引號逗號、≥含等於', status: 'weak', asked: '2026-09-04' },
-      { id: 'rv13', point: 'COUNTIF／SUMIF（E7+E9）', symptom: 'E7 COUNTIF已做✅；E9 SUMIF起表唔理解→已補教：起表=純打字砌H7:I11小表', fix: 'I8-I11打四條SUMIF（12100/3300/9050/15580）；出0=H欄部門名同B欄唔夾（多空格/錯字）', status: 'weak', asked: '2026-09-04' },
-      { id: 'rv14', point: '多層排序（E8）✅待驗證', symptom: '9/4教學後Zoe完成（未讀檔驗證）', fix: '同步後檢查：第1行=人力員工培訓6800，順序人力→行政→財務→資訊', status: 'weak', asked: '2026-09-04' },
-      { id: 'rv15', point: '簇狀直條圖（E9）🔑第一步已補教', symptom: 'Zoe卡喺「H7:I11起表」→已拆解：H:I=主表右手邊空欄｜起表=打字冇功能掣｜點解要起=圖表只食一欄名一欄數', fix: '起完表：點H7→按Shift點I11反白→插入→簇狀（第一個）→點標題打「各部門總開支」；資訊15580最高', status: 'weak', asked: '2026-09-04' },
-      { id: 'rv16', point: '頁面設定＋凍結（E10）🆕已教', symptom: '9/4 已教：口訣「版面配置三樣嘢，凍結要去檢視度」——橫向/列印標題$1:$1/1頁寬+高度自動｜檢視→凍結首列', fix: '實做驗證：Ctrl+P預覽橫向1頁；捲動時第1列唔郁；陷阱=高度要自動、揀「凍結首列」唔好揀第一項', status: 'weak', asked: '2026-09-04' }
+      { id: 'rv6', point: 'Excel 基礎四式（E1-E5✅）', symptom: 'E1-E5自評全✅＋9/3晚迷你卷4/4全對', fix: '再1次全對升綠；小執漏：公式隔籬要打標籤', status: 'almost' },
+      { id: 'rv12', point: 'IF 公式（E6）✨第1次全對', symptom: '9/4晚讀檔驗證：F2:F14十三格公式完美（引號逗號相對參照全啱）——一日內由唔識到全對', fix: '再1次唔同場景全對（唔睇步驟）升綠；Zoe自認要睇步驟→每卷繼續循環', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv13', point: 'COUNTIF／SUMIF（E7+E9）✨第1次全對', symptom: '9/4晚讀檔驗證：COUNTIF＋四條SUMIF全部正確；執漏重犯：H1隔籬冇打標籤', fix: '再1次全對升綠；鐵律：每條統計公式左邊一格打返個名（行政筆數/平均金額…）', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv14', point: '多層排序（E8）✨結果全對＋新陷阱', symptom: '9/4晚讀檢：兩層排序完全正確✨但排序範圍吞埋統計區→MAX/MIN/SUM三公式搬位整傷（SUM變189應199）', fix: '新知識點：①數據表同統計區之間留空行②排序後望一眼統計區數字有冇變', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv15', point: '簇狀直條圖（E9）⚠️90%', symptom: '9/4晚讀檢：簇狀✓數據引用✓SUMIF表✓——標題只打「各部門」漏「總開支」三隻字', fix: '打標題打齊六個字先好點出去；重做一次全對升綠', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv16', point: '頁面設定＋凍結（E10）🔴主攻', symptom: '9/4晚讀檢4做1：列印標題列✓｜橫向✗未設｜1頁寬✗未設｜凍結✗鎖咗首欄B1（應A2首列）', fix: '版面配置→方向橫向＋調整成1頁寬（高度自動）；凍結：先取消凍結→再揀「凍結首列」呢個名；驗證=上下捲第1列唔郁', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv17', point: '統計公式標籤（頑疾觀察）', symptom: '連續兩次批改都漏：H1/B9隔籬冇打標籤——考試改卷見唔個名可能當漏做', fix: '每打一條統計公式，即刻喺左邊一格打返個名（合計/最高/行政筆數）', status: 'weak', asked: '2026-09-04' }
     ]
   };
   (function seedReview() {
@@ -4169,8 +4170,8 @@
 
   // ===== 📂 練習檔案進度（v2.38：批改後自動同步）=====
   const PRACTICE_SEED = {
-    version: '2026-09-04-v1',
-    summary: '已完成 6 份｜29 題驗證 21 題全對｜知識點 6/25 綠',
+    version: '2026-09-04-v2',
+    summary: '已完成 7 份｜34 題驗證 26 題全對｜E6-E10一日攻破3題✨',
     files: [
       { name: '8/28 Word 格式暖身', status: 'done', score: '3/4（粗體其後已修正）' },
       { name: '8/28 Word 弱點診斷', status: 'done', score: '8/10' },
@@ -4178,9 +4179,10 @@
       { name: '8/30 Word 頁首頁尾取代', status: 'done', score: '3/5' },
       { name: '8/31 Word 複習卷', status: 'done', score: '4/5（表格🎉取代🎉升綠）' },
       { name: '9/3 Excel 迷你二連勝', status: 'done', score: '4/4 🎉Excel首勝' },
-      { name: '9/4 Word 頁首頁尾攻堅卷', status: 'todo', score: '今日主攻：頁尾三步鐵律＋首頁不同' },
-      { name: '9/4 Excel 衝綠卷', status: 'todo', score: '4項衝綠＋AVERAGE新朋友' },
-      { name: 'Excel 弱點診斷 E1-E10', status: 'todo', score: 'W1 週日收官前目標' }
+      { name: '8/28 Excel 弱點診斷 E1-E10', status: 'done', score: 'E6-E10：3全對✨＋1差一步＋1三缺（9/4批改）' },
+      { name: '9/4 Word 頁首頁尾攻堅卷', status: 'todo', score: '主攻：頁尾三步鐵律＋首頁不同' },
+      { name: '9/4 Excel 衝綠卷', status: 'todo', score: '基礎4項衝綠＋AVERAGE＋E10頁面設定主攻' },
+      { name: '9/5+ 還原制練習卷', status: 'todo', score: '🆕題目版＋答案版還原100%目標（擬真PSII考法）' }
     ]
   };
   (function seedPractice() {
@@ -4200,14 +4202,15 @@
 
   // ===== 🎯 弱點訓練台（v2.39：由弱點數據驅動，連住實際練習檔）=====
   const TRAIN_SEED = {
-    version: '2026-09-04-v1',
-    summary: '今日 5 項（2 未攻破優先＋3 衝綠）· 每項連住練習檔案',
+    version: '2026-09-04-v2',
+    summary: '今日 6 項（E10主攻＋頑疾＋衝綠）· 每項連住實際練習',
     items: [
+      { lvl: 'red', point: 'E10 頁面設定（9/4批改4做1）', howto: '版面配置→方向橫向；調整成1頁寬（高度自動）；列印標題✓已做', file: '8/28診斷檔修正功課＋9/4衝綠卷' },
+      { lvl: 'red', point: '凍結首列（鎖錯咗欄）', howto: '檢視→凍結窗格→先【取消凍結窗格】→再揀【凍結首列】呢個名；驗證=上下捲第1列唔郁', file: '8/28診斷檔修正功課' },
       { lvl: 'red', point: '頁尾頁碼三步鐵律', howto: '插一次＞Ctrl+E置中＞望一眼（一組啱，兩組刪一組）', file: '9/4 Word頁首頁尾攻堅卷 D1' },
-      { lvl: 'red', point: '首頁不同', howto: '雙擊頁首＞【設計】＞【選項】＞剔「首頁不同」→第1頁頁首清空', file: '9/4 Word頁首頁尾攻堅卷 D3' },
-      { lvl: 'yellow', point: 'Excel 4項衝綠＋AVERAGE', howto: '標題列/貨幣/SUM/MAX今日再全對＝4盞一齊綠；新朋友=AVERAGE(B2:B7)；記得打標籤', file: '9/4 Excel衝綠卷 F1-F5' },
-      { lvl: 'yellow', point: '移除空行 ^p^p→^p', howto: 'Ctrl+H：搵^p^p→換^p→全部取代到0（取代為必須打^p）', file: '聽日卷實戰題（今日教學文先睇）' },
-      { lvl: 'yellow', point: '多層編號＋標題字體MingLiU＋註腳插圖', howto: '編號掣＋Tab降級／字體跟指定名打MingLiU／等下批卷驗證', file: '下批卷（每日10:00）' }
+      { lvl: 'yellow', point: '統計公式標籤（兩連犯）', howto: '每打一條統計公式，左邊一格即刻打返個名（合計/最高/行政筆數）', file: '9/4衝綠卷F區＋以後每卷' },
+      { lvl: 'yellow', point: '圖表標題打齊字', howto: '「各部門總開支」六隻字打齊先好點出去——E9就係漏尾三隻字', file: '8/28診斷檔修正功課' },
+      { lvl: 'yellow', point: '排序範圍陷阱（新知識點）', howto: '數據同統計區隔一行空行；排序後望一眼統計區數字有冇變', file: '之後每份Excel卷都會出' }
     ],
     mastered: ['縮排行距', '段落對齊', '項目符號', '表格', '尋找與取代', '另存PDF']
   };
