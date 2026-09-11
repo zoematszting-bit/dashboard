@@ -485,6 +485,29 @@
   .lib-cat:first-child { margin-top: 0; }
   .food-tag { display: inline-block; font-size: 11px; padding: 5px 11px; border-radius: 6px; background: var(--surface-2); margin: 0 4px 6px 0; color: var(--text); }
 
+  /* ===== Diet check chips ===== */
+  .dc-chip { display: inline-block; font-size: 11px; padding: 6px 12px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); margin: 0 4px 6px 0; color: var(--text); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s ease; }
+  .dc-chip.on { border-color: var(--pale-red-text); color: var(--pale-red-text); background: var(--pale-red-bg); font-weight: 600; }
+  .dc-chip:active { transform: scale(0.95); }
+
+  /* ===== 弱點訓練台卡片（v2.43 豎列設計）===== */
+  .train-item { border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 10px; padding: 11px 12px; margin-top: 10px; background: var(--surface); }
+  .train-item.red { border-left-color: var(--pale-red-text); }
+  .train-item.yellow { border-left-color: var(--pale-yellow-text); }
+  .train-item.green { border-left-color: var(--pale-green-text); }
+  .train-item.gray { border-left-color: var(--text-muted); }
+  .train-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .train-title { font-size: 13px; font-weight: 600; }
+  .train-how { font-size: 11.5px; line-height: 1.65; color: var(--text); opacity: .88; margin-top: 7px; }
+  .train-file { font-size: 11px; color: var(--text-muted); margin-top: 7px; padding-top: 7px; border-top: 1px dashed var(--border); }
+  .vrow { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px; margin-top: 6px; font-size: 12px; }
+  .train-updated { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
+  .dc-day { flex: 1; text-align: center; padding: 8px 2px 6px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .dc-day.cur { border-color: var(--text); }
+  .dc-day-emoji { font-size: 15px; line-height: 1.2; }
+  .dc-day-num { font-size: 11px; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .dc-day-wd { font-size: 9px; color: var(--text-muted); }
+
   /* ===== Period timeline ===== */
   .timeline { position: relative; margin: 12px 8px 28px; }
   .timeline-line { height: 6px; background: var(--surface-2); border-radius: 3px; position: relative; }
@@ -495,6 +518,13 @@
 
   /* ===== Schedule grid ===== */
   .sched-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .sched-select {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 2px; font-size: 9px; min-height: 42px; text-align: center; text-align-last: center;
+    color: var(--text); font-family: 'Noto Sans HK', sans-serif;
+    -webkit-appearance: none; appearance: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .sched-select.sel-on { background: var(--pale-green-bg); border-color: var(--pale-green-text); color: var(--pale-green-text); font-weight: 500; }
   .sched-day { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; text-align: center; }
   .sched-box {
     background: var(--surface-2); border-radius: 6px; padding: 8px 2px; font-size: 9px; min-height: 42px;
@@ -640,7 +670,7 @@
 
     <!-- Four pillars -->
     <section>
-      <p class="section-title">六大板塊</p>
+      <p class="section-title">七大板塊</p>
       <div class="bento">
 
         <a class="card-link" href="#" onclick="switchTab('study', document.querySelector('.nav-btn[data-tab=study]'));return false;">
@@ -726,6 +756,20 @@
               <div class="progress-fill" style="width:50%;"></div>
             </div>
             <div class="progress-num" style="margin-top:6px;">補習社 · 行程</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('agent', document.querySelector('.nav-btn[data-tab=agent]'));return false;" style="grid-column:1/-1;">
+          <div class="card">
+            <div class="card-label">AI課</div>
+            <div class="card-value-sm serif">Agent 產品導師</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-yellow" id="agCardStage">階段 1/10 · 第1課</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" id="agCardBar" style="width:10%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">商業化AI產品 0→1 · 作品集打造</div>
           </div>
         </a>
 
@@ -852,6 +896,31 @@
             <button class="typing-btn" onclick="goDietToday()">今日</button>
           </div>
           <div style="font-size:10px; color:var(--text-muted); margin-top:8px;" id="dietDateLabel">檢視緊：今日</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">飲食監測</p>
+        <div class="card card-full">
+          <div class="card-label">今日飲食達標？（記入「檢視緊」嗰日）</div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button class="day-btn" onclick="setDietCheck('pass')" id="dcBtnPass">✅ 達標</button>
+            <button class="day-btn" onclick="setDietCheck('fail')" id="dcBtnFail">❌ 未達標</button>
+          </div>
+          <div id="dcFailBox" style="display:none; margin-top:12px; border-top:1px solid var(--border); padding-top:12px;">
+            <div class="field-label-mini">犯咗啲乜？（可多選）</div>
+            <div id="dcFailChips" style="margin-top:8px;"></div>
+            <div style="display:flex; gap:8px; margin-top:6px;">
+              <input class="input-mini input-text" id="dcCustomInput" placeholder="自訂項目，例如：下午茶薯片" style="flex:1;">
+              <button class="quick-btn" onclick="addDcCustom()">＋加入</button>
+            </div>
+          </div>
+          <div style="margin-top:12px; font-size:12px;" id="dcStatusLine">未記錄</div>
+        </div>
+        <div class="card card-full" style="margin-top:10px;">
+          <div class="card-label">最近 7 日達標情況（撳日期可翻查）</div>
+          <div id="dcWeekStrip" style="display:flex; gap:6px; margin-top:8px;"></div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:10px;" id="dcMonthRate">本月達標率：未有記錄</div>
         </div>
       </section>
 
@@ -1089,10 +1158,14 @@
       </section>
 
       <section>
-        <p class="section-title">訓練排程（點選切換）</p>
+        <p class="section-title">訓練排程 · 每週計劃</p>
         <div class="card card-full">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+            <span id="schedWeekLabel" style="font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--text-muted);"></span>
+            <button class="quick-btn" id="schedCopyBtn" onclick="copyPrevSched()" style="display:none;">📋 複製上週</button>
+          </div>
           <div class="sched-grid" id="schedGrid"></div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">點格仔循環切換：臀→背→胸→肩→腿→核心→手臂→瑜伽→有氧→休息→空</div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">撥格仔 → 滾輪拉動揀部位 · 每週自動重置 · 上週一模一樣就撳「複製上週」</div>
         </div>
       </section>
 
@@ -1357,8 +1430,9 @@
               <div class="field-label-mini">日期（補記用）</div>
               <input type="date" class="input-mini input-text" id="ycDate">
             </div>
-            <div class="field-full">
-              <button class="typing-btn" style="width:100%;" onclick="addYogaClass()">＋ 記錄瑜伽課</button>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addYogaClass()" id="ycBtn">＋ 記錄瑜伽課</button>
+              <button class="quick-btn" id="ycCancel" onclick="cancelEdit('yc')" style="display:none;">取消</button>
             </div>
           </div>
           <div id="yogaClassLog" style="margin-top:14px;"></div>
@@ -1573,15 +1647,17 @@
     </section>
 
     <section>
-      <p class="section-title">📚 Office 知識點清單（輔助測驗）</p>
-      <div class="card card-full" id="todayLessonCard"></div>
-      <div class="card card-full" style="margin-top:10px;">
-        <div class="progress-row">
-          <span class="progress-label">輔助測驗進度（該課測驗≥80%＝✅；主線係每日實作練習檔）</span>
-          <span class="tag tag-blue" id="officeProgTag">0 / 44</span>
+      <p class="section-title">🎯 弱點訓練台（今日要練）</p>
+      <div class="card card-full">
+        <div class="card-label" id="trainSummary">—</div>
+        <div id="trainList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">
+          📂 檔案喺 Desktop/ZCode備考練習/（iCloud同步·弟弟Windows機做）· 做完撳勾，ZCode讀檔批改後更新呢區
         </div>
-        <div class="progress-track"><div class="progress-fill" id="officeProgFill" style="width:0%;"></div></div>
-        <div id="officeList" style="margin-top:12px; max-height:280px; overflow-y:auto;"></div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">🟢 已吃碎嚼爛（連續2次全對）</div>
+        <div id="trainMastered" style="margin-top:8px;"></div>
       </div>
     </section>
 
@@ -1630,6 +1706,28 @@
     </section>
 
     <section>
+      <p class="section-title">🔄 弱點複習室（出題重點）</p>
+      <div class="card card-full">
+        <div class="card-label" id="reviewSubtitle">Zoe 問過／批改發現嘅唔識位</div>
+        <div id="reviewList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">
+          出題會著重呢啲位，換場景反覆操——連續全對先變綠；每日練習就係為咗食碎嚼爛佢
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📂 練習檔案進度</p>
+      <div class="card card-full">
+        <div class="card-label" id="practiceSummary">—</div>
+        <div id="practiceList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">
+          勾=該檔案內該題已驗證做對（ZCode讀檔批改）· 每次批改後自動更新
+        </div>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">🗓️ 學習計劃 · 月→週→日</p>
       <div class="card card-full">
         <div class="card-label" id="planMonthTitle">本月目標</div>
@@ -1646,6 +1744,31 @@
         <div class="card-label">✅ 今日任務（撳一下打勾）</div>
         <div id="planToday" style="margin-top:8px;"></div>
         <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">📂 Office 練習檔：Desktop/ZCode備考練習/Word＋Excel（弟弟 Windows 機做，iCloud 同步）</div>
+      </div>
+
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">📈 我的實際訓練（今日）</div>
+        <div id="realToday" style="margin-top:8px;"></div>
+        <div class="field-label-mini" style="margin-top:12px;">⌨️ 今日打字</div>
+        <div id="realTyping" style="font-size:12px; color:var(--text);"></div>
+      </div>
+
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">📊 掌握進度條</div>
+        <div style="margin-top:10px;">
+          <div class="progress-row"><span class="progress-label">📘 Word</span><span class="tag tag-blue" id="barWordTag">—</span></div>
+          <div class="progress-track"><div class="progress-fill" id="barWord" style="width:0%; background:var(--pale-blue-text);"></div></div>
+          <div class="progress-row" style="margin-top:10px;"><span class="progress-label">📗 Excel</span><span class="tag tag-green" id="barExcelTag">—</span></div>
+          <div class="progress-track"><div class="progress-fill" id="barExcel" style="width:0%;"></div></div>
+        </div>
+        <div class="field-label-mini" style="margin-top:14px;">🧭 未學／學習中</div>
+        <div id="unlearnedList" style="margin-top:6px;"></div>
+      </div>
+
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">🗓️ 最近訓練日誌</div>
+        <div id="trainLog" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">Zoe 做完／問完 → ZCode 教學＋批改＋即時記錄呢區</div>
       </div>
     </section>
 
@@ -2157,12 +2280,106 @@
   </div>
 </div>
 
+<!-- ============ AGENT COURSE TAB（v2.42）============ -->
+<div class="tab-view" id="tab-agent">
+  <div class="container">
+
+    <section>
+      <p class="section-title">🤖 AI Agent 產品導師課程</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">課程版本</span>
+          <span class="tag tag-blue" id="agVersion">v2.0</span>
+        </div>
+        <div class="progress-row" style="margin-top:8px;">
+          <span class="progress-label">當前進度</span>
+          <span class="tag tag-yellow" id="agStageTag">階段 1 / 10</span>
+        </div>
+        <div class="progress-track" style="margin-top:10px;">
+          <div class="progress-fill" id="agStageBar" style="width:10%;"></div>
+        </div>
+        <div class="info-block" style="margin-top:12px;">
+          <p><strong>📘 當前課堂：</strong><span id="agLesson">—</span></p>
+          <p><strong>✍️ 作業：</strong><span id="agHomework">—</span></p>
+          <p style="margin-bottom:0;"><strong>📋 狀態：</strong><span id="agHwStatus">—</span></p>
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">
+          📖 課堂全文：<a href="https://zoematszting-bit.github.io/agent-course/" target="_blank" style="color:var(--pale-blue-text); font-weight:500;">Agent 課程網站</a>（GitHub Pages）
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
+          📂 課程檔案：Zoe工作输出/Agent課程/ · 指令 v2.1 已定版
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">⏱️ 每日學習打卡</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">🔥 連續學習</span>
+          <span class="tag tag-red" id="agStreakTag">0 天</span>
+        </div>
+        <div class="progress-row" style="margin-top:8px;">
+          <span class="progress-label">📚 累積學習</span>
+          <span class="tag tag-blue" id="agTotalTag">0 分鐘 · 0 次</span>
+        </div>
+        <div class="field-label-mini" style="margin-top:12px;">日期（預設今日，可補記）</div>
+        <input type="date" class="input-mini" id="agDate" style="margin-top:4px;">
+        <div class="field-grid" style="margin-top:8px;">
+          <div>
+            <div class="field-label-mini">學習分鐘</div>
+            <input type="number" class="input-mini" id="agMin" placeholder="30">
+          </div>
+          <div>
+            <div class="field-label-mini">今日環節</div>
+            <select class="input-mini" id="agType">
+              <option value="📘 睇課文">📘 睇課文</option>
+              <option value="✍️ 做作業">✍️ 做作業</option>
+              <option value="📊 市場調研">📊 市場調研</option>
+              <option value="🔄 複習鞏固">🔄 複習鞏固</option>
+            </select>
+          </div>
+          <div class="field-full" style="display:flex; gap:8px;">
+            <button class="typing-btn" style="flex:1;" onclick="addAgentLog()">✅ 打卡</button>
+          </div>
+        </div>
+        <div id="agLogList" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">💬 學習成果留言</p>
+      <div class="card card-full">
+        <textarea class="input-mini input-text" id="agNoteText" rows="4" placeholder="記低你嘅學習成果、體會、領悟…&#10;例如：今日學識五層方案階梯，明白考試系統出題用第1層Prompt就夠" style="width:100%; resize:vertical; font-size:13px; line-height:1.6;"></textarea>
+        <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="addAgentNote()">💾 記錄成果</button>
+        <div id="agNoteList" style="margin-top:12px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">記錄存喺手機（隨「匯出同步碼」備份）· 寫得好的心得 ZCode 會幫你整理入作品集</div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">🗺️ 十大階段</p>
+      <div class="card card-full">
+        <div id="agStages"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📖 課程日誌（ZCode 更新）</p>
+      <div class="card card-full">
+        <div id="agCourseLog"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
 <div class="spacer"></div>
 
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.28 · 2026.08.28</span>
+  <span style="font-size:10px; opacity:0.5;">v2.47 · 2026.09.06</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2174,6 +2391,7 @@
   <button class="nav-btn" data-tab="web" onclick="switchTab('web', this)">網站</button>
   <button class="nav-btn" data-tab="finance" onclick="switchTab('finance', this)">財庫</button>
   <button class="nav-btn" data-tab="life" onclick="switchTab('life', this)">安排</button>
+  <button class="nav-btn" data-tab="agent" onclick="switchTab('agent', this)">Agent</button>
 </nav>
 
 <script>
@@ -2615,7 +2833,8 @@
     document.getElementById('ovKcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100)+'%';
     document.getElementById('ovProteinBar').style.width = Math.min(tot.p/t.protein*100,100)+'%';
     document.getElementById('ovWaterBar').style.width = Math.min(tw/WATER_GOAL*100,100)+'%';
-    document.getElementById('ovDayLabel').textContent = dayType==='training' ? '今日：訓練日' : '今日：休息日';
+    const dcs = dcheckOf(dateStr).status;
+    document.getElementById('ovDayLabel').textContent = (dayType==='training' ? '今日：訓練日' : '今日：休息日') + (dcs === 'pass' ? ' · 飲食✅' : dcs === 'fail' ? ' · 飲食❌' : '');
   }
 
   // ----- 通用：編輯模式按鈕 / 取消 / 日期揀選 -----
@@ -2634,12 +2853,13 @@
       weight: ['weightInput'],
       ms: ['mWaist','mHip','mThigh','mArm'],
       pd: ['periodInput'],
-      yl: ['ylContent','ylTopic','ylMins']
+      yl: ['ylContent','ylTopic','ylMins'],
+      yc: ['ycMins','ycDate']
     };
     (resets[kind]||[]).forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     const btns = { meal:['mealBtn','mealCancel','＋ 記錄餐點'], wo:['woBtn','woCancel','＋ 記錄動作'],
       weight:['weightBtn','weightCancel','記錄'], ms:['msBtn','msCancel','＋ 記錄圍度'],
-      pd:['pdBtn','pdCancel','記錄'], yl:['ylBtn','ylCancel','＋ 記錄'] };
+      pd:['pdBtn','pdCancel','記錄'], yl:['ylBtn','ylCancel','＋ 記錄'], yc:['ycBtn','ycCancel','＋ 記錄瑜伽課'] };
     const conf = btns[kind];
     if (conf) {
       const b = document.getElementById(conf[0]); if (b) b.textContent = conf[2];
@@ -2654,11 +2874,98 @@
     cancelEdit('meal');
     meals = JSON.parse(localStorage.getItem('zoe_meals_' + viewDate) || '[]');
     water = parseInt(localStorage.getItem('zoe_water_' + viewDate) || '0');
-    renderMeals(); renderDiet(); renderWater();
+    renderMeals(); renderDiet(); renderWater(); renderDcheck(); renderDcheckWeek();
   }
   function goDietToday() {
     document.getElementById('dietDatePick').value = dateStr.replace(/\./g, '-');
     loadDietDate(dateStr.replace(/\./g, '-'));
+  }
+
+  // ----- Diet compliance（飲食監測達標勾選）-----
+  const DC_FAIL_OPTIONS = ['🍗 炸雞','🧋 奶茶','🍰 甜品','🍟 零食','🍞 精緻碳水','🍚 澱粉過量','🌙 夜食9點後','🧂 重口味','🍺 酒精'];
+  function dcheckOf(d) {
+    try { return JSON.parse(localStorage.getItem('zoe_dcheck_' + d) || 'null') || { status: '', fails: [] }; }
+    catch (e) { return { status: '', fails: [] }; }
+  }
+  function saveDcheck(d, dc) { localStorage.setItem('zoe_dcheck_' + d, JSON.stringify(dc)); }
+  function setDietCheck(status) {
+    const dc = dcheckOf(viewDate);
+    dc.status = (dc.status === status) ? '' : status;   // 再撳同一個掣＝取消記錄
+    if (dc.status === 'pass') dc.fails = [];
+    saveDcheck(viewDate, dc);
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function toggleDcFail(opt) {
+    const dc = dcheckOf(viewDate);
+    const i = dc.fails.indexOf(opt);
+    if (i === -1) dc.fails.push(opt); else dc.fails.splice(i, 1);
+    if (dc.fails.length > 0) dc.status = 'fail';   // 揀咗犯規項會自動標記未達標
+    saveDcheck(viewDate, dc);
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function addDcCustom() {
+    const inp = document.getElementById('dcCustomInput');
+    const v = inp.value.trim();
+    if (!v) return;
+    const dc = dcheckOf(viewDate);
+    if (dc.fails.indexOf(v) === -1) { dc.fails.push(v); dc.status = 'fail'; }
+    saveDcheck(viewDate, dc);
+    inp.value = '';
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function renderDcheck() {
+    const dc = dcheckOf(viewDate);
+    const bp = document.getElementById('dcBtnPass'), bf = document.getElementById('dcBtnFail');
+    if (bp) bp.classList.toggle('active', dc.status === 'pass');
+    if (bf) bf.classList.toggle('active', dc.status === 'fail');
+    const box = document.getElementById('dcFailBox');
+    if (box) box.style.display = dc.status === 'fail' ? 'block' : 'none';
+    const chipsEl = document.getElementById('dcFailChips');
+    if (chipsEl) {
+      const all = DC_FAIL_OPTIONS.concat(dc.fails.filter(f => DC_FAIL_OPTIONS.indexOf(f) === -1));
+      chipsEl.innerHTML = all.map(f => {
+        const esc = f.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        return '<span class="dc-chip' + (dc.fails.indexOf(f) > -1 ? ' on' : '') + '" onclick="toggleDcFail(\'' + esc + '\')">' + f + '</span>';
+      }).join('');
+    }
+    const sl = document.getElementById('dcStatusLine');
+    if (sl) {
+      if (!dc.status) sl.innerHTML = '<span style="color:var(--text-muted);">未記錄 · 撳上面揀今日達唔達標</span>';
+      else if (dc.status === 'pass') sl.innerHTML = '<span style="color:var(--pale-green-text);">✅ 今日達標，keep 住！</span>';
+      else sl.innerHTML = '<span style="color:var(--pale-red-text);">❌ 未達標：' + dc.fails.join('、') + '</span>';
+    }
+  }
+  function renderDcheckWeek() {
+    const strip = document.getElementById('dcWeekStrip');
+    if (!strip) return;
+    let html = '';
+    for (let i = 6; i >= 0; i--) {
+      const dt = new Date(today.getTime() - i * 86400000);
+      const key = dt.getFullYear() + '.' + String(dt.getMonth() + 1).padStart(2, '0') + '.' + String(dt.getDate()).padStart(2, '0');
+      const dc = dcheckOf(key);
+      const wd = ['日','一','二','三','四','五','六'][dt.getDay()];
+      const icon = dc.status === 'pass' ? '✅' : dc.status === 'fail' ? '❌' : '·';
+      html += '<div class="dc-day' + (key === viewDate ? ' cur' : '') + '" onclick="jumpDcDate(\'' + key + '\')">' +
+        '<div class="dc-day-emoji">' + icon + '</div><div class="dc-day-num">' + dt.getDate() + '</div><div class="dc-day-wd">' + wd + '</div></div>';
+    }
+    strip.innerHTML = html;
+    const ym = dateStr.slice(0, 7);
+    let pass = 0, fail = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.indexOf('zoe_dcheck_') === 0 && k.slice(11, 18) === ym) {
+        const s = dcheckOf(k.slice(11)).status;
+        if (s === 'pass') pass++; else if (s === 'fail') fail++;
+      }
+    }
+    const mr = document.getElementById('dcMonthRate');
+    if (mr) mr.textContent = (pass + fail) > 0
+      ? '本月達標：' + pass + ' 日 ✅ / ' + fail + ' 日 ❌（達標率 ' + Math.round(pass / (pass + fail) * 100) + '%）'
+      : '本月達標率：未有記錄';
+  }
+  function jumpDcDate(key) {
+    document.getElementById('dietDatePick').value = key.replace(/\./g, '-');
+    loadDietDate(key.replace(/\./g, '-'));
   }
 
   // ----- Weight -----
@@ -2924,20 +3231,51 @@
   }
 
   // ----- Schedule -----
+  // 訓練排程：按週儲存（每週自動重置）+ 滾輪揀選
+  function schedWeekKey(off) {
+    return 'zoe_schedule_' + isoWeekKey(new Date(today.getTime() - (off||0)*7*86400000));
+  }
+  function getSched(off) {
+    return JSON.parse(localStorage.getItem(schedWeekKey(off)) || '{}');
+  }
+  (function migrateSched() {
+    // 一次性：舊 zoe_schedule 遷移到本週 key
+    const old = localStorage.getItem('zoe_schedule');
+    if (old && !localStorage.getItem(schedWeekKey(0))) {
+      localStorage.setItem(schedWeekKey(0), old);
+    }
+  })();
   function renderSchedule() {
     const el = document.getElementById('schedGrid');
+    if (!el) return;
+    const cur = getSched(0);
+    const opts = SCHED_CYCLE.filter(x => x !== '').map(x =>
+      '<option value="'+x+'">'+x+'</option>').join('');
     el.innerHTML = DAY_NAMES.map((d,i)=>{
-      const key = 'd'+i;
-      const v = schedule[key]||'';
-      return '<div><div class="sched-day">'+d+'</div><div class="sched-box'+(v?' active':'')+'" onclick="toggleSched('+i+')">'+(v||'-')+'</div></div>';
+      const v = cur['d'+i]||'';
+      return '<div><div class="sched-day">'+d+'</div>'+
+        '<select class="sched-select'+(v?' sel-on':'')+'" onchange="setSched('+i+', this.value)">'+
+        '<option value=""'+(v?'':' selected')+'>–</option>'+
+        opts.replace('value="'+v+'"', 'value="'+v+'" selected')+
+        '</select></div>';
     }).join('');
+    const wl = document.getElementById('schedWeekLabel');
+    if (wl) wl.textContent = '本週 · ' + isoWeekKey(today);
+    const prev = getSched(1);
+    const cb = document.getElementById('schedCopyBtn');
+    if (cb) cb.style.display = Object.keys(prev).length > 0 ? 'inline-block' : 'none';
   }
-  function toggleSched(i) {
-    const key='d'+i;
-    const cur = schedule[key]||'';
-    const idx = SCHED_CYCLE.indexOf(cur);
-    schedule[key] = SCHED_CYCLE[(idx+1)%SCHED_CYCLE.length];
-    localStorage.setItem('zoe_schedule', JSON.stringify(schedule));
+  function setSched(i, val) {
+    const cur = getSched(0);
+    if (val) cur['d'+i] = val; else delete cur['d'+i];
+    localStorage.setItem(schedWeekKey(0), JSON.stringify(cur));
+    renderSchedule();
+  }
+  function copyPrevSched() {
+    const prev = getSched(1);
+    if (Object.keys(prev).length === 0) { alert('上週未有排程'); return; }
+    if (!confirm('複製上週排程到本週？')) return;
+    localStorage.setItem(schedWeekKey(0), JSON.stringify(prev));
     renderSchedule();
   }
 
@@ -3776,21 +4114,21 @@
 
   // ===== 🗓️ 學習計劃（月→週→日，v2.26）=====
   const PLAN_SEED = {
-    version: '2026-09-v1',
-    monthTitle: '9月目標 · 備考正規月（第1個月）',
+    version: '2026-09-v2',
+    monthTitle: '9月目標 · 備考正規月（第1個月）｜W1已收官：10/25綠',
     goals: [
-      '弱點地圖：診斷完成，25個知識點全部有狀態',
+      '弱點地圖：25個知識點全部有狀態（W1已達成✅）',
       '英打：以第1週基線每週+2~3 wpm，月底穩定≥35',
       '中打：穩定≥18（終極目標20）',
-      'Office：weak知識點≤8個（最少17個✅）',
+      'Office：weak知識點≤8個（最少17個✅）——現況10綠12黃紅3白',
       '習慣：打字打卡率≥85%，Office練習≥20日'
     ],
     weeks: [
-      { start: '2026-08-31', end: '2026-09-06', title: 'W1 診斷＋基線週', tasks: ['Word＋Excel弱點診斷＋回報自評', '打字基線：英/中各測3次報ZCode', '建立每晚習慣：練習→打卡→回報'] },
-      { start: '2026-09-07', end: '2026-09-13', title: 'W2 Word 格式基礎', tasks: ['字型格式／縮排行距／兩端對齊→✅', '項目符號／多層編號→✅', '打字每日：英15分＋中5分'] },
-      { start: '2026-09-14', end: '2026-09-20', title: 'W3 Word表格頁面＋Excel基礎', tasks: ['表格框線底色／版面設定／頁首頁尾頁碼→✅', '註腳／尋找取代→✅', 'Excel格式／SUM／AVERAGE→✅'] },
-      { start: '2026-09-21', end: '2026-09-27', title: 'W4 Excel函數＋圖表', tasks: ['IF／COUNTIF／SUMIF／MAX／MIN→✅', '排序／篩選／凍結／列印設定→✅', '簇狀直條圖→✅'] },
-      { start: '2026-09-28', end: '2026-09-30', title: 'W5 月結＋混合模擬', tasks: ['30分鐘混合模擬卷（Word＋Excel合卷）', '月結review＋10月計劃上dashboard'] }
+      { start: '2026-08-31', end: '2026-09-06', title: 'W1 診斷＋基線週 ✅收官', tasks: ['✅ Word＋Excel診斷完成', '✅ 建立每晚練習習慣（8份檔案大爆發）', '✅ 10/25知識點升綠', '⬜ 打字基線（順延W2必報）'] },
+      { start: '2026-09-07', end: '2026-09-13', title: 'W2 斷尾＋範圍紀律週', tasks: ['頁尾鐵律斷尾：連續2次置中全對升綠', '公式範圍紀律：SUM/MAX/MIN/AVERAGE啱啱好連續2次', '多層排序＋自動篩選（新題型）→掌握', 'IF/COUNTIF/AVERAGE/圖表/凍結/列印→升綠', '新題型：文繞圖＋合併列印＋註腳首測', '打字：每日打卡＋報基線（英/中各3次）'] },
+      { start: '2026-09-14', end: '2026-09-20', title: 'W3 鞏固＋模擬（一）', tasks: ['每日還原卷：還原度≥90%', '首份30分鐘混合模擬（Word15+Excel15計時）', '弱點清零衝刺：weak≤5'] },
+      { start: '2026-09-21', end: '2026-09-27', title: 'W4 模擬（二）＋穩定期', tasks: ['混合模擬每週2份，錯誤≤2處', '全部25知識點綠燈目標', '打字衝刺：英≥38'] },
+      { start: '2026-09-28', end: '2026-09-30', title: 'W5 月結＋10月計劃', tasks: ['9月月結review', '10月計劃上dashboard', '月末模擬：連續2份90%+'] }
     ],
     daily: [
       '💻 Office實作檔（15分Word＋15分Excel，計時）',
@@ -3822,8 +4160,17 @@
     const w = currentPlanWeek();
     document.getElementById('planWeekTitle').textContent = w.title;
     document.getElementById('planWeekRange').textContent = w.start.slice(5).replace('-', '/') + ' - ' + w.end.slice(5).replace('-', '/');
-    document.getElementById('planWeekTasks').innerHTML = w.tasks.map(t =>
-      '<div class="log-row"><span style="font-size:12px;">▸ ' + t + '</span></div>').join('');
+    const wst = JSON.parse(localStorage.getItem('zoe_weektask_' + w.start + '_' + w.end) || '{}');
+    document.getElementById('planWeekTasks').innerHTML = w.tasks.map((t, i) =>
+      '<div class="log-row" onclick="toggleWeekTask(' + i + ')" style="cursor:pointer;"><span style="font-size:12px;' + (wst[i] ? ' text-decoration:line-through; color:var(--text-muted);' : '') + '">' + (wst[i] ? '✅' : '⬜') + ' ' + t + '</span></div>').join('');
+  }
+  function toggleWeekTask(i) {
+    const w = currentPlanWeek();
+    const k = 'zoe_weektask_' + w.start + '_' + w.end;
+    const st = JSON.parse(localStorage.getItem(k) || '{}');
+    st[i] = !st[i];
+    localStorage.setItem(k, JSON.stringify(st));
+    renderPlan();
   }
   function togglePlanTask(i) {
     const k = 'zoe_plan_check_' + dateStr;
@@ -3856,12 +4203,27 @@
     if (!mins || mins <= 0) { alert('請輸入時長（分鐘）'); return; }
     const dv = document.getElementById('ycDate').value;
     const date = dv ? dv.replace(/-/g, '.') : dateStr;
-    workouts.push({ date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' });
+    if (editState.yc !== undefined) {
+      if (!confirm('確認修改呢堂瑜伽課？')) return;
+      workouts[editState.yc] = { date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' };
+    } else {
+      workouts.push({ date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' });
+    }
+    const wasEdit = editState.yc !== undefined;
     localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
-    document.getElementById('ycMins').value = '';
-    document.getElementById('ycDate').value = '';
+    cancelEdit('yc');
     afterWoChange(); renderYogaTypeStats(); renderYoga1000();
-    alert('已記錄 ' + type + ' ' + mins + ' 分鐘（' + date + '）✅\n同步至：實踐時數 / 1000小時計劃 / 肌群分佈 / 週回顧');
+    alert((wasEdit ? '✅ 已更新 ' : '✅ 已記錄 ') + type + ' ' + mins + ' 分鐘（' + date + '）\n同步至：實踐時數 / 1000小時計劃 / 肌群分佈 / 週回顧');
+  }
+  function editYogaClass(i) {
+    const w = workouts[i];
+    document.getElementById('ycType').value = YOGA_TYPES.indexOf(w.exercise) >= 0 ? w.exercise : '其他瑜伽';
+    document.getElementById('ycMins').value = parseInt(String(w.reps).replace(/[^0-9]/g, '')) || '';
+    document.getElementById('ycDate').value = (w.date || dateStr).replace(/\./g, '-');
+    editState.yc = i;
+    const b = document.getElementById('ycBtn'); if (b) b.textContent = '💾 更新瑜伽課';
+    const cb = document.getElementById('ycCancel'); if (cb) cb.style.display = 'inline-block';
+    document.getElementById('ycType').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
   function renderYogaTypeStats() {
     const el = document.getElementById('yogaTypeStats');
@@ -3893,9 +4255,9 @@
         logEl.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:6px 0;">未有記錄</div>';
       } else {
         logEl.innerHTML = yAll.slice(-8).reverse().map(x =>
-          '<div class="log-row" onclick="editWorkout('+x.i+')" style="cursor:pointer;">'+
+          '<div class="log-row" onclick="editYogaClass('+x.i+')" style="cursor:pointer;">'+
           '<span class="log-date">'+x.w.date+' · '+yogaTypeOf(x.w.exercise)+'</span>'+
-          '<span><span class="log-value">'+(parseInt(String(x.w.reps).replace(/[^0-9]/g,''))||0)+' min</span> '+
+          '<span><span class="log-value">'+(parseInt(String(x.w.reps).replace(/[^0-9]/g,''))||0)+' min · 撳我編輯</span> '+
           '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div>'
         ).join('');
       }
@@ -3915,12 +4277,308 @@
       : '已達成 1000 小時 🎉 傳奇達成';
   }
 
+  // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
+  const REVIEW_SEED = {
+    version: '2026-09-11-v5',
+    subtitle: 'Zoe 弱點地圖（9/11）｜日期排序變奏已補教·E10頁面設定仍主攻',
+    items: [
+      { id: 'rv1', point: '多層次編號（一級＋二級）', symptom: '9/3 第1次全對✨（3+2結構、Tab降級正確）——再1次全對升綠', fix: '子項刪走「包括」等贅字；繼續：編號掣＋Tab降級', status: 'almost', asked: '2026-09-02' },
+      { id: 'rv2', point: '項目符號（•掣）', symptom: '連續2次全對（8/29卷＋診斷5/5）', fix: '已食碎嚼爛✅ 撳完望有•嘅習慣keep住', status: 'mastered' },
+      { id: 'rv3', point: '表格（框線／底色／置中）', symptom: '連續2次全對（診斷＋8/31複習卷：Table Grid＋粗體＋淺綠底＋置中）', fix: '已食碎嚼爛✅（9/3晚升mastered🎉）', status: 'mastered' },
+      { id: 'rv4', point: '紙張A4（Letter陷阱）', symptom: '連續兩次Letter後，9/3診斷第1次全對✨（A4＋邊界齊）', fix: '再1次全對升綠；開檔第一件事望【大小】掣', status: 'almost' },
+      { id: 'rv5', point: '標題格式（粗體✅字體✨）', symptom: '8/31複習卷字體改正✨（細明體返嚟啦）；宋体問題只出現過一次', fix: '再1次全對（連埋16pt/粗體/置中）就升返綠', status: 'almost' },
+      { id: 'rv7', point: '頁尾頁碼（今日主攻🔴）', symptom: '連續兩份文件同一款錯：真欄位✅但【未置中＋插咗兩次】——頑疾確認', fix: '插頁碼之後兩個動作：①Ctrl+E置中 ②望一眼——見到兩組「第X頁」即刻刪一組；首頁不同仍未做過', status: 'weak' },
+      { id: 'rv8', point: '頁首靠右', symptom: '9/3晚第1次全對✨（靠右＋10pt＋文字齊）', fix: '再1次全對升綠；雙擊頁首＞Ctrl+R', status: 'almost' },
+      { id: 'rv10', point: '尋找與取代', symptom: '連續2次全對（8/30卷＋8/31複習卷，0殘留）', fix: '已食碎嚼爛✅（9/3晚升mastered🎉）', status: 'mastered' },
+      { id: 'rv11', point: '另存PDF', symptom: '連續2次成功（診斷＋8/30卷）', fix: '已食碎嚼爛✅ 記住：揀咗PDF類型就唔使自己打.pdf（8/30打咗.pdf.pdf已修正）', status: 'mastered' },
+      { id: 'rv9', point: '註腳／插圖', symptom: '9/3診斷兩樣第1次全對✨（K2註腳＋5cm圖置中）', fix: '再1次全對升綠——已經好近', status: 'almost' },
+      { id: 'rv6', point: 'Excel 基礎四式（E1-E5✅）', symptom: 'E1-E5自評全✅＋9/3晚迷你卷4/4全對', fix: '再1次全對升綠；小執漏：公式隔籬要打標籤', status: 'almost' },
+      { id: 'rv12', point: 'IF 公式（E6）✨第1次全對', symptom: '9/4晚讀檔驗證：F2:F14十三格公式完美（引號逗號相對參照全啱）——一日內由唔識到全對', fix: '再1次唔同場景全對（唔睇步驟）升綠；Zoe自認要睇步驟→每卷繼續循環', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv13', point: 'COUNTIF／SUMIF（E7+E9）✨第1次全對', symptom: '9/4晚讀檔驗證：COUNTIF＋四條SUMIF全部正確；執漏重犯：H1隔籬冇打標籤', fix: '再1次全對升綠；鐵律：每條統計公式左邊一格打返個名（行政筆數/平均金額…）', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv14', point: '多層排序（E8✨全對＋日期變奏已教）', symptom: '9/4兩層排序全對✨；9/11 Zoe卡8/30卷X4日期排序→已補教：文字日期冇「最舊到最新」選項→揀A到Z（同一效果）＋排完冇變＝日期全唔同屬正常', fix: '排序陷阱keep住：①統計區同數據隔空行②排序後望一眼統計區；驗證法：Z到A倒轉→A到Z復原', status: 'almost', asked: '2026-09-11' },
+      { id: 'rv15', point: '簇狀直條圖（E9）⚠️90%', symptom: '9/4晚讀檢：簇狀✓數據引用✓SUMIF表✓——標題只打「各部門」漏「總開支」三隻字', fix: '打標題打齊六個字先好點出去；重做一次全對升綠', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv16', point: '頁面設定＋凍結（E10）🔴主攻', symptom: '9/4晚讀檢4做1：列印標題列✓｜橫向✗未設｜1頁寬✗未設｜凍結✗鎖咗首欄B1（應A2首列）', fix: '版面配置→方向橫向＋調整成1頁寬（高度自動）；凍結：先取消凍結→再揀「凍結首列」呢個名；驗證=上下捲第1列唔郁', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv17', point: '統計公式標籤（頑疾觀察）', symptom: '連續兩次批改都漏：H1/B9隔籬冇打標籤——考試改卷見唔個名可能當漏做', fix: '每打一條統計公式，即刻喺左邊一格打返個名（合計/最高/行政筆數）', status: 'weak', asked: '2026-09-04' }
+    ]
+  };
+  (function seedReview() {
+    if (localStorage.getItem('zoe_review_seeded') !== REVIEW_SEED.version) {
+      localStorage.setItem('zoe_review_data', JSON.stringify(REVIEW_SEED));
+      localStorage.setItem('zoe_review_seeded', REVIEW_SEED.version);
+    }
+  })();
+  let reviewData = JSON.parse(localStorage.getItem('zoe_review_data') || 'null') || REVIEW_SEED;
+  function renderReview() {
+    document.getElementById('reviewSubtitle').textContent = reviewData.subtitle;
+    const tag = s => s === 'weak' ? '<span class="tag tag-red">未攻破</span>'
+      : s === 'fixed' ? '<span class="tag tag-green">已改正</span>'
+      : s === 'mastered' ? '<span class="tag tag-green">已掌握</span>'
+      : s === 'almost' ? '<span class="tag tag-yellow">差一步·再1次升綠</span>'
+      : '<span class="tag tag-gray">未開始</span>';
+    const bar = s => s === 'weak' ? 'red' : s === 'almost' ? 'yellow'
+      : (s === 'mastered' || s === 'fixed') ? 'green' : 'gray';
+    document.getElementById('reviewList').innerHTML = reviewData.items.map(it =>
+      '<div class="train-item ' + bar(it.status) + '">' +
+      '<div style="font-size:13px; font-weight:600; line-height:1.5;">' + it.point + '</div>' +
+      '<div style="margin-top:6px;">' + tag(it.status) + '</div>' +
+      '<div style="font-size:11px; color:var(--text-muted); margin-top:7px;">🩺 病徵' +
+      vlines(it.symptom).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      '<div style="font-size:11.5px; margin-top:7px; padding-top:7px; border-top:1px dashed var(--border);">💊 修正' +
+      vlines(it.fix).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      (it.asked ? '<div style="font-size:11px; color:var(--text-muted); margin-top:5px;">❓ 問過：' + it.asked + '</div>' : '') +
+      '</div>').join('');
+  }
+
+  // ===== 📂 練習檔案進度（v2.38：批改後自動同步）=====
+  const PRACTICE_SEED = {
+    version: '2026-09-04-v2',
+    summary: '已完成 7 份｜34 題驗證 26 題全對｜E6-E10一日攻破3題✨',
+    files: [
+      { name: '8/28 Word 格式暖身', status: 'done', score: '3/4（粗體其後已修正）' },
+      { name: '8/28 Word 弱點診斷', status: 'done', score: '8/10' },
+      { name: '8/29 Word 表格清單', status: 'done', score: '3/5（表格A4其後攻破）' },
+      { name: '8/30 Word 頁首頁尾取代', status: 'done', score: '3/5' },
+      { name: '8/31 Word 複習卷', status: 'done', score: '4/5（表格🎉取代🎉升綠）' },
+      { name: '9/3 Excel 迷你二連勝', status: 'done', score: '4/4 🎉Excel首勝' },
+      { name: '8/28 Excel 弱點診斷 E1-E10', status: 'done', score: 'E6-E10：3全對✨＋1差一步＋1三缺（9/4批改）' },
+      { name: '9/4 Word 頁首頁尾攻堅卷', status: 'todo', score: '主攻：頁尾三步鐵律＋首頁不同' },
+      { name: '9/4 Excel 衝綠卷', status: 'todo', score: '基礎4項衝綠＋AVERAGE＋E10頁面設定主攻' },
+      { name: '9/5+ 還原制練習卷', status: 'todo', score: '🆕題目版＋答案版還原100%目標（擬真PSII考法）' }
+    ]
+  };
+  (function seedPractice() {
+    if (localStorage.getItem('zoe_practice_seeded') !== PRACTICE_SEED.version) {
+      localStorage.setItem('zoe_practice_data', JSON.stringify(PRACTICE_SEED));
+      localStorage.setItem('zoe_practice_seeded', PRACTICE_SEED.version);
+    }
+  })();
+  let practiceData = JSON.parse(localStorage.getItem('zoe_practice_data') || 'null') || PRACTICE_SEED;
+  function renderPractice() {
+    document.getElementById('practiceSummary').textContent = practiceData.summary;
+    document.getElementById('practiceList').innerHTML = practiceData.files.map(f =>
+      '<div class="log-row"><span class="log-date">' + (f.status === 'done' ? '✅' : '⬜') + '</span>' +
+      '<span style="flex:1; font-size:12px; padding:0 4px;">' + f.name + '</span>' +
+      '<span style="font-size:11px; color:var(--text-muted); text-align:right;">' + f.score + '</span></div>').join('');
+  }
+
+  // ===== 🎯 弱點訓練台（v2.39：由弱點數據驅動，連住實際練習檔）=====
+  const TRAIN_SEED = {
+    version: '2026-09-05-v1',
+    updated: '2026-09-04 23:55（大爆發日批改後）',
+    summary: '9/5 訓練 8 項（Excel範圍紀律＋排序＋頑疾）· 每項連住練習檔',
+    items: [
+      { lvl: 'red', point: '公式範圍紀律（9/4診斷3處中招）', howto: 'SUM/MAX/MIN範圍啱啱好：=SUM(D2:D14)——①唔好包標題行D1②唔好漏尾行③對住「金額」欄打（E4加錯咗數量欄）', file: '8/28診斷修正功課＋9/4衝綠卷' },
+      { lvl: 'red', point: '多層排序（E8未做，從未實測）', howto: '資料＞排序：主要=日期舊至新＞新增層級=金額大至小＞彈窗揀「擴大選取範圍」', file: '聽日10:00卷實戰' },
+      { lvl: 'red', point: 'E10 頁面設定（9/4批改4做1）', howto: '版面配置→方向橫向；調整成1頁寬（高度自動）；列印標題✓已做', file: '8/28診斷檔修正功課＋9/4衝綠卷' },
+      { lvl: 'red', point: '凍結首列（鎖錯咗欄）', howto: '檢視→凍結窗格→先【取消凍結窗格】→再揀【凍結首列】呢個名；驗證=上下捲第1列唔郁', file: '8/28診斷檔修正功課' },
+      { lvl: 'red', point: '頁尾頁碼三步鐵律', howto: '插一次＞Ctrl+E置中＞望一眼（一組啱，兩組刪一組）', file: '9/4 Word頁首頁尾攻堅卷 D1' },
+      { lvl: 'yellow', point: '統計公式標籤（兩連犯）', howto: '每打一條統計公式，左邊一格即刻打返個名（合計/最高/行政筆數）', file: '9/4衝綠卷F區＋以後每卷' },
+      { lvl: 'yellow', point: '圖表標題打齊字', howto: '「各部門總開支」六隻字打齊先好點出去——E9就係漏尾三隻字', file: '8/28診斷檔修正功課' },
+      { lvl: 'yellow', point: '排序範圍陷阱（新知識點）', howto: '數據同統計區隔一行空行；排序後望一眼統計區數字有冇變', file: '之後每份Excel卷都會出' }
+    ],
+    mastered: ['縮排行距','段落對齊','項目符號','表格','尋找與取代','另存PDF','A4紙張','標題格式·細明體','Excel標題列','Excel貨幣格式']
+  };
+  (function seedTrain() {
+    if (localStorage.getItem('zoe_train_seeded') !== TRAIN_SEED.version) {
+      localStorage.setItem('zoe_train_data', JSON.stringify(TRAIN_SEED));
+      localStorage.setItem('zoe_train_seeded', TRAIN_SEED.version);
+    }
+  })();
+  let trainData = JSON.parse(localStorage.getItem('zoe_train_data') || 'null') || TRAIN_SEED;
+  // 豎列工具：將「；」分隔嘅步驟拆做一行一行（v2.44）
+  function vlines(s) { return String(s).split('；').map(x => x.trim()).filter(Boolean); }
+
+  function renderTrain() {
+    document.getElementById('trainSummary').textContent = trainData.summary;
+    const tag = l => l === 'red' ? '<span class="tag tag-red">未攻破</span>' : '<span class="tag tag-yellow">差一步</span>';
+    document.getElementById('trainList').innerHTML = trainData.items.map(it =>
+      '<div class="train-item ' + it.lvl + '">' +
+      '<div class="train-head"><span class="train-title">' + it.point + '</span>' + tag(it.lvl) + '</div>' +
+      '<div class="train-how">' + vlines(it.howto).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      '<div class="train-file">📄 ' + it.file + '</div>' +
+      '</div>').join('') +
+      (trainData.updated ? '<div class="train-updated">🕐 最後更新：' + trainData.updated + '</div>' : '');
+    document.getElementById('trainMastered').innerHTML = trainData.mastered.map(m =>
+      '<div class="vrow"><span class="tag tag-green">✅ 已掌握</span><span style="flex:1;">' + m + '</span></div>').join('') +
+      '<div style="font-size:10px; color:var(--text-muted); margin-top:6px;">連續2次（唔同場景）全對先入呢度</div>';
+  }
+
+  // ===== 📈 我的實際訓練＋進度條（v2.41）=====
+  const REAL_SEED = {
+    version: '2026-09-04-v2',
+    today: { date: '2026.09.04', items: [
+      { h: '📘 Word ×6', lines: ['攻堅卷 4/5（首頁不同首做成）', '8/28診斷redo（頁尾全對）', '8/30 redo 5/5', '9/3變奏 5/6', '9/2三合一 5/5', '9/1鞏固 完成'] },
+      { h: '📗 Excel ×1', lines: ['弱點診斷E1-E10首測', 'IF／COUNTIF／SUMIF 全對', '發現公式範圍紀律問題'] },
+      { h: '📖 教學 ×3', lines: ['插圖＋PDF步驟', '移除空行 ^p', '頁尾共用觀念'] },
+      { h: '🏆 4個知識點升綠', lines: ['A4紙張', '標題細明體', 'Excel標題列', 'Excel貨幣'] }
+    ]},
+    word: { mastered: 8, total: 13 },
+    excel: { mastered: 2, total: 12 },
+    unlearned: ['圖片文繞圖（Word）', '合併列印（Word）', '自動篩選（Excel）'],
+    learning: ['頁首頁尾（置中習慣）', '註腳', '插圖', '多層排序', '公式範圍紀律（SUM/MAX/MIN）', 'IF/COUNTIF/AVERAGE鞏固', '圖表', '凍結欄列', '列印設定'],
+    log: [
+      { d: '9/4', t: '大爆發：8份檔案＋3教學＋4升綠（Word 6卷＋Excel診斷）' },
+      { d: '9/3', t: '3份卷（8/30＋Excel迷你4/4首勝＋8/31複習）＋弱點複習室設立' },
+      { d: '9/2', t: '表格清單卷＋多層編號教學＋Excel基礎練習檔' },
+      { d: '9/1', t: '格式暖身批改（首次）＋縮排行距對齊重溫' }
+    ]
+  };
+  (function seedReal() {
+    if (localStorage.getItem('zoe_real_seeded') !== REAL_SEED.version) {
+      localStorage.setItem('zoe_real_data', JSON.stringify(REAL_SEED));
+      localStorage.setItem('zoe_real_seeded', REAL_SEED.version);
+    }
+  })();
+  let realData = JSON.parse(localStorage.getItem('zoe_real_data') || 'null') || REAL_SEED;
+  function renderReal() {
+    const today = realData.today && realData.today.date === dateStr ? realData.today : null;
+    document.getElementById('realToday').innerHTML = today
+      ? today.items.map(i => '<div class="train-item yellow" style="border-left-color:var(--pale-blue-text);"><div class="train-title">' + i.h + '</div>' +
+          i.lines.map(l => '<div style="font-size:11.5px; margin-top:4px;">▸ ' + l + '</div>').join('') + '</div>').join('')
+      : '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">今日未有記錄——做完練習或問完ZCode就會出現</span></div>';
+    // 今日打字（live讀打卡數據）
+    const tToday = typingLog.filter(l => l.date === dateStr);
+    document.getElementById('realTyping').textContent = tToday.length
+      ? tToday.map(l => '英' + l.en + '／中' + l.zh + ' wpm' + (l.mins ? '（' + l.mins + '分）' : '')).join('  ｜  ')
+      : '今日未打卡（下方⌨️打字打卡區輸入）';
+    // 進度條
+    const wp = Math.round(realData.word.mastered / realData.word.total * 100);
+    const ep = Math.round(realData.excel.mastered / realData.excel.total * 100);
+    document.getElementById('barWord').style.width = wp + '%';
+    document.getElementById('barWordTag').textContent = realData.word.mastered + '/' + realData.word.total + '（' + wp + '%）';
+    document.getElementById('barExcel').style.width = ep + '%';
+    document.getElementById('barExcelTag').textContent = realData.excel.mastered + '/' + realData.excel.total + '（' + ep + '%）';
+    // 未學／學習中（豎列，每項一行）
+    document.getElementById('unlearnedList').innerHTML =
+      realData.unlearned.map(u => '<div class="vrow"><span class="tag tag-gray">⚪ 未學</span><span style="flex:1;">' + u + '</span></div>').join('') +
+      realData.learning.map(l => '<div class="vrow"><span class="tag tag-yellow">🟡 學習中</span><span style="flex:1;">' + l + '</span></div>').join('');
+    // 日誌
+    document.getElementById('trainLog').innerHTML = realData.log.map(l =>
+      '<div class="log-row"><span class="log-date">' + l.d + '</span><span style="flex:1; font-size:12px;">' + l.t + '</span></div>').join('');
+  }
+
+  // ===== 🤖 Agent 課程（v2.42：課程進度＋每日打卡＋學習成果留言）=====
+  const AGENT_SEED = {
+    version: '2026-09-04-v1',
+    course: 'v2.0',
+    currentStage: 1,
+    totalStages: 10,
+    currentLesson: '第1課｜LLM基礎名詞＋五層方案階梯',
+    homework: '6個產品方案配對＋市場直覸（｜分隔，每產品一行）',
+    homeworkStatus: '待提交',
+    stages: [
+      { n: 1, name: '基礎認知＆五層方案決策框架', status: 'active' },
+      { n: 2, name: 'Prompt工程→上下文工程', status: 'todo' },
+      { n: 3, name: 'RAG完整產品設計', status: 'todo' },
+      { n: 4, name: 'Function Calling＆MCP工具調用', status: 'todo' },
+      { n: 5, name: 'Agent三大核心模塊', status: 'todo' },
+      { n: 6, name: 'Agent主流架構（單vs多）', status: 'todo' },
+      { n: 7, name: '效果評測＋低成本需求驗證', status: 'todo' },
+      { n: 8, name: '小型迭代實戰MVP', status: 'todo' },
+      { n: 9, name: '完整商業專案（小說→影片）', status: 'todo' },
+      { n: 10, name: '作品集＋面試pitch', status: 'todo' }
+    ],
+    log: [
+      { d: '9/4', t: '課程指令v2.0定版（Zoe確認）＋第1課派發，作業待提交' },
+      { d: '9/4', t: 'Dashboard「Agent」tab上線：每日打卡＋學習成果留言' }
+    ]
+  };
+  (function seedAgent() {
+    if (localStorage.getItem('zoe_agent_seeded') !== AGENT_SEED.version) {
+      localStorage.setItem('zoe_agent_data', JSON.stringify(AGENT_SEED));
+      localStorage.setItem('zoe_agent_seeded', AGENT_SEED.version);
+    }
+  })();
+  let agentData = JSON.parse(localStorage.getItem('zoe_agent_data') || 'null') || AGENT_SEED;
+  let agentLog = JSON.parse(localStorage.getItem('zoe_agent_log') || '[]');
+  let agentNotes = JSON.parse(localStorage.getItem('zoe_agent_notes') || '[]');
+
+  function agentStreak() {
+    const days = new Set(agentLog.map(l => l.date));
+    if (!days.size) return 0;
+    const ds = d => d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+    let probe = days.has(ds(new Date())) ? new Date() : new Date(Date.now() - 86400000);
+    let n = 0;
+    while (days.has(ds(probe))) { n++; probe = new Date(probe.getTime() - 86400000); }
+    return n;
+  }
+  const escAgent = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  function addAgentLog() {
+    const mins = parseFloat(document.getElementById('agMin').value);
+    if (!mins || mins <= 0) { alert('填返學習咗幾多分鐘先'); return; }
+    const dpick = document.getElementById('agDate').value;
+    const logDate = dpick ? dpick.replace(/-/g, '.') : dateStr;
+    const type = document.getElementById('agType').value;
+    agentLog.push({ date: logDate, time: new Date().toTimeString().slice(0, 5), mins: mins, type: type });
+    agentLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_agent_log', JSON.stringify(agentLog));
+    document.getElementById('agMin').value = '';
+    renderAgent();
+  }
+  function addAgentNote() {
+    const txt = document.getElementById('agNoteText').value.trim();
+    if (!txt) { alert('寫低少少成果先啦 😊'); return; }
+    agentNotes.unshift({ date: dateStr, time: new Date().toTimeString().slice(0, 5), text: txt, id: Date.now() });
+    localStorage.setItem('zoe_agent_notes', JSON.stringify(agentNotes));
+    document.getElementById('agNoteText').value = '';
+    renderAgent();
+  }
+  function delAgentNote(id) {
+    agentNotes = agentNotes.filter(n => n.id !== id);
+    localStorage.setItem('zoe_agent_notes', JSON.stringify(agentNotes));
+    renderAgent();
+  }
+  function renderAgent() {
+    // 課程現況（ZCode push 更新）
+    document.getElementById('agVersion').textContent = agentData.course;
+    document.getElementById('agStageTag').textContent = '階段 ' + agentData.currentStage + ' / ' + agentData.totalStages;
+    const pct = Math.round(agentData.currentStage / agentData.totalStages * 100);
+    document.getElementById('agStageBar').style.width = pct + '%';
+    document.getElementById('agCardStage').textContent = '階段 ' + agentData.currentStage + '/' + agentData.totalStages + ' · ' + agentData.currentLesson.split('｜')[0];
+    document.getElementById('agCardBar').style.width = pct + '%';
+    document.getElementById('agLesson').textContent = agentData.currentLesson;
+    document.getElementById('agHomework').textContent = agentData.homework;
+    const hw = agentData.homeworkStatus;
+    document.getElementById('agHwStatus').innerHTML = hw === '已過關'
+      ? '<span class="tag tag-green">✅ 已過關</span>'
+      : hw === '已提交' ? '<span class="tag tag-blue">📥 已提交 · 待ZCode點評</span>'
+      : '<span class="tag tag-yellow">✍️ 待提交</span>';
+    // 每日打卡（Zoe本地）
+    const streak = agentStreak();
+    const done = agentLog.some(l => l.date === dateStr);
+    document.getElementById('agStreakTag').textContent = streak + ' 天' + (done ? ' · 今日✅' : ' · 今日未學');
+    const totalMin = agentLog.reduce((s, l) => s + (l.mins || 0), 0);
+    document.getElementById('agTotalTag').textContent = totalMin + ' 分鐘 · ' + agentLog.length + ' 次';
+    const dpick = document.getElementById('agDate'); if (dpick && !dpick.value) dpick.value = dateStr.replace(/\./g, '-');
+    document.getElementById('agLogList').innerHTML = agentLog.slice(-10).reverse().map(l =>
+      '<div class="log-row"><span class="log-date">' + l.date.slice(5) + '</span><span style="flex:1; font-size:12px;">' + l.type + ' · ' + l.mins + ' 分</span></div>'
+    ).join('') || '<div style="font-size:11px; color:var(--text-muted);">未有打卡記錄——學完嘢記得嚟打卡 🔥</div>';
+    // 學習成果留言（Zoe本地）
+    document.getElementById('agNoteList').innerHTML = agentNotes.map(n =>
+      '<div class="log-item" style="cursor:default;">' +
+      '<div class="log-item-head"><span class="log-item-title">' + n.date + ' ' + n.time + '</span>' +
+      '<button onclick="delAgentNote(' + n.id + ')" style="background:none;border:none;color:var(--text-muted);font-size:14px;padding:0 4px;cursor:pointer;">✕</button></div>' +
+      '<div class="log-item-meta" style="text-align:left; white-space:pre-wrap; font-size:12px; color:var(--text); line-height:1.6;">' + escAgent(n.text) + '</div></div>'
+    ).join('') || '<div style="font-size:11px; color:var(--text-muted);">仲未有留言——學完第一課記低你嘅領悟 💬</div>';
+    // 十大階段
+    const stTag = s => s === 'done' ? '<span class="tag tag-green">✅ 完成</span>' : s === 'active' ? '<span class="tag tag-blue">🔵 進行中</span>' : '<span class="tag tag-gray">⚪ 未開始</span>';
+    document.getElementById('agStages').innerHTML = agentData.stages.map(s =>
+      '<div class="progress-row" style="margin:8px 0;">' +
+      '<span class="progress-label">' + s.n + '｜' + s.name + '</span>' + stTag(s.status) + '</div>'
+    ).join('');
+    // 課程日誌
+    document.getElementById('agCourseLog').innerHTML = agentData.log.map(l =>
+      '<div class="log-row"><span class="log-date">' + l.d + '</span><span style="flex:1; font-size:12px;">' + l.t + '</span></div>'
+    ).join('');
+  }
+
   // ----- Init yoga -----
   renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
 
   // ===== Hash deep-linking（例如 #fitness 直接開健身 tab）=====
   const hashTab = location.hash.replace('#', '');
-  const validTabs = ['overview','study','fitness','yoga','web','finance','life'];
+  const validTabs = ['overview','study','fitness','yoga','web','finance','life','agent'];
   if (validTabs.includes(hashTab) && hashTab !== 'overview') {
     document.querySelector('.tab-view.active')?.classList.remove('active');
     document.getElementById('tab-' + hashTab).classList.add('active');
@@ -3933,10 +4591,11 @@
   }
 
   renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory(); renderSleep();
+  renderDcheck(); renderDcheckWeek();
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
-  renderTyping(); renderOffice(); renderPlan(); renderPlanToday();
+  renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice(); renderReal(); renderAgent();
 </script>
 
 </body>
