@@ -329,45 +329,6 @@
   .alert-icon { font-size: 16px; flex-shrink: 0; line-height: 1.5; }
   .alert-text { font-size: 12px; color: var(--pale-red-text); line-height: 1.5; }
 
-  /* ===== Collapsible month record ===== */
-  .month-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 10px;
-    overflow: hidden;
-  }
-  .month-card summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    list-style: none;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .month-card summary::-webkit-details-marker { display: none; }
-  .month-card summary:active { background: var(--surface-2); }
-  .month-summary-left { display: flex; align-items: center; gap: 10px; }
-  .month-summary-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-  .month-chevron {
-    color: var(--text-muted);
-    font-size: 12px;
-    transition: transform 0.2s ease;
-  }
-  .month-card[open] .month-chevron { transform: rotate(90deg); }
-  .month-body {
-    padding: 4px 16px 16px;
-    border-top: 1px solid var(--border);
-    animation: fadeIn 0.25s ease;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
   }
@@ -524,6 +485,29 @@
   .lib-cat:first-child { margin-top: 0; }
   .food-tag { display: inline-block; font-size: 11px; padding: 5px 11px; border-radius: 6px; background: var(--surface-2); margin: 0 4px 6px 0; color: var(--text); }
 
+  /* ===== Diet check chips ===== */
+  .dc-chip { display: inline-block; font-size: 11px; padding: 6px 12px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); margin: 0 4px 6px 0; color: var(--text); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s ease; }
+  .dc-chip.on { border-color: var(--pale-red-text); color: var(--pale-red-text); background: var(--pale-red-bg); font-weight: 600; }
+  .dc-chip:active { transform: scale(0.95); }
+
+  /* ===== 弱點訓練台卡片（v2.43 豎列設計）===== */
+  .train-item { border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 10px; padding: 11px 12px; margin-top: 10px; background: var(--surface); }
+  .train-item.red { border-left-color: var(--pale-red-text); }
+  .train-item.yellow { border-left-color: var(--pale-yellow-text); }
+  .train-item.green { border-left-color: var(--pale-green-text); }
+  .train-item.gray { border-left-color: var(--text-muted); }
+  .train-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .train-title { font-size: 13px; font-weight: 600; }
+  .train-how { font-size: 11.5px; line-height: 1.65; color: var(--text); opacity: .88; margin-top: 7px; }
+  .train-file { font-size: 11px; color: var(--text-muted); margin-top: 7px; padding-top: 7px; border-top: 1px dashed var(--border); }
+  .vrow { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px; margin-top: 6px; font-size: 12px; }
+  .train-updated { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
+  .dc-day { flex: 1; text-align: center; padding: 8px 2px 6px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .dc-day.cur { border-color: var(--text); }
+  .dc-day-emoji { font-size: 15px; line-height: 1.2; }
+  .dc-day-num { font-size: 11px; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .dc-day-wd { font-size: 9px; color: var(--text-muted); }
+
   /* ===== Period timeline ===== */
   .timeline { position: relative; margin: 12px 8px 28px; }
   .timeline-line { height: 6px; background: var(--surface-2); border-radius: 3px; position: relative; }
@@ -534,6 +518,13 @@
 
   /* ===== Schedule grid ===== */
   .sched-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .sched-select {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 2px; font-size: 9px; min-height: 42px; text-align: center; text-align-last: center;
+    color: var(--text); font-family: 'Noto Sans HK', sans-serif;
+    -webkit-appearance: none; appearance: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .sched-select.sel-on { background: var(--pale-green-bg); border-color: var(--pale-green-text); color: var(--pale-green-text); font-weight: 500; }
   .sched-day { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; text-align: center; }
   .sched-box {
     background: var(--surface-2); border-radius: 6px; padding: 8px 2px; font-size: 9px; min-height: 42px;
@@ -558,6 +549,70 @@
   .status-emoji.active { border-color: var(--accent); background: var(--surface); }
   .status-emoji:active { transform: scale(0.95); }
 
+  /* ===== Yoga Module CSS ===== */
+  .yoga-seg { display: flex; background: var(--surface-2); border-radius: 10px; padding: 3px; gap: 3px; margin-bottom: 8px; }
+  .yoga-seg-btn { flex: 1; background: none; border: none; padding: 9px 4px; font-size: 12px; font-family: 'Noto Sans HK', sans-serif; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
+  .yoga-seg-btn.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-soft); }
+  .yoga-sub { display: none; animation: fadeIn 0.3s ease; }
+  .yoga-sub.active { display: block; }
+
+  .mod-card { border: 1px solid var(--border); border-radius: 10px; background: var(--surface); margin-bottom: 10px; overflow: hidden; }
+  .mod-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .mod-head:active { background: var(--surface-2); }
+  .mod-name { font-size: 13px; font-weight: 600; }
+  .mod-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+  .mod-right { display: flex; align-items: center; gap: 8px; }
+  .mod-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); }
+  .mod-arrow { font-size: 11px; color: var(--text-muted); transition: transform 0.2s ease; }
+  .mod-card.open .mod-arrow { transform: rotate(90deg); }
+  .mod-bar { height: 3px; background: var(--surface-2); }
+  .mod-bar-fill { height: 100%; background: var(--pale-green-text); transition: width 0.4s ease; }
+  .mod-topics { display: none; padding: 6px 14px 12px; border-top: 1px solid var(--border); }
+  .mod-card.open .mod-topics { display: block; }
+  .topic-item { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 13px; -webkit-tap-highlight-color: transparent; }
+  .topic-item:last-child { border-bottom: none; }
+  .topic-box { width: 18px; height: 18px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; position: relative; transition: all 0.15s ease; }
+  .topic-item.done .topic-box { background: var(--pale-green-text); border-color: var(--pale-green-text); }
+  .topic-item.done .topic-box::after { content: ''; position: absolute; top: 2px; left: 5px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .topic-item.done .topic-name { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--border-strong); }
+
+  .week-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .week-pill { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 10px; font-size: 12px; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s ease; color: var(--text); }
+  .week-pill.done { background: var(--pale-green-bg); border-color: var(--pale-green-text); color: var(--pale-green-text); font-weight: 500; }
+  .week-pill:active { transform: scale(0.96); }
+  .week-pill .wp-sub { display: block; font-size: 9px; color: var(--text-muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+  .ylog-item { padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .ylog-item:last-child { border-bottom: none; }
+  .ylog-head { display: flex; align-items: center; gap: 6px; }
+  .ylog-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); margin-left: auto; }
+  .ylog-content { font-size: 13px; margin-top: 4px; line-height: 1.55; }
+  .ylog-meta { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-top: 3px; }
+  .ylog-q-solved { text-decoration: line-through; text-decoration-color: var(--border-strong); color: var(--text-muted); }
+
+
+  /* ===== Responsive：電腦版自適應多欄（v2.14）===== */
+  @media (min-width: 900px) {
+    .tab-view > .container { max-width: 1100px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; align-items: start; }
+    header .container { max-width: 1100px; }
+    .tab-view > .container > .fit-seg,
+    .tab-view > .container > .yoga-seg,
+    .tab-view > .container > .fit-sub,
+    .tab-view > .container > .yoga-sub { grid-column: 1 / -1; }
+    .fit-sub.active, .yoga-sub.active { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; align-items: start; }
+    .field-grid { grid-template-columns: repeat(3, 1fr); }
+    .field-full { grid-column: 1 / -1; }
+    .week-grid { grid-template-columns: repeat(3, 1fr); }
+    #strengthChart svg { max-width: 100% !important; }
+    .typing-input-wrap { max-width: 460px; }
+  }
+  @media (min-width: 1440px) {
+    .tab-view > .container { max-width: 1400px; grid-template-columns: repeat(3, 1fr); }
+    header .container { max-width: 1400px; }
+    .fit-sub.active, .yoga-sub.active { grid-template-columns: repeat(3, 1fr); }
+    .field-grid { grid-template-columns: repeat(4, 1fr); }
+    .week-grid { grid-template-columns: repeat(6, 1fr); }
+  }
 </style>
 </head>
 <body>
@@ -567,7 +622,7 @@
   <div class="container">
     <span class="eyebrow">Personal Command Center</span>
     <h1 class="serif">Zoe · 總指揮台</h1>
-    <p class="subtitle">備考 · 財庫 · 項目 · 安排</p>
+    <p class="subtitle">備考 · 瑜伽 · 健身 · 財庫 · 網站 · 安排</p>
     <p class="date" id="todayDate">2026.08.07</p>
   </div>
 </header>
@@ -589,10 +644,16 @@
 
     <!-- Urgent alerts -->
     <section>
-      <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15);">
+      <div class="alert-banner" style="background:var(--pale-blue-bg); border-color:rgba(31,108,159,0.18);">
+        <span class="alert-icon" style="color:var(--pale-blue-text);">📬</span>
+        <div class="alert-text" style="color:var(--pale-blue-text);">
+          <strong>ACO＋PSII 已報名（8.27）</strong>等公務員事務局 email 邀請技能測驗 · 記得查 spam
+        </div>
+      </div>
+      <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15); margin-top:8px;">
         <span class="alert-icon" style="color:var(--pale-green-text);">🎉</span>
         <div class="alert-text" style="color:var(--pale-green-text);">
-          <strong>三張信用卡全部清零！</strong>零負債狀態 ✨
+          <strong>三張信用卡全部清零！</strong>零負債狀態
         </div>
       </div>
     </section>
@@ -601,28 +662,28 @@
     <section>
       <p class="section-title">財庫快照</p>
       <div class="card card-full">
-        <div class="card-label">淨資產（HKD）· 9月</div>
-        <div class="card-value serif">143,442<span style="font-size:20px;">.35</span></div>
-        <div class="card-unit">資產 143,442 · 負債 0 · 零負債 ✨</div>
+        <div class="card-label">淨資產（HKD）</div>
+        <div class="card-value serif">135,624<span style="font-size:20px;">.00</span></div>
+        <div class="card-unit">資產 135,624 · 負債 0 · 零負債 ✨</div>
       </div>
     </section>
 
     <!-- Four pillars -->
     <section>
-      <p class="section-title">五大板塊</p>
+      <p class="section-title">七大板塊</p>
       <div class="bento">
 
         <a class="card-link" href="#" onclick="switchTab('study', document.querySelector('.nav-btn[data-tab=study]'));return false;">
           <div class="card">
             <div class="card-label">備考</div>
-            <div class="card-value-sm serif">PSII</div>
+            <div class="card-value-sm serif">已報名 ✅</div>
             <div style="margin-top:10px;">
-              <span class="tag tag-yellow">第 1 週</span>
+              <span class="tag tag-green">ACO＋PSII</span>
             </div>
             <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
               <div class="progress-fill" style="width:20%;"></div>
             </div>
-            <div class="progress-num" style="margin-top:6px;">16 週計劃 · 20%</div>
+            <div class="progress-num" style="margin-top:6px;">8.27 遞交 · 等 email 測驗邀請</div>
           </div>
         </a>
 
@@ -638,6 +699,21 @@
             </div>
             <div class="progress-num" style="margin-top:6px;" id="fitCardInfo">57.6 → 53.0 kg</div>
             <div class="progress-num" id="fitCardToday" style="margin-top:2px;">今日 0 / 1750 kcal</div>
+          </div>
+        </a>
+
+        <a class="card-link" href="#" onclick="switchTab('yoga', document.querySelector('.nav-btn[data-tab=yoga]'));return false;">
+          <div class="card">
+            <div class="card-label">瑜伽</div>
+            <div class="card-value-sm serif">YT200</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-blue">自學中</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" id="yogaCardBar" style="width:0%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;" id="yogaCardMod">模組一 · 基礎入門</div>
+            <div class="progress-num" id="yogaCardHrs" style="margin-top:2px;">理論 0h · 實踐 0h</div>
           </div>
         </a>
 
@@ -683,6 +759,20 @@
           </div>
         </a>
 
+        <a class="card-link" href="#" onclick="switchTab('agent', document.querySelector('.nav-btn[data-tab=agent]'));return false;" style="grid-column:1/-1;">
+          <div class="card">
+            <div class="card-label">AI課</div>
+            <div class="card-value-sm serif">Agent 產品導師</div>
+            <div style="margin-top:10px;">
+              <span class="tag tag-yellow" id="agCardStage">階段 1/10 · 第1課</span>
+            </div>
+            <div class="progress-track" style="margin-top:12px; margin-bottom:0;">
+              <div class="progress-fill" id="agCardBar" style="width:10%;"></div>
+            </div>
+            <div class="progress-num" style="margin-top:6px;">商業化AI產品 0→1 · 作品集打造</div>
+          </div>
+        </a>
+
       </div>
     </section>
 
@@ -695,7 +785,7 @@
           <p><span class="check-dot"></span><strong>睇新聞</strong>15 分鐘（時事累積）</p>
           <p><span class="check-dot todo"></span><strong>午膳運動</strong>2hr 時段做運動</p>
           <p><span class="check-dot" style="background:var(--pale-green-text);"></span><strong>信用卡</strong>三張已全部清零 ✨</p>
-          <p><span class="check-dot todo"></span><strong>南昌薈宿舍</strong>薪金證明已準備</p>
+          <p><span class="check-dot todo"></span><strong>報名 PSII</strong>去 csb.gov.hk 確認</p>
         </div>
       </div>
     </section>
@@ -799,6 +889,42 @@
       </section>
 
       <section>
+        <div class="card card-full">
+          <div class="card-label">檢視日期（翻查 / 補記其他日子）</div>
+          <div class="typing-input-wrap" style="margin-top:6px;">
+            <input type="date" class="typing-input input-text" id="dietDatePick" onchange="loadDietDate(this.value)">
+            <button class="typing-btn" onclick="goDietToday()">今日</button>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:8px;" id="dietDateLabel">檢視緊：今日</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">飲食監測</p>
+        <div class="card card-full">
+          <div class="card-label">今日飲食達標？（記入「檢視緊」嗰日）</div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button class="day-btn" onclick="setDietCheck('pass')" id="dcBtnPass">✅ 達標</button>
+            <button class="day-btn" onclick="setDietCheck('fail')" id="dcBtnFail">❌ 未達標</button>
+          </div>
+          <div id="dcFailBox" style="display:none; margin-top:12px; border-top:1px solid var(--border); padding-top:12px;">
+            <div class="field-label-mini">犯咗啲乜？（可多選）</div>
+            <div id="dcFailChips" style="margin-top:8px;"></div>
+            <div style="display:flex; gap:8px; margin-top:6px;">
+              <input class="input-mini input-text" id="dcCustomInput" placeholder="自訂項目，例如：下午茶薯片" style="flex:1;">
+              <button class="quick-btn" onclick="addDcCustom()">＋加入</button>
+            </div>
+          </div>
+          <div style="margin-top:12px; font-size:12px;" id="dcStatusLine">未記錄</div>
+        </div>
+        <div class="card card-full" style="margin-top:10px;">
+          <div class="card-label">最近 7 日達標情況（撳日期可翻查）</div>
+          <div id="dcWeekStrip" style="display:flex; gap:6px; margin-top:8px;"></div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:10px;" id="dcMonthRate">本月達標率：未有記錄</div>
+        </div>
+      </section>
+
+      <section>
         <p class="section-title">今日總計</p>
         <div class="bento">
           <div class="card">
@@ -813,7 +939,20 @@
             <div class="card-unit">/ <span id="proteinGoal">110</span> g</div>
             <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="proteinBar" style="width:0%; background: var(--pale-green-text);"></div></div>
           </div>
+          <div class="card">
+            <div class="card-label">碳水</div>
+            <div class="card-value-sm serif"><span id="carbNow">0</span></div>
+            <div class="card-unit">/ <span id="carbGoal">200</span> g</div>
+            <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="carbBar" style="width:0%; background: var(--pale-yellow-text);"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-label">脂肪</div>
+            <div class="card-value-sm serif"><span id="fatNow">0</span></div>
+            <div class="card-unit">/ <span id="fatGoal">55</span> g</div>
+            <div class="progress-track" style="margin-top:10px; margin-bottom:0;"><div class="progress-fill" id="fatBar" style="width:0%; background: var(--pale-red-text);"></div></div>
+          </div>
         </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">目標隨日型切換：訓練日 1750/P110/C200/F55 · 休息日 1400/P100/C140/F50 · PCOS 宜低碳水集中日間</div>
       </section>
 
       <section>
@@ -838,7 +977,7 @@
               <div class="macro-row"><span class="macro-dot" style="background:var(--pale-red-text);"></span>脂肪<span class="macro-g" id="legFat">0g</span></div>
             </div>
           </div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">由每餐記錄自動計算 · 蛋白/碳水/脂肪理想約 30/45/25%</div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">由每餐記錄自動計算 · 目標比例約 碳水45-50%／蛋白25-30%／脂肪25-30%（依日型微調）</div>
         </div>
       </section>
 
@@ -870,12 +1009,24 @@
               <div class="field-label-mini">脂肪 g</div>
               <input type="number" class="input-mini" id="mealF" placeholder="15">
             </div>
-            <div class="field-full">
-              <button class="typing-btn" style="width:100%;" onclick="addMeal()">＋ 記錄餐點</button>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addMeal()" id="mealBtn">＋ 記錄餐點</button>
+              <button class="quick-btn" id="mealCancel" onclick="cancelEdit('meal')" style="display:none;">取消</button>
             </div>
           </div>
           <div id="mealLog" style="margin-top:14px;">
             <div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">未有記錄</div>
+          </div>
+          <div style="margin-top:14px; border-top:1px solid var(--border); padding-top:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div class="field-label-mini">📋 匯入餐單（ZCode 分析結果）</div>
+              <button class="quick-btn" id="importToggle" onclick="toggleImport()">展開</button>
+            </div>
+            <div id="importBox" style="display:none;">
+              <textarea id="importText" class="input-mini input-text" rows="5" placeholder="每行一餐，用｜分隔：&#10;食物｜時間｜kcal｜蛋白g｜碳水g｜脂肪g" style="width:100%; margin-top:8px; font-size:13px; line-height:1.6; resize:vertical;"></textarea>
+              <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importMeals()">📥 匯入今日餐點</button>
+              <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">匯入會加喺現有記錄之後，唔會覆蓋 · 記入嘅係「檢視緊」嗰日日期</div>
+            </div>
           </div>
         </div>
       </section>
@@ -980,29 +1131,57 @@
                 <option value="手臂">手臂</option>
                 <option value="核心">核心</option>
                 <option value="有氧">有氧</option>
+                <option value="瑜伽">瑜伽</option>
               </select>
             </div>
             <div class="field-full">
-              <button class="typing-btn" style="width:100%;" onclick="addWorkout()">＋ 記錄動作</button>
+              <div class="field-label-mini">日期（補記用 · 唔揀就記今日）</div>
+              <input type="date" class="input-mini input-text" id="woDate">
+            </div>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addWorkout()" id="woBtn">＋ 記錄動作</button>
+              <button class="quick-btn" id="woCancel" onclick="cancelEdit('wo')" style="display:none;">取消</button>
+            </div>
+            <div class="field-full">
+              <button class="quick-btn" style="width:100%; font-size:13px;" onclick="exportZoeData()">📤 複製數據俾 ZCode（餐點＋訓練＋體重）</button>
             </div>
           </div>
         </div>
       </section>
 
       <section>
-        <p class="section-title">訓練排程（點選切換）</p>
+        <p class="section-title">訓練歷史</p>
         <div class="card card-full">
-          <div class="sched-grid" id="schedGrid"></div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">點格仔循環切換：臀→背→胸→肩→腿→有氧→休息→空</div>
+          <div id="woHistory"><div class="log-item" style="color:var(--text-muted); text-align:center;">未有記錄</div></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">撳記錄＝編輯 · ×＝刪除</div>
         </div>
       </section>
 
       <section>
-        <p class="section-title">肌群訓練分佈（本週）</p>
+        <p class="section-title">訓練排程 · 每週計劃</p>
         <div class="card card-full">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+            <span id="schedWeekLabel" style="font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--text-muted);"></span>
+            <button class="quick-btn" id="schedCopyBtn" onclick="copyPrevSched()" style="display:none;">📋 複製上週</button>
+          </div>
+          <div class="sched-grid" id="schedGrid"></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">撥格仔 → 滾輪拉動揀部位 · 每週自動重置 · 上週一模一樣就撳「複製上週」</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">肌群分佈 · 週回顧</p>
+        <div class="card card-full">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+            <button class="quick-btn" onclick="shiftMuscleWeek(1)">‹ 上一週</button>
+            <span id="muscleWeekLabel" style="font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--text-muted);"></span>
+            <button class="quick-btn" id="mwNext" onclick="shiftMuscleWeek(-1)">下一週 ›</button>
+          </div>
           <div id="muscleDist">
             <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">記錄訓練後顯示分佈</div>
           </div>
+        </div>
+          <div id="weekWoList" style="margin-top:16px; border-top:1px solid var(--border); padding-top:12px;"></div>
         </div>
       </section>
 
@@ -1053,9 +1232,38 @@
         <div class="card card-full">
           <div class="typing-input-wrap" style="margin-top:0;">
             <input type="number" step="0.1" class="typing-input" id="weightInput" placeholder="輸入體重 kg">
-            <button class="typing-btn" onclick="addWeight()">記錄</button>
+            <button class="typing-btn" onclick="addWeight()" id="weightBtn">記錄</button>
+            <button class="quick-btn" id="weightCancel" onclick="cancelEdit('weight')" style="display:none;">取消</button>
           </div>
           <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">建議每週一空腹、去完廁所後量度</div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card card-full">
+          <div class="card-label">體重歷史</div>
+          <div id="weightHist"><div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄</span></div></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">睡眠記錄</p>
+        <div class="card card-full">
+          <div class="typing-input-wrap" style="margin-top:0;">
+            <input type="number" step="0.1" min="0" max="24" class="typing-input" id="sleepInput" placeholder="昨晚睡眠時數（例如 7.5）">
+            <button class="typing-btn" onclick="addSleep()" id="sleepBtn">記錄</button>
+          </div>
+          <div class="quick-btns" style="margin-top:12px;">
+            <button class="quick-btn" onclick="quickSleep(6)">6h</button>
+            <button class="quick-btn" onclick="quickSleep(7)">7h</button>
+            <button class="quick-btn" onclick="quickSleep(8)">8h</button>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="card-label">最近一晚 · 目標 7–9 小時</div>
+            <div class="progress-track" style="margin-top:6px; margin-bottom:0;"><div class="progress-fill" id="sleepBar" style="width:0%; background: var(--pale-blue-text);"></div></div>
+          </div>
+          <div id="sleepHist" style="margin-top:12px;"></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">PCOS 減脂關鍵：睡眠不足 6.5h 會降低胰島素敏感度</div>
         </div>
       </section>
 
@@ -1067,11 +1275,15 @@
             <div><div class="field-label-mini">臀圍 cm</div><input type="number" class="input-mini" id="mHip" placeholder="84"></div>
             <div><div class="field-label-mini">大腿 cm</div><input type="number" class="input-mini" id="mThigh" placeholder="52"></div>
             <div><div class="field-label-mini">手臂 cm</div><input type="number" class="input-mini" id="mArm" placeholder="26"></div>
-            <div class="field-full"><button class="typing-btn" style="width:100%;" onclick="addMeasurement()">＋ 記錄圍度</button></div>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addMeasurement()" id="msBtn">＋ 記錄圍度</button>
+              <button class="quick-btn" id="msCancel" onclick="cancelEdit('ms')" style="display:none;">取消</button>
+            </div>
           </div>
           <div id="measureTrend" style="margin-top:14px;">
             <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">未有圍度記錄</div>
           </div>
+          <div id="measureLog" style="margin-top:6px;"></div>
         </div>
       </section>
 
@@ -1081,12 +1293,14 @@
           <div class="card-label">記錄經期開始日</div>
           <div class="typing-input-wrap" style="margin-top:6px;">
             <input type="date" class="typing-input input-text" id="periodInput">
-            <button class="typing-btn" onclick="addPeriod()">記錄</button>
+            <button class="typing-btn" onclick="addPeriod()" id="pdBtn">記錄</button>
+            <button class="quick-btn" id="pdCancel" onclick="cancelEdit('pd')" style="display:none;">取消</button>
           </div>
           <div class="info-block" style="font-size:12px; margin-top:12px;">
             <p id="periodInfo" style="margin-bottom:0;">未有記錄</p>
           </div>
           <div id="periodTimeline"></div>
+          <div id="periodLog" style="margin-top:6px;"></div>
         </div>
       </section>
 
@@ -1131,6 +1345,227 @@
         </div>
       </section>
 
+      <section>
+        <p class="section-title">☁️ 跨裝置同步</p>
+        <div class="card card-full">
+          <div class="info-block" style="font-size:11px; color:var(--text-muted);">
+            <p>📱 iPhone／iPad／Mac 電腦各入口嘅儲存區係獨立嘅，唔會自動同步。</p>
+            <p><strong>用法：</strong>喺有數據嗰部撳「匯出」→ 去另一部貼上「匯入」。智能合併，唔會重複、唔會沖走另一部嘅記錄 ✅</p>
+            <p>💬 或者直接報俾 ZCode（飲食相、體重、訓練），ZCode 分析後推送，全部裝置 refresh 即見。</p>
+          </div>
+          <button class="typing-btn" style="width:100%; margin-top:10px;" onclick="exportAllData()">📤 匯出同步碼（複製全部數據）</button>
+          <div class="field-label-mini" style="margin-top:14px;">📥 匯入同步碼（貼上另一裝置匯出嘅文字）</div>
+          <textarea class="input-mini input-text" id="importAllText" rows="4" placeholder="貼上同步碼…" style="width:100%; resize:vertical;"></textarea>
+          <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importAllData()">📥 匯入（智能合併）</button>
+          <div id="importAllResult" style="font-size:11px; color:var(--pale-green-text); text-align:center; margin-top:8px; display:none;"></div>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ TAB: 瑜伽 ============ -->
+<div class="tab-view" id="tab-yoga">
+  <div class="container">
+
+    <!-- Segmented Control -->
+    <div class="yoga-seg">
+      <button class="yoga-seg-btn active" onclick="switchYoga('overview', this)">總覽</button>
+      <button class="yoga-seg-btn" onclick="switchYoga('modules', this)">模組</button>
+      <button class="yoga-seg-btn" onclick="switchYoga('log', this)">日誌</button>
+    </div>
+
+    <!-- ===== SUB: 總覽 ===== -->
+    <div class="yoga-sub active" id="yoga-overview">
+
+      <section>
+        <div class="card card-full" style="text-align:center;">
+          <div class="card-label">YT200 導師之路</div>
+          <div class="countdown-box">
+            <div class="countdown-num serif" id="yogaTotalHrs">0</div>
+            <div class="countdown-label">總累積小時 · 目標 250 hr（理論 150 + 實踐 100）</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">時數累積</p>
+        <div class="card card-full">
+          <div class="progress-row">
+            <span class="progress-label">📖 理論自修</span>
+            <span class="progress-num"><span id="yogaTheoryHrs">0</span> / 150 hr</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="yogaTheoryBar" style="width:0%; background: var(--pale-green-text);"></div></div>
+          <div class="progress-row">
+            <span class="progress-label">🧘 實踐練習（健身板塊自動同步）</span>
+            <span class="progress-num"><span id="yogaPracticeHrs">0</span> / 100 hr</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" id="yogaPracticeBar" style="width:0%; background: var(--pale-blue-text);"></div></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">瑜伽課記錄（自動同步健身板塊）</p>
+        <div class="card card-full">
+          <div class="field-grid">
+            <div>
+              <div class="field-label-mini">瑜伽類型</div>
+              <select class="input-mini input-text" id="ycType">
+                <option value="陰瑜伽">陰瑜伽</option>
+                <option value="瘦身瑜伽">瘦身瑜伽</option>
+                <option value="空中瑜伽">空中瑜伽</option>
+                <option value="瑜伽拉伸">瑜伽拉伸</option>
+                <option value="哈達瑜伽">哈達瑜伽</option>
+                <option value="流瑜伽">流瑜伽</option>
+                <option value="其他瑜伽">其他瑜伽</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label-mini">時長（分鐘）</div>
+              <input type="number" class="input-mini" id="ycMins" placeholder="45">
+            </div>
+            <div>
+              <div class="field-label-mini">日期（補記用）</div>
+              <input type="date" class="input-mini input-text" id="ycDate">
+            </div>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addYogaClass()" id="ycBtn">＋ 記錄瑜伽課</button>
+              <button class="quick-btn" id="ycCancel" onclick="cancelEdit('yc')" style="display:none;">取消</button>
+            </div>
+          </div>
+          <div id="yogaClassLog" style="margin-top:14px;"></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">類型統計</p>
+        <div class="card card-full">
+          <div id="yogaTypeStats"></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">🏆 1000 小時訓練計劃</p>
+        <div class="card card-full" style="text-align:center;">
+          <div class="card-value serif" id="yoga1000Hrs">0</div>
+          <div class="card-unit">/ 1000 小時 · 瑜伽實踐終身累積</div>
+          <div class="progress-track" style="margin:14px 0 8px;"><div class="progress-fill" id="yoga1000Bar" style="width:0%; background: var(--pale-green-text);"></div></div>
+          <div class="progress-num" id="yoga1000Milestone"></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">所有瑜伽課（健身版記錄嘅都自動計入）· 每上一堂自動累積</div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">本週學習節奏</p>
+        <div class="card card-full">
+          <div class="week-grid" id="yogaWeekGrid"></div>
+          <div class="progress-track" style="margin-top:14px; margin-bottom:6px;"><div class="progress-fill" id="yogaWeekBar" style="width:0%;"></div></div>
+          <div style="font-size:10px; color:var(--text-muted); font-family:'JetBrains Mono',monospace;" id="yogaWeekLabel"></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">當前模組</p>
+        <div class="card card-full">
+          <div class="ring-wrap">
+            <div class="ring">
+              <svg width="64" height="64">
+                <circle class="ring-track" cx="32" cy="32" r="28" fill="none" stroke-width="3"/>
+                <circle id="yogaModRing" cx="32" cy="32" r="28" fill="none" stroke-width="3" stroke-dasharray="175.9" stroke-dashoffset="175.9" style="stroke: var(--pale-green-text); stroke-linecap: round;"/>
+              </svg>
+              <span class="ring-text" id="yogaModPct">0%</span>
+            </div>
+            <div style="flex:1;">
+              <div class="card-value-sm serif" id="yogaModName">模組一 · 基礎入門</div>
+              <div class="card-unit" id="yogaModSub">第 1-2 個月</div>
+              <div class="progress-num" style="margin-top:4px;" id="yogaModCount">0 / 7 主題</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">路線圖</p>
+        <div class="card card-full">
+          <div class="info-block" style="font-size:12px;">
+            <p><strong>而家：</strong>自學打好基礎（12 個月 · 6 模組）</p>
+            <p><strong>之後：</strong>報 CEF 資助課程攞 RYT 200 牌</p>
+            <p><strong>慳錢路線：</strong>自學 250hr &gt; 正式課程 200hr，贏在起跑線</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ===== SUB: 模組 ===== -->
+    <div class="yoga-sub" id="yoga-modules">
+      <section>
+        <p class="section-title">六大模組 · 進度地圖</p>
+        <div class="card card-full" style="margin-bottom:12px;">
+          <div class="progress-row">
+            <span class="progress-label">整體進度</span>
+            <span class="progress-num" id="yogaAllCount">0 / 0 主題</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" id="yogaAllBar" style="width:0%;"></div></div>
+        </div>
+        <div id="yogaModules"></div>
+        <div style="font-size:10px; color:var(--text-muted);">撳模組展開 · 撳主題打勾 ✅</div>
+      </section>
+    </div>
+
+    <!-- ===== SUB: 日誌 ===== -->
+    <div class="yoga-sub" id="yoga-log">
+      <section>
+        <p class="section-title">記錄學習 / 筆記 / 疑問</p>
+        <div class="card card-full">
+          <div class="field-grid">
+            <div>
+              <div class="field-label-mini">類型</div>
+              <select class="input-mini input-text" id="ylType">
+                <option value="理論">📖 理論</option>
+                <option value="筆記">📝 筆記</option>
+                <option value="疑問">❓ 疑問</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label-mini">模組</div>
+              <select class="input-mini input-text" id="ylModule">
+                <option value="m1">一 基礎</option><option value="m2">二 站姿</option>
+                <option value="m3">三 前屈</option><option value="m4">四 後彎</option>
+                <option value="m5">五 倒立</option><option value="m6">六 教學</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label-mini">分鐘（理論計時數）</div>
+              <input type="number" class="input-mini" id="ylMins" placeholder="30">
+            </div>
+            <div>
+              <div class="field-label-mini">主題（選填）</div>
+              <input class="input-mini input-text" id="ylTopic" placeholder="例如：拜日式 A">
+            </div>
+            <div class="field-full">
+              <div class="field-label-mini">內容</div>
+              <input class="input-mini input-text" id="ylContent" placeholder="學到咩 / 筆記 / 唔明嘅地方">
+            </div>
+            <div class="field-full" style="display:flex; gap:8px;">
+              <button class="typing-btn" style="flex:1;" onclick="addYogaLog()" id="ylBtn">＋ 記錄</button>
+              <button class="quick-btn" id="ylCancel" onclick="cancelEdit('yl')" style="display:none;">取消</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">學習日誌 · 疑問簿</p>
+        <div class="card card-full">
+          <div id="yogaLog">
+            <div class="ylog-item" style="color:var(--text-muted); text-align:center;">未有記錄</div>
+          </div>
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">❓ 疑問撳一下 = 已解決（刪除線）· 下次問我記得貼過嚟</div>
+      </section>
     </div>
 
   </div>
@@ -1151,12 +1586,89 @@
     </section>
 
     <section>
+      <p class="section-title">申請狀態 · 2026.08.27</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">助理文書主任 ACO · C-5814060</span>
+          <span class="tag tag-green">已遞交 ✅</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">二級私人秘書 PSII · C-5814061</span>
+          <span class="tag tag-green">已遞交 ✅</span>
+        </div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">
+          📬 下一步：等公務員事務局 email 邀請技能測驗（記得查 spam）<br>
+          ⚠️ 測驗唔及格 3 個月內唔可以再申請 · 面試唔過 12 個月 · 唔好裸考
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">⌨️ 打字每日打卡 · 進度曲線</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">🔥 連續打卡</span>
+          <span class="tag tag-red" id="typStreakTag">0 天</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">⏱️ 累積練習</span>
+          <span class="tag tag-blue" id="typTotalTag">0 分鐘 · 0 節</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">📅 技能測驗日期</span>
+          <span class="tag tag-gray" id="examDateTag">未定（等 CSB）</span>
+        </div>
+        <input type="date" class="input-mini" id="examDatePick" style="margin-top:6px;" onchange="setExamDate(this.value)">
+        <div id="typChart" style="margin-top:12px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
+          <span style="color:var(--pale-blue-text); font-weight:500;">— 英打</span> ｜ <span style="color:var(--pale-green-text); font-weight:500;">— 中打</span> ｜ 虛線＝目標（中20 · 英30 ACO · 英40 PSII）
+        </div>
+        <div class="field-label-mini" style="margin-top:14px;">打卡日期（預設今日，漏記可以補）</div>
+        <input type="date" class="input-mini" id="typDate" style="margin-top:4px;">
+        <div class="field-grid" style="margin-top:8px;">
+          <div>
+            <div class="field-label-mini">英打 wpm</div>
+            <input type="number" class="input-mini" id="typEn" placeholder="35">
+          </div>
+          <div>
+            <div class="field-label-mini">中打 wpm</div>
+            <input type="number" class="input-mini" id="typZh" placeholder="18">
+          </div>
+          <div>
+            <div class="field-label-mini">練習分鐘</div>
+            <input type="number" class="input-mini" id="typMin" placeholder="20">
+          </div>
+          <div class="field-full" style="display:flex; gap:8px;">
+            <button class="typing-btn" style="flex:1;" onclick="addTypingLog()">✅ 打卡</button>
+          </div>
+        </div>
+        <div id="typLogList" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">🎯 弱點訓練台（今日要練）</p>
+      <div class="card card-full">
+        <div class="card-label" id="trainSummary">—</div>
+        <div id="trainList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">
+          📂 檔案喺 Desktop/ZCode備考練習/（iCloud同步·弟弟Windows機做）· 做完撳勾，ZCode讀檔批改後更新呢區
+        </div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">🟢 已吃碎嚼爛（連續2次全對）</div>
+        <div id="trainMastered" style="margin-top:8px;"></div>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">目標</p>
       <div class="card card-full">
         <div class="info-block">
-          <p><strong>目標：</strong>2027 年中考入二級私人秘書（PSII）</p>
-          <p><strong>流程：</strong>報名 → 資格審核 → 技能測試 → 面試 → 聘書</p>
-          <p><strong>合格線：</strong>中文打字 20 wpm · 英文打字 40 wpm · Word/Excel 2016</p>
+          <p><strong>目標：</strong>2027 年中考入政府文職（PSII／ACO）</p>
+          <p><strong>流程：</strong>報名 ✅（8.27）→ 資格審核 → 技能測試 → 面試 → 聘書</p>
+          <p><strong>合格線：</strong>中打 20 wpm · 英打 ACO 30／PSII 40 wpm · Word/Excel 2016</p>
+          <p><strong>成績效期：</strong>技能測驗及格成績兩年內有效</p>
         </div>
       </div>
     </section>
@@ -1194,37 +1706,69 @@
     </section>
 
     <section>
-      <p class="section-title">16 週計劃</p>
+      <p class="section-title">🔄 弱點複習室（出題重點）</p>
       <div class="card card-full">
-        <div class="progress-row">
-          <span class="progress-label">第 1-2 週 · 啟動</span>
-          <span class="tag tag-yellow">進行中</span>
+        <div class="card-label" id="reviewSubtitle">Zoe 問過／批改發現嘅唔識位</div>
+        <div id="reviewList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:10px;">
+          出題會著重呢啲位，換場景反覆操——連續全對先變綠；每日練習就係為咗食碎嚼爛佢
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:30%;"></div></div>
+      </div>
+    </section>
 
-        <div class="progress-row">
-          <span class="progress-label">第 3-6 週 · 打字攻堅</span>
-          <span class="tag tag-gray">未開始</span>
+    <section>
+      <p class="section-title">📂 練習檔案進度</p>
+      <div class="card card-full">
+        <div class="card-label" id="practiceSummary">—</div>
+        <div id="practiceList" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">
+          勾=該檔案內該題已驗證做對（ZCode讀檔批改）· 每次批改後自動更新
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+      </div>
+    </section>
 
+    <section>
+      <p class="section-title">🗓️ 學習計劃 · 月→週→日</p>
+      <div class="card card-full">
+        <div class="card-label" id="planMonthTitle">本月目標</div>
+        <div id="planGoals" style="margin-top:8px;"></div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
         <div class="progress-row">
-          <span class="progress-label">第 7-10 週 · Word</span>
-          <span class="tag tag-gray">未開始</span>
+          <span class="progress-label" id="planWeekTitle">本週任務</span>
+          <span class="tag tag-blue" id="planWeekRange"></span>
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+        <div id="planWeekTasks" style="margin-top:8px;"></div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">✅ 今日任務（撳一下打勾）</div>
+        <div id="planToday" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">📂 Office 練習檔：Desktop/ZCode備考練習/Word＋Excel（弟弟 Windows 機做，iCloud 同步）</div>
+      </div>
 
-        <div class="progress-row">
-          <span class="progress-label">第 11-14 週 · Excel</span>
-          <span class="tag tag-gray">未開始</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">📈 我的實際訓練（今日）</div>
+        <div id="realToday" style="margin-top:8px;"></div>
+        <div class="field-label-mini" style="margin-top:12px;">⌨️ 今日打字</div>
+        <div id="realTyping" style="font-size:12px; color:var(--text);"></div>
+      </div>
 
-        <div class="progress-row">
-          <span class="progress-label">第 15-16 週 · 模考</span>
-          <span class="tag tag-gray">未開始</span>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">📊 掌握進度條</div>
+        <div style="margin-top:10px;">
+          <div class="progress-row"><span class="progress-label">📘 Word</span><span class="tag tag-blue" id="barWordTag">—</span></div>
+          <div class="progress-track"><div class="progress-fill" id="barWord" style="width:0%; background:var(--pale-blue-text);"></div></div>
+          <div class="progress-row" style="margin-top:10px;"><span class="progress-label">📗 Excel</span><span class="tag tag-green" id="barExcelTag">—</span></div>
+          <div class="progress-track"><div class="progress-fill" id="barExcel" style="width:0%;"></div></div>
         </div>
-        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:0%;"></div></div>
+        <div class="field-label-mini" style="margin-top:14px;">🧭 未學／學習中</div>
+        <div id="unlearnedList" style="margin-top:6px;"></div>
+      </div>
+
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">🗓️ 最近訓練日誌</div>
+        <div id="trainLog" style="margin-top:8px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">Zoe 做完／問完 → ZCode 教學＋批改＋即時記錄呢區</div>
       </div>
     </section>
 
@@ -1239,8 +1783,12 @@
           <span class="link-text">⌨️ 打字練習網站（即練）</span>
           <span class="link-arrow">→</span>
         </a>
+        <a class="link-item" href="https://www.csb.gov.hk/tc_chi/admin/grade/cs/2323.html" target="_blank">
+          <span class="link-text">🏛️ ACO 官方招聘頁（已報名）</span>
+          <span class="link-arrow">→</span>
+        </a>
         <a class="link-item" href="https://www.csb.gov.hk/tc_chi/admin/grade/cs/2689.html" target="_blank">
-          <span class="link-text">報名 PSII（公務員事務局）</span>
+          <span class="link-text">🏛️ PSII 官方招聘頁（已報名）</span>
           <span class="link-arrow">→</span>
         </a>
       </div>
@@ -1342,10 +1890,10 @@
 
     <section>
       <div class="card card-full" style="text-align:center;">
-        <div class="card-label">淨資產（HKD）· 9月</div>
+        <div class="card-label">淨資產（HKD）· 零負債</div>
         <div class="countdown-box">
-          <div class="countdown-num serif">143,442<span style="font-size:24px;">.35</span></div>
-          <div class="countdown-label">截至 2026.09.11 · 零負債 ✨</div>
+          <div class="countdown-num serif">135,624<span style="font-size:24px;">.00</span></div>
+          <div class="countdown-label">截至 2026.08.10 · 資產 = 淨資產</div>
         </div>
       </div>
     </section>
@@ -1375,255 +1923,209 @@
     </section>
 
     <section>
-      <p class="section-title">💎 儲蓄投資</p>
+      <p class="section-title">資產明細</p>
       <div class="card card-full">
         <div class="asset-row">
           <div>
             <div class="asset-name">📈 富途基金（Zoe 實際）</div>
-            <div class="asset-sub">總額 101,000（含媽媽 10,000）≈ 12,860 USD</div>
+            <div class="asset-sub">總額 85,644 · 扣除媽媽代存 10,000</div>
           </div>
-          <span class="asset-val">91,000.00</span>
+          <span class="asset-val">75,644.74</span>
         </div>
         <div class="asset-row">
           <div>
-            <div class="asset-name">👨🏻‍💼 Brian 應收</div>
+            <div class="asset-name">🏦 中銀香港</div>
+            <div class="asset-sub">結餘</div>
+          </div>
+          <span class="asset-val">8,073.96</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">🏦 Za Bank</div>
+            <div class="asset-sub">結餘</div>
+          </div>
+          <span class="asset-val">2,905.30</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">👨🏻‍💼 Brian 應收欠款</div>
             <div class="asset-sub">老師人工+淘寶+運費+借款</div>
           </div>
           <span class="asset-val">49,000.00</span>
         </div>
         <div class="asset-row">
-          <span class="asset-name"><strong>儲蓄投資合計</strong></span>
-          <span class="asset-val"><strong>140,000.00</strong></span>
+          <span class="asset-name"><strong>總資產</strong></span>
+          <span class="asset-val"><strong>135,624.00</strong></span>
         </div>
       </div>
     </section>
 
     <section>
-      <p class="section-title">💸 流動資金</p>
-      <div class="card card-full">
-        <div class="alert-banner" style="background:var(--pale-yellow-bg); border-color:rgba(149,100,0,0.15); margin-bottom:14px;">
-          <span class="alert-icon" style="color:var(--pale-yellow-text);">⚠️</span>
-          <div class="alert-text" style="color:var(--pale-yellow-text);">
-            流動資金隨時會花，唔算入儲蓄
-          </div>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">🏦 中銀香港</div>
-            <div class="asset-sub">9月中結餘</div>
-          </div>
-          <span class="asset-val">3,424.00</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">🏦 Za Bank</div>
-            <div class="asset-sub">9月中結餘</div>
-          </div>
-          <span class="asset-val">18.35</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name"><strong>流動資金合計</strong></span>
-          <span class="asset-val"><strong>3,442.35</strong></span>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <p class="section-title">💳 信用卡還款記錄（9月）</p>
+      <p class="section-title">負債（信用卡）</p>
       <div class="card card-full">
         <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15); margin-bottom:14px;">
           <span class="alert-icon" style="color:var(--pale-green-text);">🎉</span>
           <div class="alert-text" style="color:var(--pale-green-text);">
-            <strong>9月10日全部還清！</strong>零結欠 ✨
+            <strong>三張信用卡全部清零！</strong>零負債狀態
           </div>
         </div>
         <div class="asset-row">
           <div>
             <div class="asset-name">💳 信銀 Motion</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 已還清</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
           </div>
-          <span class="asset-val">14,774.50</span>
+          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
         </div>
         <div class="asset-row">
           <div>
             <div class="asset-name">💳 花旗 Citi Quick Cash</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 已還清 · 港鐵都會票</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
           </div>
-          <span class="asset-val">460.00</span>
+          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
         </div>
         <div class="asset-row">
           <div>
-            <div class="asset-name">💳 中銀人民幣卡</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 已還清 · CNY 4,288</div>
+            <div class="asset-name">💳 中銀 Go 銀聯鑽石卡</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
           </div>
-          <span class="asset-val">5,100.00</span>
+          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
         </div>
         <div class="asset-row">
-          <div>
-            <div class="asset-name">💳 中銀 Master</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 已還清</div>
-          </div>
-          <span class="asset-val">1,116.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name"><strong>9月還款總額</strong></span>
-          <span class="asset-val" style="color:var(--pale-green-text);"><strong>21,450.50</strong></span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">📊 累計還款總額（7月起）</div>
-            <div class="asset-sub">7月 2,140 + 8月 4,988 + 9月 21,451</div>
-          </div>
-          <span class="asset-val">28,578.57</span>
+          <span class="asset-name"><strong>總負債</strong></span>
+          <span class="asset-val" style="color:var(--pale-green-text);"><strong>0.00 ✨</strong></span>
         </div>
       </div>
     </section>
 
-    <!-- ===== 月度記錄（自動摺疊） ===== -->
+    <!-- ===== 7月現金流分析 ===== -->
     <section>
-      <p class="section-title">📅 月度記錄</p>
-
-      <details class="month-card" open>
-        <summary>
-          <span class="month-summary-left">
-            <span class="month-chevron">▶</span>
-            <span>2026年9月</span>
-          </span>
-          <span class="month-summary-val">淨資產 143,442</span>
-        </summary>
-        <div class="month-body">
-          <div class="asset-row">
-            <span class="asset-name">富途（Zoe 實際）</span>
-            <span class="asset-val">91,000.00</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">中銀香港</span>
-            <span class="asset-val">3,424.00</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">Za Bank</span>
-            <span class="asset-val">18.35</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">Brian 應收</span>
-            <span class="asset-val">49,000.00</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">信用卡還款</span>
-            <span class="asset-val neg">-21,450.50</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name"><strong>淨資產</strong></span>
-            <span class="asset-val"><strong>143,442.35</strong></span>
-          </div>
-          <div class="info-block" style="font-size:11px; margin-top:10px; color:var(--text-muted);">
-            <p>· 9/10 四張卡全部還清（21,450.50）</p>
-            <p>· 富途 101,000 提取做宿舍申請再注資</p>
-            <p>· 淨資產較 8 月 +9,716</p>
-          </div>
+      <p class="section-title">7月現金流（中銀）</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <span class="asset-name">6月底結餘</span>
+          <span class="asset-val">12,382.42</span>
         </div>
-      </details>
-
-      <details class="month-card">
-        <summary>
-          <span class="month-summary-left">
-            <span class="month-chevron">▶</span>
-            <span>2026年8月</span>
-          </span>
-          <span class="month-summary-val">淨資產 133,727</span>
-        </summary>
-        <div class="month-body">
-          <div class="asset-row">
-            <span class="asset-name">富途（Zoe 實際）</span>
-            <span class="asset-val">75,644.74</span>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">薪金入帳（ADECCO）</div>
+            <div class="asset-sub">7/7</div>
           </div>
-          <div class="asset-row">
-            <span class="asset-name">中銀香港</span>
-            <span class="asset-val">6,073.97</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">Za Bank</span>
-            <span class="asset-val">10,127.30</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">Brian 應收</span>
-            <span class="asset-val">49,000.00</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">信用卡結欠</span>
-            <span class="asset-val neg">-15,234.50</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name"><strong>淨資產</strong></span>
-            <span class="asset-val"><strong>133,726.51</strong></span>
-          </div>
-          <div class="info-block" style="font-size:11px; margin-top:10px; color:var(--text-muted);">
-            <p>· 周大福金器 11,115（Zoe 負擔 3,000，家人分擔已用畢）</p>
-            <p>· 分期第 6/6 期完成 🎉</p>
-            <p>· 信銀結欠一度升至 14,774</p>
-          </div>
+          <span class="asset-val pos">+17,271.00</span>
         </div>
-      </details>
-
-      <details class="month-card">
-        <summary>
-          <span class="month-summary-left">
-            <span class="month-chevron">▶</span>
-            <span>2026年7月</span>
-          </span>
-          <span class="month-summary-val">淨資產 135,624</span>
-        </summary>
-        <div class="month-body">
-          <div class="asset-row">
-            <span class="asset-name">富途（Zoe 實際）</span>
-            <span class="asset-val">75,644.74</span>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">Brian 宿舍證明資金</div>
+            <div class="asset-sub">7/1 LEE KA HEI · 已歸位</div>
           </div>
-          <div class="asset-row">
-            <span class="asset-name">中銀香港</span>
-            <span class="asset-val">8,073.96</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">Za Bank</span>
-            <span class="asset-val">2,905.30</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name">Brian 應收</span>
-            <span class="asset-val">49,000.00</span>
-          </div>
-          <div class="asset-row">
-            <span class="asset-name"><strong>淨資產（零負債）</strong></span>
-            <span class="asset-val"><strong>135,624.00</strong></span>
-          </div>
-          <div class="info-block" style="font-size:11px; margin-top:10px; color:var(--text-muted);">
-            <p>· 建檔首月，三卡全清</p>
-            <p>· Brian 宿舍證明資金 80,700 過帳已歸位</p>
-            <p>· 健身房年費 568（SnapFi）</p>
-          </div>
+          <span class="asset-val pos">+80,700.00</span>
         </div>
-      </details>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">轉入富途（Zoe 自己）</div>
+            <div class="asset-sub">7/3 · 已計入富途</div>
+          </div>
+          <span class="asset-val neg">-75,000.00</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">媽媽資金（已退回）</div>
+            <div class="asset-sub">已轉返媽媽帳戶</div>
+          </div>
+          <span class="asset-val neg">-5,700.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name"><strong>7月底結餘</strong></span>
+          <span class="asset-val"><strong>3,768.40</strong></span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">8月薪金入帳後</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 已回升</div>
+          </div>
+          <span class="asset-val" style="color:var(--pale-green-text);"><strong>8,073.96</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 信用卡消費分析 ===== -->
+    <section>
+      <p class="section-title">7月信用卡消費分析</p>
+
+      <!-- CITIC -->
+      <div class="card card-full" style="margin-bottom:12px;">
+        <div class="progress-row" style="margin-bottom:8px;">
+          <span class="card-value-sm serif" style="font-size:16px;">💳 信銀 Motion</span>
+          <span class="tag tag-gray">已清 ✅</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🏋️ 健身房（SnapFi）</span>
+          <span class="asset-val">568.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🚇 港鐵 MTR</span>
+          <span class="asset-val" style="color:var(--pale-yellow-text);">460.00 ⚠️</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🛒 超市（Wellcome×3 + TASTE）</span>
+          <span class="asset-val">417.70</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">📋 分期（第5/6期）</div>
+            <div class="asset-sub" style="color:var(--pale-green-text);">差1期就清</div>
+          </div>
+          <span class="asset-val">591.57</span>
+        </div>
+      </div>
+
+      <!-- Citi -->
+      <div class="card card-full">
+        <div class="progress-row" style="margin-bottom:8px;">
+          <span class="card-value-sm serif" style="font-size:16px;">💳 花旗 Citi</span>
+          <span class="tag tag-gray">已清 ✅</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">🍣 翠屋日料（Daikiya）</div>
+            <div class="asset-sub" style="color:var(--pale-red-text);">⚠️ 佔 76%</div>
+          </div>
+          <span class="asset-val" style="color:var(--pale-red-text);">2,244.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🚌 八達通增值</span>
+          <span class="asset-val">500.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🎬 電影院</span>
+          <span class="asset-val">195.00</span>
+        </div>
+        <div class="asset-row">
+          <span class="asset-name">🚇 港鐵</span>
+          <span class="asset-val">15.80</span>
+        </div>
+      </div>
     </section>
 
     <!-- ===== 財務健康評分 ===== -->
     <section>
-      <p class="section-title">財務健康評分（9月）</p>
+      <p class="section-title">財務健康評分</p>
       <div class="card card-full">
         <div style="text-align:center; margin-bottom:16px;">
           <div class="card-label">綜合評分</div>
-          <div class="countdown-num serif" style="color:var(--pale-green-text);">8<span style="font-size:20px;">/10</span></div>
-          <div class="card-unit" style="color:var(--text-muted);">8月 8.5 → 9月 8（現金緩衝拖低，還款能力強）</div>
+          <div class="countdown-num serif" style="color:var(--pale-green-text);">8.5<span style="font-size:20px;">/10</span></div>
         </div>
 
         <div class="progress-row">
           <span class="progress-label">收入穩定性</span>
-          <span class="tag tag-green">優 · 雙收入</span>
+          <span class="tag tag-green">優</span>
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:95%; background:var(--pale-green-text);"></div></div>
 
         <div class="progress-row">
           <span class="progress-label">信用使用率</span>
-          <span class="tag tag-green">0% 全清</span>
+          <span class="tag tag-green">&lt; 7%</span>
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:100%; background:var(--pale-green-text);"></div></div>
+        <div class="progress-track"><div class="progress-fill" style="width:95%; background:var(--pale-green-text);"></div></div>
 
         <div class="progress-row">
           <span class="progress-label">負債狀況</span>
@@ -1633,31 +2135,30 @@
 
         <div class="progress-row">
           <span class="progress-label">投資理財</span>
-          <span class="tag tag-green">91k · 月增 15k</span>
+          <span class="tag tag-green">有</span>
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:85%; background:var(--pale-green-text);"></div></div>
+        <div class="progress-track"><div class="progress-fill" style="width:80%; background:var(--pale-green-text);"></div></div>
 
         <div class="progress-row">
           <span class="progress-label">現金緩衝</span>
-          <span class="tag tag-red">3,442 偏低</span>
+          <span class="tag tag-yellow">可加強</span>
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:40%; background:var(--pale-red-text);"></div></div>
+        <div class="progress-track"><div class="progress-fill" style="width:65%; background:var(--pale-yellow-text);"></div></div>
 
         <div class="progress-row">
           <span class="progress-label">消費控制</span>
-          <span class="tag tag-yellow">送禮合理 · 餐飲留意</span>
+          <span class="tag tag-yellow">留意餐飲</span>
         </div>
         <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:70%; background:var(--pale-yellow-text);"></div></div>
       </div>
 
       <div class="card card-full" style="margin-top:12px;">
-        <div class="card-label">💡 財務管家建議（9月）</div>
+        <div class="card-label">💡 財務管家建議</div>
         <div class="info-block" style="font-size:12px;">
-          <p>· 流動資金 3,442 偏低，10月薪金入帳後撥返至少 5,000 緩衝</p>
-          <p>· 四張卡全清 ✅ 保持全數清還習慣，APR 34%+ 唔可以有利息</p>
-          <p>· 富途月增 15,355 表現好，宿舍申請完記得重新配置</p>
-          <p>· Brian 應收 49,000 佔資產 1/3，建議傾還款時間表</p>
-          <p>· 下月留意：宿舍申請結果 · 10/7 月度更新</p>
+          <p>· 中銀戶口 keep 住 5,000+ 緩衝</p>
+          <p>· 大額餐飲（翠屋 2,244）每月限 1-2 次</p>
+          <p>· 港鐵 460 偏高，留意交通補貼</p>
+          <p>· 兩張卡 APR 34%+，保持全數清還</p>
         </div>
       </div>
     </section>
@@ -1666,10 +2167,9 @@
       <p class="section-title">備註</p>
       <div class="card card-full">
         <div class="info-block">
-          <p>💡 富途總額 101,000（≈12,860 USD），當中 10,000 為媽媽代存，Zoe 實際 91,000</p>
-          <p>💡 流動資金（中銀 + Za Bank）隨時會花，唔算入儲蓄</p>
-          <p>💡 完整月結單分析存於桌面 <strong>Zoe工作输出</strong></p>
-          <p style="margin-top:10px; color:var(--text-muted); font-size:12px;">每月7號自動更新 · 撳月度記錄可展開以往月份</p>
+          <p>💡 富途基金總額 85,644.74，當中 10,000 為媽媽代存投資，Zoe 實際持有 75,644.74</p>
+          <p>💡 完整月結單分析：<strong>2026-08-12_銀行月結單分析.md</strong>（桌面）</p>
+          <p style="margin-top:10px; color:var(--text-muted); font-size:12px;">每月更新後跟我講，我幫你同步到此頁面</p>
         </div>
       </div>
     </section>
@@ -1780,12 +2280,106 @@
   </div>
 </div>
 
+<!-- ============ AGENT COURSE TAB（v2.42）============ -->
+<div class="tab-view" id="tab-agent">
+  <div class="container">
+
+    <section>
+      <p class="section-title">🤖 AI Agent 產品導師課程</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">課程版本</span>
+          <span class="tag tag-blue" id="agVersion">v2.0</span>
+        </div>
+        <div class="progress-row" style="margin-top:8px;">
+          <span class="progress-label">當前進度</span>
+          <span class="tag tag-yellow" id="agStageTag">階段 1 / 10</span>
+        </div>
+        <div class="progress-track" style="margin-top:10px;">
+          <div class="progress-fill" id="agStageBar" style="width:10%;"></div>
+        </div>
+        <div class="info-block" style="margin-top:12px;">
+          <p><strong>📘 當前課堂：</strong><span id="agLesson">—</span></p>
+          <p><strong>✍️ 作業：</strong><span id="agHomework">—</span></p>
+          <p style="margin-bottom:0;"><strong>📋 狀態：</strong><span id="agHwStatus">—</span></p>
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">
+          📖 課堂全文：<a href="https://zoematszting-bit.github.io/agent-course/" target="_blank" style="color:var(--pale-blue-text); font-weight:500;">Agent 課程網站</a>（GitHub Pages）
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
+          📂 課程檔案：Zoe工作输出/Agent課程/ · 指令 v2.1 已定版
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">⏱️ 每日學習打卡</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">🔥 連續學習</span>
+          <span class="tag tag-red" id="agStreakTag">0 天</span>
+        </div>
+        <div class="progress-row" style="margin-top:8px;">
+          <span class="progress-label">📚 累積學習</span>
+          <span class="tag tag-blue" id="agTotalTag">0 分鐘 · 0 次</span>
+        </div>
+        <div class="field-label-mini" style="margin-top:12px;">日期（預設今日，可補記）</div>
+        <input type="date" class="input-mini" id="agDate" style="margin-top:4px;">
+        <div class="field-grid" style="margin-top:8px;">
+          <div>
+            <div class="field-label-mini">學習分鐘</div>
+            <input type="number" class="input-mini" id="agMin" placeholder="30">
+          </div>
+          <div>
+            <div class="field-label-mini">今日環節</div>
+            <select class="input-mini" id="agType">
+              <option value="📘 睇課文">📘 睇課文</option>
+              <option value="✍️ 做作業">✍️ 做作業</option>
+              <option value="📊 市場調研">📊 市場調研</option>
+              <option value="🔄 複習鞏固">🔄 複習鞏固</option>
+            </select>
+          </div>
+          <div class="field-full" style="display:flex; gap:8px;">
+            <button class="typing-btn" style="flex:1;" onclick="addAgentLog()">✅ 打卡</button>
+          </div>
+        </div>
+        <div id="agLogList" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">💬 學習成果留言</p>
+      <div class="card card-full">
+        <textarea class="input-mini input-text" id="agNoteText" rows="4" placeholder="記低你嘅學習成果、體會、領悟…&#10;例如：今日學識五層方案階梯，明白考試系統出題用第1層Prompt就夠" style="width:100%; resize:vertical; font-size:13px; line-height:1.6;"></textarea>
+        <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="addAgentNote()">💾 記錄成果</button>
+        <div id="agNoteList" style="margin-top:12px;"></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">記錄存喺手機（隨「匯出同步碼」備份）· 寫得好的心得 ZCode 會幫你整理入作品集</div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">🗺️ 十大階段</p>
+      <div class="card card-full">
+        <div id="agStages"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📖 課程日誌（ZCode 更新）</p>
+      <div class="card card-full">
+        <div id="agCourseLog"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
 <div class="spacer"></div>
 
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v3.3 · 2026.09.12</span>
+  <span style="font-size:10px; opacity:0.5;">v2.48 · 2026.09.12</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -1793,9 +2387,11 @@
   <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview', this)">總覽</button>
   <button class="nav-btn" data-tab="study" onclick="switchTab('study', this)">備考</button>
   <button class="nav-btn" data-tab="fitness" onclick="switchTab('fitness', this)">健身</button>
+  <button class="nav-btn" data-tab="yoga" onclick="switchTab('yoga', this)">瑜伽</button>
   <button class="nav-btn" data-tab="web" onclick="switchTab('web', this)">網站</button>
   <button class="nav-btn" data-tab="finance" onclick="switchTab('finance', this)">財庫</button>
   <button class="nav-btn" data-tab="life" onclick="switchTab('life', this)">安排</button>
+  <button class="nav-btn" data-tab="agent" onclick="switchTab('agent', this)">Agent</button>
 </nav>
 
 <script>
@@ -1838,20 +2434,151 @@
   const GOAL_WEIGHT = 53;
   const WATER_GOAL = 2000;
   const dayTargets = {
-    training: { kcal: 1750, protein: 110 },
-    rest: { kcal: 1400, protein: 100 }
+    training: { kcal: 1750, protein: 110, carb: 200, fat: 55 },
+    rest: { kcal: 1400, protein: 100, carb: 140, fat: 50 }
   };
   const MUSCLE_COLORS = {
     '背':'#1F6C9F','胸':'#9F2F2D','肩':'#956400','臀':'#346538',
-    '腿':'#6B5B95','手臂':'#C2548A','核心':'#5C7A69','有氧':'#787774'
+    '腿':'#6B5B95','手臂':'#C2548A','核心':'#5C7A69','有氧':'#787774','瑜伽':'#8B7355'
   };
-  const SCHED_CYCLE = ['', '臀', '背', '胸', '肩', '腿', '有氧', '休息'];
+  const SCHED_CYCLE = ['', '臀', '背', '胸', '肩', '腿', '核心', '手臂', '瑜伽', '有氧', '休息'];
   const DAY_NAMES = ['一','二','三','四','五','六','日'];
+
+  // ===== 餐點種子數據（ZCode 遠程更新用）=====
+  // 每次 Zoe 報飲食 → ZCode 更新呢度 + git push → Zoe refresh 就見到
+  // 機制：該日 localStorage 冇記錄先注入一次（打咗 marker 就唔會重複/翻注）
+  const SEED_MEALS = {
+    '2026.08.18': [
+      {food:'桃膠蓮子銀耳牛奶羹（低糖）', time:'08:30', kcal:200, p:4, c:38, f:3},
+      {food:'九陽純豆漿粉1條', time:'10:30', kcal:90, p:8, c:2.4, f:4.9},
+      {food:'全麥包炒蛋午餐肉', time:'12:30', kcal:360, p:19, c:19, f:21},
+      {food:'可可蛋白奶（奶150+粉30g）', time:'12:45', kcal:215, p:24, c:14, f:7}
+    ],
+    '2026.08.19': [
+      {food:'燕麥粥（1杯）', time:'08:30', kcal:115, p:4, c:19, f:2},
+      {food:'紅棗豆漿（條粉30g）', time:'08:30', kcal:121, p:3, c:21, f:2.5},
+      {food:'水煮蛋（1隻）', time:'08:30', kcal:78, p:6, c:1, f:5},
+      {food:'自選壽司盛6貫', time:'12:30', kcal:350, p:20, c:42, f:11},
+      {food:'大阪章魚燒2顆', time:'12:30', kcal:180, p:5, c:20, f:10},
+      {food:'海鮮茶碗蒸', time:'12:30', kcal:90, p:8, c:4, f:4},
+      {food:'單點壽司3貫（無飯）', time:'12:30', kcal:170, p:14, c:3, f:10},
+      {food:'蒜炒芥蘭（大份）', time:'19:00', kcal:75, p:4, c:8, f:5},
+      {food:'彩椒炒鮮魷', time:'19:00', kcal:130, p:14, c:5, f:6.5},
+      {food:'醬汁燜三文魚（3大塊）', time:'19:00', kcal:400, p:40, c:3, f:24},
+      {food:'煎蛋肉餅（1小塊）', time:'19:00', kcal:75, p:6, c:0.5, f:5},
+      {food:'無糖可樂', time:'19:00', kcal:0, p:0, c:0, f:0}
+    ],
+    '2026.08.20': [
+      {food:'蒸貝貝南瓜（半個）', time:'08:30', kcal:80, p:1, c:18, f:0.5},
+      {food:'脆桃（1個）', time:'08:30', kcal:65, p:1, c:15, f:0.5},
+      {food:'便當（白飯+可樂雞肉碎+蛋）', time:'12:30', kcal:405, p:17, c:50, f:12},
+      {food:'九陽黑咖啡可可自律豆漿', time:'12:30', kcal:56, p:4, c:7, f:2},
+      {food:'自製涼拌青瓜（1條）', time:'12:30', kcal:55, p:2, c:5, f:4.5}
+    ]
+  };
+  // 增量同步：marker 記錄已同步嘅項目數；種子有新項目就追加（按 food+time 去重）
+  Object.keys(SEED_MEALS).forEach(function(d) {
+    const k = 'zoe_meals_' + d, mk = 'zoe_meals_seeded_' + d;
+    const seed = SEED_MEALS[d];
+    const prev = parseInt(localStorage.getItem(mk) || '0', 10) || 0;
+    if (prev === seed.length) return;
+    let cur = JSON.parse(localStorage.getItem(k) || '[]');
+    if (cur.length === 0 && prev === 0) {
+      localStorage.setItem(k, JSON.stringify(seed));
+    } else {
+      const has = cur.map(function(m) { return m.food + '@' + m.time; });
+      const add = seed.slice(prev).filter(function(s) { return has.indexOf(s.food + '@' + s.time) === -1; });
+      if (add.length) { cur = cur.concat(add); localStorage.setItem(k, JSON.stringify(cur)); }
+    }
+    localStorage.setItem(mk, String(seed.length));
+  });
+
+  // ===== 種子修正（一次性：精確匹配舊數值先替換；Zoe 自己改過嘅記錄唔會被覆蓋）=====
+  const SEED_CORRECTIONS = [
+    { id: 'c1', date: '2026.08.20',
+      match: {food:'蒸貝貝南瓜（半個）', time:'08:30', kcal:150, p:2, c:33, f:0.5},
+      to:    {food:'蒸貝貝南瓜（半個）', time:'08:30', kcal:80,  p:1, c:18, f:0.5} }
+  ];
+  SEED_CORRECTIONS.forEach(function(c) {
+    const dk = 'zoe_seed_corr_' + c.id;
+    if (localStorage.getItem(dk)) return;
+    const k = 'zoe_meals_' + c.date;
+    const cur = JSON.parse(localStorage.getItem(k) || '[]');
+    let changed = false;
+    cur.forEach(function(m, i) {
+      if (m && m.food === c.match.food && m.time === c.match.time &&
+          parseFloat(m.kcal) === c.match.kcal && parseFloat(m.p) === c.match.p &&
+          parseFloat(m.c) === c.match.c && parseFloat(m.f) === c.match.f) {
+        cur[i] = c.to; changed = true;
+      }
+    });
+    if (changed) localStorage.setItem(k, JSON.stringify(cur));
+    localStorage.setItem(dk, '1');
+  });
 
   let dayType = localStorage.getItem('zoe_dayType') || 'training';
   let weightData = JSON.parse(localStorage.getItem('zoe_weight') || '[]');
   let meals = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
   let water = parseInt(localStorage.getItem('zoe_water_' + dateStr) || '0');
+  let viewDate = dateStr;            // 飲食 tab 檢視緊嘅日期（可翻查補記）
+  let editState = {};                // 編輯模式狀態
+
+  // ===== 訓練種子數據（ZCode 遠程更新用，增量同步＋按 date|exercise|weight|reps 去重）=====
+  const SEED_WORKOUTS = [
+    {date:'2026.08.17', exercise:'肩前舉', weight:'2.5', reps:'15×4', group:'肩'},
+    {date:'2026.08.17', exercise:'飛鳥', weight:'2.5', reps:'15×4', group:'肩'},
+    {date:'2026.08.17', exercise:'招財貓', weight:'2.5', reps:'2×2', group:'肩'},
+    {date:'2026.08.17', exercise:'爬坡跑步', weight:'', reps:'30min', group:'有氧'},
+    {date:'2026.08.17', exercise:'山羊挺身', weight:'', reps:'12×4', group:'核心'},
+    {date:'2026.08.17', exercise:'臀推', weight:'30', reps:'12×4', group:'臀'},
+    {date:'2026.08.17', exercise:'硬拉', weight:'50', reps:'8×4', group:'臀'},
+    {date:'2026.08.17', exercise:'硬拉（輕組）', weight:'20', reps:'12×1', group:'臀'},
+    {date:'2026.08.17', exercise:'半蹲外展', weight:'52.5', reps:'12×4', group:'臀'},
+    {date:'2026.08.17', exercise:'前傾坐姿外展', weight:'52.5', reps:'12×4', group:'臀'},
+    {date:'2026.08.17', exercise:'坐姿外展（標準）', weight:'52.5', reps:'12×4', group:'臀'},
+    {date:'2026.08.18', exercise:'龍門架三頭', weight:'6.5', reps:'12×4', group:'手臂'},
+    {date:'2026.08.18', exercise:'面拉', weight:'6', reps:'12×3', group:'肩'},
+    {date:'2026.08.18', exercise:'蝴蝶機後束飛鳥', weight:'15', reps:'12×4', group:'肩'},
+    {date:'2026.08.18', exercise:'史密斯推肩', weight:'5', reps:'2×2', group:'肩'},
+    {date:'2026.08.18', exercise:'史密斯推肩', weight:'10', reps:'10×2', group:'肩'},
+    {date:'2026.08.18', exercise:'肩前舉', weight:'2.5', reps:'12×4', group:'肩'},
+    {date:'2026.08.18', exercise:'飛鳥', weight:'2.5', reps:'15×4', group:'肩'},
+    {date:'2026.08.18', exercise:'招財貓', weight:'2.5', reps:'2×2', group:'肩'},
+    {date:'2026.08.18', exercise:'陰瑜伽 Yin Yoga', weight:'', reps:'45min', group:'瑜伽'},
+    {date:'2026.08.19', exercise:'Slimming Yoga', weight:'', reps:'45min', group:'瑜伽'},
+    {date:'2026.08.28', exercise:'二頭彎舉', weight:'4', reps:'12×4', group:'手臂'},
+    {date:'2026.08.28', exercise:'錘式彎舉', weight:'4', reps:'12×4', group:'手臂'},
+    {date:'2026.08.28', exercise:'龍門架二頭彎舉', weight:'4', reps:'12×4', group:'手臂'},
+    {date:'2026.08.28', exercise:'龍門架三頭下壓', weight:'6', reps:'12×4', group:'手臂'},
+    {date:'2026.08.28', exercise:'跑步', weight:'', reps:'30min', group:'有氧'}
+  ];
+  (function() {
+    const mk = 'zoe_workouts_seeded';
+    const prev = parseInt(localStorage.getItem(mk) || '0', 10) || 0;
+    if (prev !== SEED_WORKOUTS.length && prev < SEED_WORKOUTS.length) {
+      let cur = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
+      const key = function(w) { return w.date + '|' + w.exercise + '|' + w.weight + '|' + w.reps; };
+      const has = cur.map(key);
+      const add = SEED_WORKOUTS.slice(prev).filter(function(w) { return has.indexOf(key(w)) === -1; });
+      if (add.length) { cur = cur.concat(add); localStorage.setItem('zoe_workouts', JSON.stringify(cur)); }
+    }
+    if (prev !== SEED_WORKOUTS.length) localStorage.setItem(mk, String(SEED_WORKOUTS.length));
+  })();
+
+  // ===== 瑜伽週打卡種子（ZCode 遠程更新用：已上堂自動打勾）=====
+  (function() {
+    const SEED_YOGA_WEEKS = { '2026-W34': { p1: true, p2: true } }; // 8/18 Yin + 8/19 Slimming
+    Object.keys(SEED_YOGA_WEEKS).forEach(function(wk) {
+      const k = 'zoe_yoga_week_' + wk;
+      const cur = JSON.parse(localStorage.getItem(k) || '{}');
+      let changed = false;
+      Object.keys(SEED_YOGA_WEEKS[wk]).forEach(function(kk) {
+        if (!cur[kk]) { cur[kk] = SEED_YOGA_WEEKS[wk][kk]; changed = true; }
+      });
+      if (changed) localStorage.setItem(k, JSON.stringify(cur));
+    });
+  })();
+
   let workouts = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
   let schedule = JSON.parse(localStorage.getItem('zoe_schedule') || '{}');
   let measurements = JSON.parse(localStorage.getItem('zoe_measurements') || '[]');
@@ -1921,11 +2648,23 @@
     document.getElementById('proteinNow').textContent = Math.round(tot.p);
     document.getElementById('kcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100) + '%';
     document.getElementById('proteinBar').style.width = Math.min(tot.p/t.protein*100,100) + '%';
+    const cn = document.getElementById('carbNow'), cg = document.getElementById('carbGoal'), cb = document.getElementById('carbBar');
+    if (cn) cn.textContent = Math.round(tot.c);
+    if (cg && t.carb) cg.textContent = t.carb;
+    if (cb && t.carb) cb.style.width = Math.min(tot.c/t.carb*100,100) + '%';
+    const fn = document.getElementById('fatNow'), fg = document.getElementById('fatGoal'), fb = document.getElementById('fatBar');
+    if (fn) fn.textContent = Math.round(tot.f);
+    if (fg && t.fat) fg.textContent = t.fat;
+    if (fb && t.fat) fb.style.width = Math.min(tot.f/t.fat*100,100) + '%';
     document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
     const ab = document.getElementById(dayType==='training'?'dayBtnTraining':'dayBtnRest');
     if (ab) ab.classList.add('active');
+    const tm0 = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
+    const tt0 = tm0.reduce((a,m)=>({kcal:a.kcal+(parseFloat(m.kcal)||0), p:a.p+(parseFloat(m.p)||0)}),{kcal:0,p:0});
     const fct = document.getElementById('fitCardToday');
-    if (fct) fct.textContent = '今日 ' + Math.round(tot.kcal) + ' / ' + t.kcal + ' kcal · P' + Math.round(tot.p) + 'g';
+    if (fct) fct.textContent = '今日 ' + Math.round(tt0.kcal) + ' / ' + t.kcal + ' kcal · P' + Math.round(tt0.p) + 'g';
+    const dl = document.getElementById('dietDateLabel');
+    if (dl) dl.textContent = viewDate === dateStr ? '檢視緊：今日' : '檢視緊：' + viewDate + '（補記模式 · 記錄會存入呢一日）';
     renderMacro();
   }
 
@@ -1933,20 +2672,40 @@
   function addMeal() {
     const food = document.getElementById('mealFood').value.trim();
     if (!food) return;
-    meals.push({
-      food, time: document.getElementById('mealTime').value || dateStr.slice(5),
+    const entry = {
+      food, time: document.getElementById('mealTime').value || viewDate.slice(5),
       kcal: document.getElementById('mealKcal').value || 0,
       p: document.getElementById('mealP').value || 0,
       c: document.getElementById('mealC').value || 0,
       f: document.getElementById('mealF').value || 0
-    });
-    localStorage.setItem('zoe_meals_' + dateStr, JSON.stringify(meals));
-    ['mealFood','mealTime','mealKcal','mealP','mealC','mealF'].forEach(id => document.getElementById(id).value='');
+    };
+    if (editState.meal !== undefined) {
+      if (!confirm('確認修改呢條餐飲記錄？')) return;
+      meals[editState.meal] = entry;
+    } else {
+      meals.push(entry);
+    }
+    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
+    cancelEdit('meal');
     renderMeals(); renderDiet(); renderOverview();
   }
+  function editMeal(i) {
+    const m = meals[i];
+    document.getElementById('mealFood').value = m.food;
+    document.getElementById('mealTime').value = m.time;
+    document.getElementById('mealKcal').value = m.kcal;
+    document.getElementById('mealP').value = m.p;
+    document.getElementById('mealC').value = m.c;
+    document.getElementById('mealF').value = m.f;
+    editState.meal = i;
+    setFormBtn('mealBtn','mealCancel',true,'💾 更新餐點');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
   function delMeal(i) {
+    if (!confirm('確認刪除「' + meals[i].food + '」？')) return;
     meals.splice(i,1);
-    localStorage.setItem('zoe_meals_' + dateStr, JSON.stringify(meals));
+    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
+    cancelEdit('meal');
     renderMeals(); renderDiet(); renderOverview();
   }
   function renderMeals() {
@@ -1956,16 +2715,49 @@
       return;
     }
     el.innerHTML = meals.map((m,i) =>
-      '<div class="log-item"><div class="log-item-head"><span class="log-item-title">'+m.food+'</span>'+
-      '<span><span class="log-item-time">'+m.time+'</span> <button class="log-del" onclick="delMeal('+i+')">×</button></span></div>'+
+      '<div class="log-item" onclick="editMeal('+i+')" style="cursor:pointer;">'+
+      '<div class="log-item-head"><span class="log-item-title">'+m.food+'</span>'+
+      '<span><span class="log-item-time">'+m.time+'</span> <button class="log-del" onclick="event.stopPropagation(); delMeal('+i+')">×</button></span></div>'+
       '<div class="log-item-meta">'+(m.kcal||0)+' kcal · P'+(m.p||0)+' C'+(m.c||0)+' F'+(m.f||0)+'</div></div>'
     ).join('');
+  }
+
+  // ----- 匯入餐單（ZCode 分析結果）-----
+  function toggleImport() {
+    const box = document.getElementById('importBox');
+    const show = box.style.display === 'none';
+    box.style.display = show ? 'block' : 'none';
+    document.getElementById('importToggle').textContent = show ? '收起' : '展開';
+  }
+  function importMeals() {
+    const raw = document.getElementById('importText').value.trim();
+    if (!raw) { alert('請先貼上餐單'); return; }
+    let ok = 0, skip = 0;
+    raw.split(/\n+/).forEach(line => {
+      const parts = line.trim().split(/[|｜]/).map(s => s.trim());
+      if (parts.length === 5 && !/^\d{1,2}:\d{2}$/.test(parts[1])) parts.splice(1, 0, '');
+      if (!parts[0] || parts.length < 5) { skip++; return; }
+      meals.push({
+        food: parts[0], time: parts[1] || viewDate.slice(5),
+        kcal: parseFloat(parts[2]) || 0,
+        p: parseFloat(parts[3]) || 0,
+        c: parseFloat(parts[4]) || 0,
+        f: parseFloat(parts[5]) || 0
+      });
+      ok++;
+    });
+    if (!ok) { alert('格式唔啱：每行要係「食物｜時間｜kcal｜蛋白g｜碳水g｜脂肪g」'); return; }
+    localStorage.setItem('zoe_meals_' + viewDate, JSON.stringify(meals));
+    document.getElementById('importText').value = '';
+    cancelEdit('meal');
+    renderMeals(); renderDiet(); renderOverview();
+    alert('已匯入 ' + ok + ' 項餐點到 ' + viewDate + (skip ? '（略過 ' + skip + ' 行格式唔啱）' : '') + ' ✅');
   }
 
   // ----- Water -----
   function addWater(ml) {
     water = Math.max(0, water + ml);
-    localStorage.setItem('zoe_water_' + dateStr, water);
+    localStorage.setItem('zoe_water_' + viewDate, water);
     renderWater(); renderOverview();
   }
   function renderWater() {
@@ -1975,19 +2767,205 @@
     document.getElementById('waterRing').style.strokeDashoffset = 175.9 - (175.9*pct/100);
   }
 
-  // ----- Overview -----
+  // ----- Sleep -----
+  let sleepData = JSON.parse(localStorage.getItem('zoe_sleep') || '[]');
+  function addSleep() {
+    const v = parseFloat(document.getElementById('sleepInput').value);
+    if (!v || v <= 0 || v > 24) { alert('請輸入有效時數（0-24小時）'); return; }
+    const i = sleepData.findIndex(s => s.date === dateStr);
+    if (i >= 0) sleepData[i].hours = v; else sleepData.push({ date: dateStr, hours: v });
+    localStorage.setItem('zoe_sleep', JSON.stringify(sleepData));
+    document.getElementById('sleepInput').value = '';
+    renderSleep();
+  }
+  function quickSleep(v) { document.getElementById('sleepInput').value = v; addSleep(); }
+  function renderSleep() {
+    const bar = document.getElementById('sleepBar');
+    const last = sleepData.length ? sleepData[sleepData.length-1] : null;
+    if (last) bar.style.width = Math.min(last.hours/8*100, 100) + '%';
+    const el = document.getElementById('sleepHist');
+    el.innerHTML = sleepData.slice(-7).reverse().map(s =>
+      '<div class="log-row"><span class="log-date">' + s.date + '</span><span class="log-value">' + s.hours + ' h' + (s.hours < 6.5 ? ' ⚠️' : ' ✅') + '</span></div>'
+    ).join('') || '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄</span></div>';
+  }
+
+  // ----- 複製數據俾 ZCode -----
+  function exportZoeData() {
+    const lines = [];
+    lines.push('【Zoe Dashboard 數據 ' + dateStr + '】');
+    lines.push('日型：' + (dayType==='training' ? '訓練日' : '休息日'));
+    lines.push('最新體重：' + (weightData.length ? (weightData[weightData.length-1].date||'') + ' ' + weightData[weightData.length-1].weight + 'kg' : '未有'));
+    lines.push('');
+    lines.push('— 餐點（' + viewDate + '）—');
+    if (meals.length) meals.forEach(m => lines.push(m.food+'｜'+m.time+'｜'+m.kcal+'kcal｜P'+m.p+' C'+m.c+' F'+m.f));
+    else lines.push('未有');
+    lines.push('');
+    lines.push('— 訓練記錄（最近60項）—');
+    if (workouts.length) workouts.slice(-60).forEach(w => lines.push(w.date+'｜'+w.exercise+'｜'+(w.weight||'')+'kg｜'+(w.reps||'')+'｜'+(w.group||'')));
+    else lines.push('未有');
+    lines.push('');
+    lines.push('— 睡眠（最近7晚）—');
+    if (sleepData.length) sleepData.slice(-7).forEach(s => lines.push(s.date+'｜'+s.hours+'h'));
+    else lines.push('未有');
+    const text = lines.join('\n');
+    const done = () => alert('已複製！直接貼俾 ZCode 就得 ✅');
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) { alert('複製失敗，請手動抄低'); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
+  }
+
+  // ----- Overview（永遠顯示今日數據）-----
   function renderOverview() {
     const t = dayTargets[dayType];
-    const tot = mealTotals();
+    const tm = JSON.parse(localStorage.getItem('zoe_meals_' + dateStr) || '[]');
+    const tot = tm.reduce((a,m)=>({kcal:a.kcal+(parseFloat(m.kcal)||0), p:a.p+(parseFloat(m.p)||0)}),{kcal:0,p:0});
+    const tw = parseInt(localStorage.getItem('zoe_water_' + dateStr) || '0');
     document.getElementById('ovKcalGoal').textContent = t.kcal;
     document.getElementById('ovProteinGoal').textContent = t.protein;
     document.getElementById('ovKcal').textContent = Math.round(tot.kcal);
     document.getElementById('ovProtein').textContent = Math.round(tot.p);
-    document.getElementById('ovWater').textContent = water;
+    document.getElementById('ovWater').textContent = tw;
     document.getElementById('ovKcalBar').style.width = Math.min(tot.kcal/t.kcal*100,100)+'%';
     document.getElementById('ovProteinBar').style.width = Math.min(tot.p/t.protein*100,100)+'%';
-    document.getElementById('ovWaterBar').style.width = Math.min(water/WATER_GOAL*100,100)+'%';
-    document.getElementById('ovDayLabel').textContent = dayType==='training' ? '今日：訓練日' : '今日：休息日';
+    document.getElementById('ovWaterBar').style.width = Math.min(tw/WATER_GOAL*100,100)+'%';
+    const dcs = dcheckOf(dateStr).status;
+    document.getElementById('ovDayLabel').textContent = (dayType==='training' ? '今日：訓練日' : '今日：休息日') + (dcs === 'pass' ? ' · 飲食✅' : dcs === 'fail' ? ' · 飲食❌' : '');
+  }
+
+  // ----- 通用：編輯模式按鈕 / 取消 / 日期揀選 -----
+  function setFormBtn(btnId, cancelId, editing, editLabel) {
+    const b = document.getElementById(btnId); if (!b) return;
+    b.textContent = editing ? editLabel : b.getAttribute('data-add') || b.textContent;
+    if (!b.getAttribute('data-add')) b.setAttribute('data-add', '＋ ' + (b.textContent.replace('＋ ','').replace('💾 更新','記錄')) || '記錄');
+    const cb = document.getElementById(cancelId); if (cb) cb.style.display = editing ? 'inline-block' : 'none';
+  }
+  function clearEdit(kind) { delete editState[kind]; }
+  function cancelEdit(kind) {
+    clearEdit(kind);
+    const resets = {
+      meal: ['mealFood','mealTime','mealKcal','mealP','mealC','mealF'],
+      wo: ['woExercise','woWeight','woReps','woDate'],
+      weight: ['weightInput'],
+      ms: ['mWaist','mHip','mThigh','mArm'],
+      pd: ['periodInput'],
+      yl: ['ylContent','ylTopic','ylMins'],
+      yc: ['ycMins','ycDate']
+    };
+    (resets[kind]||[]).forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    const btns = { meal:['mealBtn','mealCancel','＋ 記錄餐點'], wo:['woBtn','woCancel','＋ 記錄動作'],
+      weight:['weightBtn','weightCancel','記錄'], ms:['msBtn','msCancel','＋ 記錄圍度'],
+      pd:['pdBtn','pdCancel','記錄'], yl:['ylBtn','ylCancel','＋ 記錄'], yc:['ycBtn','ycCancel','＋ 記錄瑜伽課'] };
+    const conf = btns[kind];
+    if (conf) {
+      const b = document.getElementById(conf[0]); if (b) b.textContent = conf[2];
+      const cb = document.getElementById(conf[1]); if (cb) cb.style.display = 'none';
+    }
+  }
+  function loadDietDate(val) {
+    if (!val) return;
+    const key = val.replace(/-/g, '.');
+    if (key === viewDate) return;
+    viewDate = key;
+    cancelEdit('meal');
+    meals = JSON.parse(localStorage.getItem('zoe_meals_' + viewDate) || '[]');
+    water = parseInt(localStorage.getItem('zoe_water_' + viewDate) || '0');
+    renderMeals(); renderDiet(); renderWater(); renderDcheck(); renderDcheckWeek();
+  }
+  function goDietToday() {
+    document.getElementById('dietDatePick').value = dateStr.replace(/\./g, '-');
+    loadDietDate(dateStr.replace(/\./g, '-'));
+  }
+
+  // ----- Diet compliance（飲食監測達標勾選）-----
+  const DC_FAIL_OPTIONS = ['🍗 炸雞','🧋 奶茶','🍰 甜品','🍟 零食','🍞 精緻碳水','🍚 澱粉過量','🌙 夜食9點後','🧂 重口味','🍺 酒精'];
+  function dcheckOf(d) {
+    try { return JSON.parse(localStorage.getItem('zoe_dcheck_' + d) || 'null') || { status: '', fails: [] }; }
+    catch (e) { return { status: '', fails: [] }; }
+  }
+  function saveDcheck(d, dc) { localStorage.setItem('zoe_dcheck_' + d, JSON.stringify(dc)); }
+  function setDietCheck(status) {
+    const dc = dcheckOf(viewDate);
+    dc.status = (dc.status === status) ? '' : status;   // 再撳同一個掣＝取消記錄
+    if (dc.status === 'pass') dc.fails = [];
+    saveDcheck(viewDate, dc);
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function toggleDcFail(opt) {
+    const dc = dcheckOf(viewDate);
+    const i = dc.fails.indexOf(opt);
+    if (i === -1) dc.fails.push(opt); else dc.fails.splice(i, 1);
+    if (dc.fails.length > 0) dc.status = 'fail';   // 揀咗犯規項會自動標記未達標
+    saveDcheck(viewDate, dc);
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function addDcCustom() {
+    const inp = document.getElementById('dcCustomInput');
+    const v = inp.value.trim();
+    if (!v) return;
+    const dc = dcheckOf(viewDate);
+    if (dc.fails.indexOf(v) === -1) { dc.fails.push(v); dc.status = 'fail'; }
+    saveDcheck(viewDate, dc);
+    inp.value = '';
+    renderDcheck(); renderDcheckWeek(); renderOverview();
+  }
+  function renderDcheck() {
+    const dc = dcheckOf(viewDate);
+    const bp = document.getElementById('dcBtnPass'), bf = document.getElementById('dcBtnFail');
+    if (bp) bp.classList.toggle('active', dc.status === 'pass');
+    if (bf) bf.classList.toggle('active', dc.status === 'fail');
+    const box = document.getElementById('dcFailBox');
+    if (box) box.style.display = dc.status === 'fail' ? 'block' : 'none';
+    const chipsEl = document.getElementById('dcFailChips');
+    if (chipsEl) {
+      const all = DC_FAIL_OPTIONS.concat(dc.fails.filter(f => DC_FAIL_OPTIONS.indexOf(f) === -1));
+      chipsEl.innerHTML = all.map(f => {
+        const esc = f.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        return '<span class="dc-chip' + (dc.fails.indexOf(f) > -1 ? ' on' : '') + '" onclick="toggleDcFail(\'' + esc + '\')">' + f + '</span>';
+      }).join('');
+    }
+    const sl = document.getElementById('dcStatusLine');
+    if (sl) {
+      if (!dc.status) sl.innerHTML = '<span style="color:var(--text-muted);">未記錄 · 撳上面揀今日達唔達標</span>';
+      else if (dc.status === 'pass') sl.innerHTML = '<span style="color:var(--pale-green-text);">✅ 今日達標，keep 住！</span>';
+      else sl.innerHTML = '<span style="color:var(--pale-red-text);">❌ 未達標：' + dc.fails.join('、') + '</span>';
+    }
+  }
+  function renderDcheckWeek() {
+    const strip = document.getElementById('dcWeekStrip');
+    if (!strip) return;
+    let html = '';
+    for (let i = 6; i >= 0; i--) {
+      const dt = new Date(today.getTime() - i * 86400000);
+      const key = dt.getFullYear() + '.' + String(dt.getMonth() + 1).padStart(2, '0') + '.' + String(dt.getDate()).padStart(2, '0');
+      const dc = dcheckOf(key);
+      const wd = ['日','一','二','三','四','五','六'][dt.getDay()];
+      const icon = dc.status === 'pass' ? '✅' : dc.status === 'fail' ? '❌' : '·';
+      html += '<div class="dc-day' + (key === viewDate ? ' cur' : '') + '" onclick="jumpDcDate(\'' + key + '\')">' +
+        '<div class="dc-day-emoji">' + icon + '</div><div class="dc-day-num">' + dt.getDate() + '</div><div class="dc-day-wd">' + wd + '</div></div>';
+    }
+    strip.innerHTML = html;
+    const ym = dateStr.slice(0, 7);
+    let pass = 0, fail = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.indexOf('zoe_dcheck_') === 0 && k.slice(11, 18) === ym) {
+        const s = dcheckOf(k.slice(11)).status;
+        if (s === 'pass') pass++; else if (s === 'fail') fail++;
+      }
+    }
+    const mr = document.getElementById('dcMonthRate');
+    if (mr) mr.textContent = (pass + fail) > 0
+      ? '本月達標：' + pass + ' 日 ✅ / ' + fail + ' 日 ❌（達標率 ' + Math.round(pass / (pass + fail) * 100) + '%）'
+      : '本月達標率：未有記錄';
+  }
+  function jumpDcDate(key) {
+    document.getElementById('dietDatePick').value = key.replace(/\./g, '-');
+    loadDietDate(key.replace(/\./g, '-'));
   }
 
   // ----- Weight -----
@@ -2012,52 +2990,158 @@
     const input = document.getElementById('weightInput');
     const val = parseFloat(input.value);
     if (!val || val<30 || val>100) return;
-    weightData.push({ date: dateStr, weight: val });
+    if (editState.weight !== undefined) {
+      if (!confirm('確認修改呢條體重記錄？')) return;
+      weightData[editState.weight].weight = val;
+    } else {
+      weightData.push({ date: dateStr, weight: val });
+    }
     localStorage.setItem('zoe_weight', JSON.stringify(weightData));
-    input.value=''; renderWeight();
+    cancelEdit('weight');
+    renderWeight(); renderWeightList();
+  }
+  function editWeight(i) {
+    document.getElementById('weightInput').value = weightData[i].weight;
+    editState.weight = i;
+    const b = document.getElementById('weightBtn'); if (b) b.textContent = '💾 更新';
+    const cb = document.getElementById('weightCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function delWeight(i) {
+    if (!confirm('確認刪除 ' + weightData[i].date + ' 嘅體重記錄？')) return;
+    weightData.splice(i,1);
+    localStorage.setItem('zoe_weight', JSON.stringify(weightData));
+    cancelEdit('weight');
+    renderWeight(); renderWeightList();
+  }
+  function renderWeightList() {
+    const el = document.getElementById('weightHist');
+    if (!el) return;
+    if (weightData.length === 0) {
+      el.innerHTML = '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄</span></div>';
+      return;
+    }
+    el.innerHTML = weightData.slice(-10).reverse().map((w, ri) => {
+      const i = weightData.length - 1 - ri;
+      const diff = i>0 ? w.weight - weightData[i-1].weight : 0;
+      const ds = i===0 ? '' : (diff<=0 ? '<span style="color:var(--pale-green-text);">'+diff.toFixed(1)+'</span>' : '<span style="color:var(--pale-red-text);">+'+diff.toFixed(1)+'</span>');
+      return '<div class="log-row" onclick="editWeight('+i+')" style="cursor:pointer;">'+
+        '<span class="log-date">'+w.date+'</span>'+
+        '<span><span class="log-value">'+w.weight.toFixed(1)+' kg '+ds+'</span> <button class="log-del" onclick="event.stopPropagation(); delWeight('+i+')">×</button></span></div>';
+    }).join('');
   }
 
   // ----- Workouts -----
-  function addWorkout() {
-    const ex = document.getElementById('woExercise').value.trim();
-    if (!ex) return;
-    workouts.push({
-      date: dateStr, exercise: ex,
+  function buildWoEntry() {
+    return {
+      exercise: document.getElementById('woExercise').value.trim(),
       weight: document.getElementById('woWeight').value||'',
       reps: document.getElementById('woReps').value||'',
       group: document.getElementById('woGroup').value
-    });
+    };
+  }
+  function fillWoForm(w) {
+    document.getElementById('woExercise').value = w.exercise;
+    document.getElementById('woWeight').value = w.weight;
+    document.getElementById('woReps').value = w.reps;
+    document.getElementById('woGroup').value = w.group;
+    document.getElementById('woDate').value = (w.date || dateStr).replace(/\./g, '-');
+  }
+  function woFormDate() {
+    const v = document.getElementById('woDate').value; // YYYY-MM-DD
+    return v ? v.replace(/-/g, '.') : dateStr;
+  }
+  function afterWoChange() {
+    renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderYogaHours(); renderWorkoutHistory(); renderYogaTypeStats(); renderYoga1000();
+  }
+  function addWorkout() {
+    const entry = buildWoEntry();
+    if (!entry.exercise) return;
+    if (editState.wo !== undefined) {
+      if (!confirm('確認修改呢條訓練記錄？')) return;
+      workouts[editState.wo] = Object.assign({ date: woFormDate() }, entry); // 日期都可以改
+    } else {
+      workouts.push(Object.assign({ date: woFormDate() }, entry)); // 補記：揀咗日期就用嗰日
+    }
     localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
-    document.getElementById('woExercise').value='';
-    document.getElementById('woWeight').value='';
-    document.getElementById('woReps').value='';
-    renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect();
+    cancelEdit('wo');
+    afterWoChange();
+  }
+  function editWorkout(i) {
+    fillWoForm(workouts[i]);
+    editState.wo = i;
+    const b = document.getElementById('woBtn'); if (b) b.textContent = '💾 更新動作';
+    const cb = document.getElementById('woCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function delWorkout(i) {
+    if (!confirm('確認刪除「' + workouts[i].exercise + '」（' + workouts[i].date + '）？')) return;
+    workouts.splice(i,1);
+    localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
+    cancelEdit('wo');
+    afterWoChange();
   }
   function renderTodayWorkout() {
     const el = document.getElementById('todayWorkout');
-    const todays = workouts.filter(w => w.date === dateStr);
+    const todays = workouts.map((w,i)=>({w,i})).filter(x => x.w.date === dateStr);
     if (todays.length === 0) {
       el.innerHTML = '<div class="log-item" style="color:var(--text-muted); justify-content:center; text-align:center;">今日未有訓練記錄</div>';
       return;
     }
-    el.innerHTML = todays.map(w =>
-      '<div class="log-item"><div class="log-item-head"><span class="log-item-title">'+w.exercise+
-      ' <span class="tag tag-gray" style="margin-left:4px;">'+w.group+'</span></span>'+
-      '<span class="log-item-meta">'+w.weight+'kg · '+w.reps+'</span></div></div>'
+    el.innerHTML = todays.map(x =>
+      '<div class="log-item" onclick="editWorkout('+x.i+')" style="cursor:pointer;">'+
+      '<div class="log-item-head"><span class="log-item-title">'+x.w.exercise+
+      ' <span class="tag tag-gray" style="margin-left:4px;">'+x.w.group+'</span></span>'+
+      '<span><span class="log-item-meta">'+x.w.weight+'kg · '+x.w.reps+'</span> '+
+      '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div></div>'
     ).join('');
   }
+  let woHistShowAll = false;
+  function toggleWoHist() { woHistShowAll = !woHistShowAll; renderWorkoutHistory(); }
+  function renderWorkoutHistory() {
+    const el = document.getElementById('woHistory');
+    if (!el) return;
+    if (workouts.length === 0) {
+      el.innerHTML = '<div class="log-item" style="color:var(--text-muted); text-align:center;">未有記錄</div>';
+      return;
+    }
+    const total = workouts.length;
+    const shown = woHistShowAll ? workouts.slice().reverse() : workouts.slice(-20).reverse();
+    const moreBtn = total > 20
+      ? '<div style="text-align:center; margin-top:10px;"><button class="quick-btn" onclick="toggleWoHist()">'+(woHistShowAll ? '收起（只顯示最近 20 筆）' : '顯示全部 '+total+' 筆紀錄 ▾')+'</button></div>'
+      : '';
+    el.innerHTML = shown.map((w, ri) => {
+      const i = workouts.length - 1 - ri;
+      return '<div class="log-item" onclick="editWorkout('+i+')" style="cursor:pointer;">'+
+        '<div class="log-item-head"><span class="log-item-title">'+w.exercise+
+        ' <span class="tag tag-gray" style="margin-left:4px;">'+w.group+'</span></span>'+
+        '<span><span class="log-item-meta">'+w.weight+'kg · '+w.reps+'</span> '+
+        '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+i+')">×</button></span></div>'+
+        '<div class="log-item-time" style="margin-top:2px;">'+w.date+'</div></div>';
+    }).join('') + moreBtn;
+  }
 
-  // ----- Muscle distribution (this week) -----
+  // ----- Muscle distribution（週回顧，可翻過往週）-----
+  let muscleWeekOffset = 0;
   function startOfWeek(d) {
     const x = new Date(d);
     const day = (x.getDay()+6)%7; // Mon=0
     x.setDate(x.getDate()-day); x.setHours(0,0,0,0);
     return x;
   }
+  function shiftMuscleWeek(delta) {
+    muscleWeekOffset = Math.max(0, muscleWeekOffset + delta);
+    renderMuscleDist(); renderWeekWoList();
+  }
   function renderMuscleDist() {
     const el = document.getElementById('muscleDist');
-    const ws = startOfWeek(today);
-    const weekWos = workouts.filter(w => new Date(w.date.replace(/\./g,'-')) >= ws);
+    const ws = startOfWeek(new Date(today.getTime() - muscleWeekOffset*7*86400000));
+    const we = new Date(ws.getTime() + 7*86400000);
+    const weekWos = workouts.filter(w => { const d = new Date(w.date.replace(/\./g,'-')); return d >= ws && d < we; });
+    const wl = document.getElementById('muscleWeekLabel');
+    if (wl) wl.textContent = (muscleWeekOffset === 0 ? '本週' : '前 '+muscleWeekOffset+' 週') + ' · ' + isoWeekKey(ws);
+    const nx = document.getElementById('mwNext');
+    if (nx) nx.style.visibility = muscleWeekOffset === 0 ? 'hidden' : 'visible';
     const counts = {};
     weekWos.forEach(w => counts[w.group] = (counts[w.group]||0)+1);
     const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
@@ -2066,10 +3150,50 @@
       return;
     }
     const max = Math.max(...entries.map(e=>e[1]));
-    el.innerHTML = entries.map(([g,n]) =>
-      '<div class="bar-row"><div class="bar-label-line"><span>'+g+'</span><span style="font-family:JetBrains Mono,monospace; font-size:11px; color:var(--text-muted);">'+n+' 組</span></div>'+
-      '<div class="bar-track-h"><div class="bar-fill-h" style="width:'+(n/max*100)+'%; background:'+(MUSCLE_COLORS[g]||'#1A1A1A')+';"></div></div></div>'
-    ).join('');
+    el.innerHTML = entries.map(([g,n]) => {
+      const items = weekWos.filter(w => w.group === g).map(w =>
+        w.date.slice(5) + ' · ' + w.exercise + '｜' + (w.weight ? w.weight + 'kg' : '—') + '｜' + (w.reps || ''));
+      return '<div class="bar-row" style="cursor:pointer; border-radius:6px;" onclick="toggleMuscleDetail(this)">'+
+      '<div class="bar-label-line"><span><span class="msc-arrow" style="display:inline-block; font-size:10px; transition:transform .2s;">▸</span> '+g+'</span><span style="font-family:JetBrains Mono,monospace; font-size:11px; color:var(--text-muted);">'+n+' 組</span></div>'+
+      '<div class="bar-track-h"><div class="bar-fill-h" style="width:'+(n/max*100)+'%; background:'+(MUSCLE_COLORS[g]||'#1A1A1A')+';"></div></div>'+
+      '<div class="msc-detail" style="display:none; margin-top:8px; border-top:1px dashed var(--border); padding-top:8px;">'+
+      items.map(t => '<div style="font-size:11px; color:var(--text-muted); padding:3px 0 3px 14px; font-family:JetBrains Mono,monospace;">'+t+'</div>').join('')+
+      '</div></div>';
+    }).join('');
+  }
+  function toggleMuscleDetail(row) {
+    const d = row.querySelector('.msc-detail');
+    const a = row.querySelector('.msc-arrow');
+    if (!d) return;
+    const show = d.style.display === 'none';
+    d.style.display = show ? 'block' : 'none';
+    if (a) a.style.transform = show ? 'rotate(90deg)' : 'rotate(0deg)';
+  }
+
+  // ----- 該週訓練記錄（跟隨肌群分佈週導航）-----
+  function renderWeekWoList() {
+    const el = document.getElementById('weekWoList');
+    if (!el) return;
+    const ws = startOfWeek(new Date(today.getTime() - muscleWeekOffset*7*86400000));
+    const we = new Date(ws.getTime() + 7*86400000);
+    const weekWos = workouts.filter(w => { const d = new Date(w.date.replace(/\./g,'-')); return d >= ws && d < we; });
+    if (weekWos.length === 0) {
+      el.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:6px 0;">該週未有訓練記錄</div>';
+      return;
+    }
+    const byDate = {};
+    weekWos.forEach(w => { (byDate[w.date] = byDate[w.date] || []).push(w); });
+    const dates = Object.keys(byDate).sort().reverse();
+    el.innerHTML = '<div class="card-label" style="margin-bottom:8px;">該週訓練記錄（'+weekWos.length+' 筆）</div>' +
+      dates.map(d =>
+        '<div style="margin-bottom:10px;">'+
+        '<div style="font-size:11px; color:var(--text-muted); font-family:JetBrains Mono,monospace; margin-bottom:4px;">'+d+'</div>'+
+        byDate[d].map(w =>
+          '<div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-bottom:1px solid var(--border);">'+
+          '<span>'+w.exercise+' <span class="tag tag-gray">'+w.group+'</span></span>'+
+          '<span style="color:var(--text-muted); font-family:JetBrains Mono,monospace; font-size:11px;">'+(w.weight?w.weight+'kg · ':'')+(w.reps||'')+'</span></div>'
+        ).join('')+'</div>'
+      ).join('');
   }
 
   // ----- Strength progress -----
@@ -2107,42 +3231,100 @@
   }
 
   // ----- Schedule -----
+  // 訓練排程：按週儲存（每週自動重置）+ 滾輪揀選
+  function schedWeekKey(off) {
+    return 'zoe_schedule_' + isoWeekKey(new Date(today.getTime() - (off||0)*7*86400000));
+  }
+  function getSched(off) {
+    return JSON.parse(localStorage.getItem(schedWeekKey(off)) || '{}');
+  }
+  (function migrateSched() {
+    // 一次性：舊 zoe_schedule 遷移到本週 key
+    const old = localStorage.getItem('zoe_schedule');
+    if (old && !localStorage.getItem(schedWeekKey(0))) {
+      localStorage.setItem(schedWeekKey(0), old);
+    }
+  })();
   function renderSchedule() {
     const el = document.getElementById('schedGrid');
+    if (!el) return;
+    const cur = getSched(0);
+    const opts = SCHED_CYCLE.filter(x => x !== '').map(x =>
+      '<option value="'+x+'">'+x+'</option>').join('');
     el.innerHTML = DAY_NAMES.map((d,i)=>{
-      const key = 'd'+i;
-      const v = schedule[key]||'';
-      return '<div><div class="sched-day">'+d+'</div><div class="sched-box'+(v?' active':'')+'" onclick="toggleSched('+i+')">'+(v||'-')+'</div></div>';
+      const v = cur['d'+i]||'';
+      return '<div><div class="sched-day">'+d+'</div>'+
+        '<select class="sched-select'+(v?' sel-on':'')+'" onchange="setSched('+i+', this.value)">'+
+        '<option value=""'+(v?'':' selected')+'>–</option>'+
+        opts.replace('value="'+v+'"', 'value="'+v+'" selected')+
+        '</select></div>';
     }).join('');
+    const wl = document.getElementById('schedWeekLabel');
+    if (wl) wl.textContent = '本週 · ' + isoWeekKey(today);
+    const prev = getSched(1);
+    const cb = document.getElementById('schedCopyBtn');
+    if (cb) cb.style.display = Object.keys(prev).length > 0 ? 'inline-block' : 'none';
   }
-  function toggleSched(i) {
-    const key='d'+i;
-    const cur = schedule[key]||'';
-    const idx = SCHED_CYCLE.indexOf(cur);
-    schedule[key] = SCHED_CYCLE[(idx+1)%SCHED_CYCLE.length];
-    localStorage.setItem('zoe_schedule', JSON.stringify(schedule));
+  function setSched(i, val) {
+    const cur = getSched(0);
+    if (val) cur['d'+i] = val; else delete cur['d'+i];
+    localStorage.setItem(schedWeekKey(0), JSON.stringify(cur));
+    renderSchedule();
+  }
+  function copyPrevSched() {
+    const prev = getSched(1);
+    if (Object.keys(prev).length === 0) { alert('上週未有排程'); return; }
+    if (!confirm('複製上週排程到本週？')) return;
+    localStorage.setItem(schedWeekKey(0), JSON.stringify(prev));
     renderSchedule();
   }
 
   // ----- Measurements -----
-  function addMeasurement() {
-    const m = {
-      date: dateStr,
+  function buildMs() {
+    return {
       waist: document.getElementById('mWaist').value||'',
       hip: document.getElementById('mHip').value||'',
       thigh: document.getElementById('mThigh').value||'',
       arm: document.getElementById('mArm').value||''
     };
+  }
+  function addMeasurement() {
+    const m = buildMs();
     if (!m.waist && !m.hip && !m.thigh && !m.arm) return;
-    measurements.push(m);
+    if (editState.ms !== undefined) {
+      if (!confirm('確認修改呢條圍度記錄？')) return;
+      const old = measurements[editState.ms];
+      measurements[editState.ms] = Object.assign({ date: old.date }, m);
+    } else {
+      measurements.push(Object.assign({ date: dateStr }, m));
+    }
     localStorage.setItem('zoe_measurements', JSON.stringify(measurements));
-    ['mWaist','mHip','mThigh','mArm'].forEach(id=>document.getElementById(id).value='');
+    cancelEdit('ms');
+    renderMeasurements();
+  }
+  function editMeasurement(i) {
+    const m = measurements[i];
+    document.getElementById('mWaist').value = m.waist;
+    document.getElementById('mHip').value = m.hip;
+    document.getElementById('mThigh').value = m.thigh;
+    document.getElementById('mArm').value = m.arm;
+    editState.ms = i;
+    const b = document.getElementById('msBtn'); if (b) b.textContent = '💾 更新圍度';
+    const cb = document.getElementById('msCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function delMeasurement(i) {
+    if (!confirm('確認刪除 ' + measurements[i].date + ' 嘅圍度記錄？')) return;
+    measurements.splice(i,1);
+    localStorage.setItem('zoe_measurements', JSON.stringify(measurements));
+    cancelEdit('ms');
     renderMeasurements();
   }
   function renderMeasurements() {
     const el = document.getElementById('measureTrend');
     if (measurements.length === 0) {
       el.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">未有圍度記錄</div>';
+      document.getElementById('measureLog').innerHTML = '';
       return;
     }
     const fields = [['waist','腰圍'],['hip','臀圍'],['thigh','大腿'],['arm','手臂']];
@@ -2158,6 +3340,14 @@
       }
       return '<div class="trend-row"><span>'+label+' '+(!isNaN(lv)?lv:'-')+' cm</span>'+delta+'</div>';
     }).join('') + '<div style="font-size:10px; color:var(--text-muted); margin-top:8px;">對比首次記錄</div>';
+    // 歷史列表
+    document.getElementById('measureLog').innerHTML = measurements.slice(-10).reverse().map((m, ri) => {
+      const i = measurements.length - 1 - ri;
+      const parts = [['waist','腰'],['hip','臀'],['thigh','腿'],['arm','手']].filter(([k])=>m[k]).map(([k,l])=>l+m[k]).join(' · ');
+      return '<div class="log-row" onclick="editMeasurement('+i+')" style="cursor:pointer;">'+
+        '<span class="log-date">'+m.date+' · '+parts+'</span>'+
+        '<span><button class="log-del" onclick="event.stopPropagation(); delMeasurement('+i+')">×</button></span></div>';
+    }).join('');
   }
 
   // ----- Period -----
@@ -2179,6 +3369,7 @@
     else status='已遲約 '+(daysSince-30)+' 日（PCOS 週期不規律）';
     infoEl.innerHTML = '<strong>上次開始：</strong>'+last+'<br><strong>狀態：</strong>'+status;
     renderPeriodTimeline();
+    renderPeriodLog();
   }
   function renderPeriodTimeline() {
     const el = document.getElementById('periodTimeline');
@@ -2204,9 +3395,40 @@
   function addPeriod() {
     const input = document.getElementById('periodInput');
     if (!input.value) return;
-    periodData.push({ date: input.value });
+    if (editState.pd !== undefined) {
+      if (!confirm('確認修改經期日期？')) return;
+      periodData[editState.pd].date = input.value;
+    } else {
+      periodData.push({ date: input.value });
+    }
     localStorage.setItem('zoe_period', JSON.stringify(periodData));
-    input.value=''; calcPeriodStatus();
+    cancelEdit('pd');
+    calcPeriodStatus();
+  }
+  function editPeriod(i) {
+    document.getElementById('periodInput').value = periodData[i].date;
+    editState.pd = i;
+    const b = document.getElementById('pdBtn'); if (b) b.textContent = '💾 更新';
+    const cb = document.getElementById('pdCancel'); if (cb) cb.style.display = 'inline-block';
+  }
+  function delPeriod(i) {
+    if (!confirm('確認刪除經期記錄 ' + periodData[i].date + '？')) return;
+    periodData.splice(i,1);
+    localStorage.setItem('zoe_period', JSON.stringify(periodData));
+    cancelEdit('pd');
+    calcPeriodStatus();
+  }
+  function renderPeriodLog() {
+    const el = document.getElementById('periodLog');
+    if (!el) return;
+    if (periodData.length === 0) { el.innerHTML = ''; return; }
+    const sorted = [...periodData].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    el.innerHTML = sorted.map(p => {
+      const i = periodData.indexOf(p);
+      return '<div class="log-row" onclick="editPeriod('+i+')" style="cursor:pointer;">'+
+        '<span class="log-date">🔴 '+p.date+'</span>'+
+        '<span><button class="log-del" onclick="event.stopPropagation(); delPeriod('+i+')">×</button></span></div>';
+    }).join('');
   }
 
   // ----- Daily status -----
@@ -2240,9 +3462,1122 @@
   document.getElementById('mealFood')?.addEventListener('keydown', e=>{ if(e.key==='Enter') addMeal(); });
 
   // ----- Init -----
+  // ===== Yoga YT200 Module =====
+  const YOGA_MODULES = [
+    {id:'m1', name:'模組一 · 基礎入門', sub:'第 1-2 個月', topics:['拜日式 A','拜日式 B','基本站姿（山式/下犬/平板/嬰兒式）','骨骼系統','脊椎結構','關節類型','瑜伽歷史五大時期']},
+    {id:'m2', name:'模組二 · 站姿系列', sub:'第 3-4 個月', topics:['戰士一、二、三','三角式＋側角式','平衡體式（樹式/鷹式）','肌肉系統','核心肌群','肩膀結構','八支瑜伽入門']},
+    {id:'m3', name:'模組三 · 前屈扭轉', sub:'第 5-6 個月', topics:['前屈體式','扭轉體式','筋膜系統','肌腱 vs 韌帶','生物力學','瑜伽經']},
+    {id:'m4', name:'模組四 · 後彎開髖', sub:'第 7-8 個月', topics:['後彎（眼鏡蛇/駱駝/橋/輪）','開髖（鴿子/牛面式）','神經系統','迷走神經','Yamas ＋ Niyamas']},
+    {id:'m5', name:'模組五 · 倒立平衡', sub:'第 9-10 個月', topics:['倒立（頭/肩/靠牆腿）','手臂平衡（烏鴉式）','呼吸系統','Pranayama 生理影響','薄伽梵歌','八支 6-8 支']},
+    {id:'m6', name:'模組六 · 整合教學', sub:'第 11-12 個月', topics:['脈輪','經絡 Nadis','鞘層 Koshas','呼吸法實踐（Ujjayi 等）','口令技巧 Cueing','課堂編排','觀察＋調整','教學練習']}
+  ];
+  const WEEK_ITEMS = [
+    {k:'w1', label:'平日理論 ①', sub:'30 min'},
+    {k:'w2', label:'平日理論 ②', sub:'30 min'},
+    {k:'sat', label:'週六深入學習', sub:'1 hr'},
+    {k:'sun', label:'週日複習＋筆記', sub:'30 min'},
+    {k:'p1', label:'實踐堂 ①', sub:'瑜伽課'},
+    {k:'p2', label:'實踐堂 ②', sub:'瑜伽課'}
+  ];
+  const TYPE_TAGS = { '理論':'tag-green', '筆記':'tag-blue', '疑問':'tag-yellow' };
+
+  let yogaTopics = JSON.parse(localStorage.getItem('zoe_yoga_topics') || '{}');
+  let yogaLogs = JSON.parse(localStorage.getItem('zoe_yoga_log') || '[]');
+
+  function isoWeekKey(d) {
+    const x = new Date(d);
+    const day = (x.getDay()+6)%7;
+    x.setDate(x.getDate()-day+3);
+    const firstThu = new Date(x.getFullYear(),0,4);
+    const wk = 1 + Math.round(((x - firstThu)/86400000 - 3 + ((firstThu.getDay()+6)%7))/7);
+    return x.getFullYear() + '-W' + wk;
+  }
+
+  function switchYoga(id, btn) {
+    document.querySelectorAll('.yoga-sub').forEach(s => s.classList.remove('active'));
+    document.getElementById('yoga-' + id).classList.add('active');
+    document.querySelectorAll('.yoga-seg-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ----- 時數：理論（日誌）+ 實踐（健身同步）-----
+  function yogaTheoryMins() {
+    return yogaLogs.filter(l => l.type === '理論').reduce((a,l) => a + (parseInt(l.mins)||0), 0);
+  }
+  function yogaPracticeMins() {
+    return workouts.filter(w => w.group === '瑜伽')
+      .reduce((a,w) => a + (parseInt(String(w.reps).replace(/[^0-9]/g,''))||0), 0);
+  }
+  function renderYogaHours() {
+    const tH = yogaTheoryMins()/60, pH = yogaPracticeMins()/60;
+    const tEl = document.getElementById('yogaTheoryHrs');
+    if (!tEl) return;
+    tEl.textContent = (Math.round(tH*10)/10);
+    document.getElementById('yogaPracticeHrs').textContent = (Math.round(pH*10)/10);
+    document.getElementById('yogaTheoryBar').style.width = Math.min(tH/150*100,100)+'%';
+    document.getElementById('yogaPracticeBar').style.width = Math.min(pH/100*100,100)+'%';
+    document.getElementById('yogaTotalHrs').textContent = (Math.round((tH+pH)*10)/10);
+    // 總覽卡同步
+    const ych = document.getElementById('yogaCardHrs');
+    if (ych) ych.textContent = '理論 ' + (Math.round(tH*10)/10) + 'h · 實踐 ' + (Math.round(pH*10)/10) + 'h';
+  }
+
+  // ----- 模組地圖 -----
+  function renderYogaModules() {
+    const wrap = document.getElementById('yogaModules');
+    if (!wrap) return;
+    wrap.innerHTML = YOGA_MODULES.map(m => {
+      const done = m.topics.filter((_,i) => yogaTopics[m.id+'_'+i]).length;
+      const pct = Math.round(done/m.topics.length*100);
+      const topics = m.topics.map((t,i) => {
+        const key = m.id+'_'+i;
+        const isDone = !!yogaTopics[key];
+        return '<div class="topic-item'+(isDone?' done':'')+'" onclick="toggleYogaTopic(\''+key+'\')"><span class="topic-box"></span><span class="topic-name">'+t+'</span></div>';
+      }).join('');
+      return '<div class="mod-card" id="mod-'+m.id+'">'+
+        '<div class="mod-head" onclick="toggleModOpen(\''+m.id+'\')">'+
+          '<div><div class="mod-name">'+m.name+'</div><div class="mod-sub">'+m.sub+'</div></div>'+
+          '<div class="mod-right"><span class="mod-count">'+done+' / '+m.topics.length+'</span><span class="mod-arrow">▶</span></div>'+
+        '</div>'+
+        '<div class="mod-bar"><div class="mod-bar-fill" style="width:'+pct+'%;"></div></div>'+
+        '<div class="mod-topics">'+topics+'</div>'+
+      '</div>';
+    }).join('');
+    // 整體
+    const allTopics = YOGA_MODULES.reduce((a,m) => a + m.topics.length, 0);
+    const allDone = YOGA_MODULES.reduce((a,m) => a + m.topics.filter((_,i) => yogaTopics[m.id+'_'+i]).length, 0);
+    document.getElementById('yogaAllCount').textContent = allDone + ' / ' + allTopics + ' 主題';
+    document.getElementById('yogaAllBar').style.width = (allDone/allTopics*100)+'%';
+    // 當前模組 = 第一個未完成
+    const cur = YOGA_MODULES.find(m => m.topics.some((_,i) => !yogaTopics[m.id+'_'+i])) || YOGA_MODULES[5];
+    const curDone = cur.topics.filter((_,i) => yogaTopics[cur.id+'_'+i]).length;
+    const curPct = Math.round(curDone/cur.topics.length*100);
+    document.getElementById('yogaModName').textContent = cur.name;
+    document.getElementById('yogaModSub').textContent = cur.sub;
+    document.getElementById('yogaModCount').textContent = curDone + ' / ' + cur.topics.length + ' 主題';
+    document.getElementById('yogaModPct').textContent = curPct + '%';
+    document.getElementById('yogaModRing').style.strokeDashoffset = 175.9 - (175.9*curPct/100);
+    const ycm = document.getElementById('yogaCardMod');
+    if (ycm) ycm.textContent = cur.name;
+    const ycb = document.getElementById('yogaCardBar');
+    if (ycb) ycb.style.width = (allDone/allTopics*100)+'%';
+  }
+  function toggleYogaTopic(key) {
+    yogaTopics[key] = !yogaTopics[key];
+    localStorage.setItem('zoe_yoga_topics', JSON.stringify(yogaTopics));
+    renderYogaModules();
+  }
+  function toggleModOpen(id) {
+    document.getElementById('mod-'+id).classList.toggle('open');
+  }
+
+  // ----- 每週打卡 -----
+  let yogaWeek = JSON.parse(localStorage.getItem('zoe_yoga_week_' + isoWeekKey(today)) || '{}');
+  function renderYogaWeek() {
+    const g = document.getElementById('yogaWeekGrid');
+    if (!g) return;
+    g.innerHTML = WEEK_ITEMS.map(w =>
+      '<div class="week-pill'+(yogaWeek[w.k]?' done':'')+'" onclick="toggleYogaWeek(\''+w.k+'\')">'+w.label+'<span class="wp-sub">'+w.sub+'</span></div>'
+    ).join('');
+    const n = WEEK_ITEMS.filter(w => yogaWeek[w.k]).length;
+    document.getElementById('yogaWeekBar').style.width = (n/WEEK_ITEMS.length*100)+'%';
+    document.getElementById('yogaWeekLabel').textContent = isoWeekKey(today) + ' · ' + n + ' / ' + WEEK_ITEMS.length + ' 完成';
+  }
+  function toggleYogaWeek(k) {
+    yogaWeek[k] = !yogaWeek[k];
+    localStorage.setItem('zoe_yoga_week_' + isoWeekKey(today), JSON.stringify(yogaWeek));
+    renderYogaWeek();
+  }
+
+  // ----- 日誌 -----
+  function addYogaLog() {
+    const content = document.getElementById('ylContent').value.trim();
+    const type = document.getElementById('ylType').value;
+    if (!content && type !== '理論') return;
+    if (editState.yl !== undefined) {
+      if (!confirm('確認修改呢條記錄？')) return;
+      const old = yogaLogs[editState.yl];
+      yogaLogs[editState.yl] = {
+        date: old.date, solved: old.solved, type,
+        module: document.getElementById('ylModule').value,
+        topic: document.getElementById('ylTopic').value || '',
+        mins: document.getElementById('ylMins').value || 0,
+        content: content
+      };
+    } else {
+      yogaLogs.push({
+        date: dateStr, type,
+        module: document.getElementById('ylModule').value,
+        topic: document.getElementById('ylTopic').value || '',
+        mins: document.getElementById('ylMins').value || 0,
+        content: content, solved: false
+      });
+    }
+    localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
+    cancelEdit('yl');
+    renderYogaLogList(); renderYogaHours();
+  }
+  function editYogaLog(i) {
+    const l = yogaLogs[i];
+    document.getElementById('ylType').value = l.type;
+    document.getElementById('ylModule').value = l.module;
+    document.getElementById('ylTopic').value = l.topic;
+    document.getElementById('ylMins').value = l.mins;
+    document.getElementById('ylContent').value = l.content;
+    editState.yl = i;
+    const b = document.getElementById('ylBtn'); if (b) b.textContent = '💾 更新';
+    const cb = document.getElementById('ylCancel'); if (cb) cb.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function delYogaLog(i) {
+    if (!confirm('確認刪除呢條瑜伽記錄？')) return;
+    yogaLogs.splice(i,1);
+    localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
+    cancelEdit('yl');
+    renderYogaLogList(); renderYogaHours();
+  }
+  function toggleYogaSolved(i) {
+    yogaLogs[i].solved = !yogaLogs[i].solved;
+    localStorage.setItem('zoe_yoga_log', JSON.stringify(yogaLogs));
+    renderYogaLogList();
+  }
+  function renderYogaLogList() {
+    const el = document.getElementById('yogaLog');
+    if (!el) return;
+    if (yogaLogs.length === 0) {
+      el.innerHTML = '<div class="ylog-item" style="color:var(--text-muted); text-align:center;">未有記錄</div>';
+      return;
+    }
+    const modName = id => (YOGA_MODULES.find(m => m.id === id) || {}).name || '';
+    el.innerHTML = yogaLogs.slice().reverse().map((l, ri) => {
+      const i = yogaLogs.length - 1 - ri;
+      const solvedCls = (l.type === '疑問' && l.solved) ? ' ylog-q-solved' : '';
+      const solvedBtn = l.type === '疑問'
+        ? '<button class="quick-btn" style="padding:3px 10px; font-size:10px;" onclick="event.stopPropagation(); toggleYogaSolved('+i+')">'+(l.solved?'↺ 重開':'✓ 解決')+'</button>'
+        : '';
+      return '<div class="ylog-item" onclick="editYogaLog('+i+')" style="cursor:pointer;">'+
+        '<div class="ylog-head"><span class="tag '+(TYPE_TAGS[l.type]||'tag-gray')+'">'+l.type+'</span>'+
+        (l.topic ? '<span style="font-size:11px; color:var(--text-muted);">'+l.topic+'</span>' : '')+
+        '<span class="ylog-date">'+l.date+'</span>'+solvedBtn+
+        '<button class="log-del" onclick="event.stopPropagation(); delYogaLog('+i+')">×</button></div>'+
+        '<div class="ylog-content'+solvedCls+'">'+(l.content || '(只記時數)')+'</div>'+
+        '<div class="ylog-meta">'+modName(l.module)+(l.mins>0 ? ' · '+l.mins+' min' : '')+' · 撳我編輯</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // ----- 全數據備份 / 跨入口同步 -----
+  function exportAllData() {
+    const dump = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.indexOf('zoe_') === 0) dump[k] = localStorage.getItem(k);
+    }
+    const payload = JSON.stringify({ __zoeBackup: dateStr, keys: dump });
+    const done = () => alert('已複製全部數據（' + Object.keys(dump).length + ' 項）！去另一個入口貼入「匯入」就得 ✅');
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = payload; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) { alert('複製失敗，請手動抄低'); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload).then(done, fallback);
+    } else { fallback(); }
+  }
+  // ----- 智能合併（跨裝置同步 v2.23）-----
+  function zoeRecBucket(key, rec) {
+    if (rec && typeof rec === 'object') {
+      if (rec.id !== undefined) return 'id|' + rec.id;
+      if (key.indexOf('zoe_meals_') === 0) return 'meal|' + rec.food + '@' + (rec.time || '');
+      if (rec.date !== undefined) {
+        return 'date|' + rec.date + '|' + (rec.exercise || rec.module || rec.name || '') + '|' + (rec.time || '');
+      }
+    }
+    return null; // 冇自然身份 → 用完整內容做 key
+  }
+  function mergeZoeValue(key, existingRaw, incomingRaw) {
+    if (existingRaw === null || existingRaw === undefined) return { raw: incomingRaw, stat: 'new' };
+    if (existingRaw === incomingRaw) return { raw: existingRaw, stat: 'same' };
+    if (/_seeded/.test(key)) { // 種子計數標記 → 取大（防止種子重複注入）
+      const a = parseInt(existingRaw, 10) || 0, b = parseInt(incomingRaw, 10) || 0;
+      return { raw: String(Math.max(a, b)), stat: 'merged' };
+    }
+    if (key.indexOf('zoe_water_') === 0 && !isNaN(parseFloat(existingRaw)) && !isNaN(parseFloat(incomingRaw))) {
+      return { raw: String(Math.max(parseFloat(existingRaw), parseFloat(incomingRaw))), stat: 'merged' }; // 每日水量 → 取大
+    }
+    let ev, iv;
+    try { ev = JSON.parse(existingRaw); } catch (e) { ev = existingRaw; }
+    try { iv = JSON.parse(incomingRaw); } catch (e) { iv = incomingRaw; }
+    if (Array.isArray(ev) && Array.isArray(iv)) {
+      // 記錄陣列 → 按身份分桶：新記錄加入；同身份唔同內容用貼上嗰邊（較新編輯）；
+      // 各變體保留最大出現次數（同一動作打多組都保得住）；完全相同唔會重複
+      const buckets = new Map();
+      const put = (side, arr) => arr.forEach(r => {
+        const id = zoeRecBucket(key, r) || 'json|' + JSON.stringify(r);
+        if (!buckets.has(id)) buckets.set(id, new Map());
+        const vars = buckets.get(id);
+        const j = JSON.stringify(r);
+        if (!vars.has(j)) vars.set(j, { rec: r, countInc: 0, countExc: 0 });
+        vars.get(j)[side === 'inc' ? 'countInc' : 'countExc']++;
+      });
+      put('exc', ev); put('inc', iv);
+      const out = [];
+      buckets.forEach(vars => {
+        const incVars = Array.from(vars.values()).filter(v => v.countInc > 0);
+        const use = incVars.length ? incVars : Array.from(vars.values());
+        use.forEach(v => {
+          const n = Math.max(v.countInc, v.countExc);
+          for (let i = 0; i < n; i++) out.push(v.rec);
+        });
+      });
+      return { raw: JSON.stringify(out), stat: 'merged' };
+    }
+    if (ev && iv && typeof ev === 'object' && typeof iv === 'object') {
+      return { raw: JSON.stringify(Object.assign({}, ev, iv)), stat: 'merged' }; // 物件 → 淺合併（貼上優先）
+    }
+    return { raw: incomingRaw, stat: 'merged' }; // 其他純量 → 貼上優先
+  }
+  function importAllData() {
+    const raw = document.getElementById('importAllText').value.trim();
+    if (!raw) { alert('請先貼上同步碼'); return; }
+    let obj;
+    try { obj = JSON.parse(raw); } catch(e) { alert('格式唔啱：貼上嘅唔係有效同步碼'); return; }
+    const keys = obj && obj.keys && typeof obj.keys === 'object' ? obj.keys : null;
+    if (!keys) { alert('格式唔啱：搵唔到數據內容'); return; }
+    const names = Object.keys(keys).filter(k => k.indexOf('zoe_') === 0);
+    if (!names.length) { alert('同步碼入面冇 Zoe 數據'); return; }
+    if (!confirm('智能合併 ' + names.length + ' 項數據？\n（新記錄會加入，相同記錄唔會重複，唔會沖走本機記錄）')) return;
+    let added = 0, merged = 0, same = 0;
+    names.forEach(k => {
+      const res = mergeZoeValue(k, localStorage.getItem(k), keys[k]);
+      localStorage.setItem(k, res.raw);
+      if (res.stat === 'new') added++; else if (res.stat === 'same') same++; else merged++;
+    });
+    const r = document.getElementById('importAllResult');
+    r.textContent = '✅ 合併完成 · 新增 ' + added + ' · 更新 ' + merged + ' · 相同 ' + same + ' · 重新載入中…';
+    r.style.display = 'block';
+    setTimeout(() => location.reload(), 900);
+  }
+
+  // ===== ⌨️ 打字打卡（v2.24）=====
+  let typingLog = JSON.parse(localStorage.getItem('zoe_typing_log') || '[]');
+  // ZCode 推送種子：Zoe 報打字成績 → 加喺下面陣列 → push（marker 用長度）
+  const TYPING_SEED = [
+  ];
+  (function seedTyping() {
+    const mk = parseInt(localStorage.getItem('zoe_typing_seeded') || '0', 10);
+    if (TYPING_SEED.length > mk) {
+      TYPING_SEED.slice(mk).forEach(s => {
+        if (!typingLog.some(l => l.date === s.date && l.time === s.time)) typingLog.push(s);
+      });
+      typingLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+      localStorage.setItem('zoe_typing_seeded', String(TYPING_SEED.length));
+    }
+  })();
+  // ===== ⌨️ typing-trainer 自動同步（v2.29 支援中文）=====
+  // 讀取同 origin 打字網站嘅歷史（英文 typing_trainer_history ／中文 _zh），
+  // 按記錄 lang 分流：中文紀錄入「中」欄、英文入「英」欄，自動轉換做 zoe_typing_log
+  // 兩個 tab 同時開住時 BroadcastChannel 即時通知；分開開就 load 時補同步
+  function syncTypingTrainer(){
+    let changed = false;
+    [ { key: 'typing_trainer_history',      marker: 'zoe_typing_synced',    lang: 'en' },
+      { key: 'typing_trainer_history_zh',   marker: 'zoe_typing_synced_zh', lang: 'zh' } ].forEach(src => {
+      let auto = [];
+      try{ auto = JSON.parse(localStorage.getItem(src.key) || '[]'); }catch(e){ return; }
+      if(!auto.length) return;
+      const lastSync = parseInt(localStorage.getItem(src.marker) || '0', 10);
+      const fresh = auto.filter(r => r.date > lastSync);
+      if(!fresh.length) return;
+      fresh.forEach(r => {
+        const isZh = (r.lang || src.lang) === 'zh';
+        const d = new Date(r.date);
+        const ds = d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
+        const ts = String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+        const en = isZh ? 0 : r.wpm, zh = isZh ? r.wpm : 0;
+        if(!typingLog.some(l => l.date === ds && l.time === ts && l.en === en && l.zh === zh)){
+          typingLog.push({ date: ds, time: ts, en: en, zh: zh,
+            mins: Math.round((r.dur || 60) / 60 * 10) / 10,
+            src: 'auto', acc: r.acc, lang: isZh ? 'zh' : 'en' });
+        }
+      });
+      localStorage.setItem(src.marker, String(Math.max.apply(null, auto.map(r => r.date))));
+      changed = true;
+    });
+    if(!changed) return;
+    typingLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+    renderTyping();
+  }
+  syncTypingTrainer();
+  try{
+    const _ttBc = new BroadcastChannel('typing_trainer_sync');
+    _ttBc.onmessage = () => syncTypingTrainer();
+  }catch(e){}
+
+  function addTypingLog() {
+    const en = parseFloat(document.getElementById('typEn').value);
+    const zh = parseFloat(document.getElementById('typZh').value);
+    const mins = parseFloat(document.getElementById('typMin').value);
+    if ((!en || en <= 0) && (!zh || zh <= 0)) { alert('英打或中打 wpm 至少填一項'); return; }
+    const dpick = document.getElementById('typDate').value; // YYYY-MM-DD
+    const logDate = dpick ? dpick.replace(/-/g, '.') : dateStr;
+    typingLog.push({ date: logDate, time: new Date().toTimeString().slice(0, 5), en: en || 0, zh: zh || 0, mins: mins || 0 });
+    typingLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+    ['typEn', 'typZh', 'typMin'].forEach(id => document.getElementById(id).value = '');
+    renderTyping();
+  }
+  function delTypingLog(i) {
+    if (!confirm('刪除 ' + typingLog[i].date + ' 嘅打字記錄？')) return;
+    typingLog.splice(i, 1);
+    localStorage.setItem('zoe_typing_log', JSON.stringify(typingLog));
+    renderTyping();
+  }
+  function typingStreak() {
+    const days = new Set(typingLog.map(l => l.date));
+    if (!days.size) return 0;
+    const ds = d => d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+    let probe = days.has(ds(new Date())) ? new Date() : new Date(Date.now() - 86400000);
+    let n = 0;
+    while (days.has(ds(probe))) { n++; probe = new Date(probe.getTime() - 86400000); }
+    return n;
+  }
+  function renderTypingChart() {
+    const byDay = {};
+    typingLog.forEach(l => {
+      if (!byDay[l.date]) byDay[l.date] = { en: 0, zh: 0 };
+      if ((l.en || 0) > byDay[l.date].en) byDay[l.date].en = l.en;
+      if ((l.zh || 0) > byDay[l.date].zh) byDay[l.date].zh = l.zh;
+    });
+    const days = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(Date.now() - i * 86400000);
+      days.push(d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0'));
+    }
+    const W = 330, H = 132, pl = 24, pr = 8, pt = 10, pb = 18;
+    const maxV = Math.max(45, ...days.map(d => Math.max(byDay[d] ? byDay[d].en : 0, byDay[d] ? byDay[d].zh : 0))) + 5;
+    const X = i => (pl + (W - pl - pr) * (i / 13)).toFixed(1);
+    const Y = v => (pt + (H - pt - pb) * (1 - v / maxV)).toFixed(1);
+    const line = k => {
+      let d = '', pen = false;
+      days.forEach((dt, i) => {
+        const v = byDay[dt] ? byDay[dt][k] : 0;
+        if (v > 0) { d += (pen ? ' ' : '') + X(i) + ',' + Y(v); pen = true; } else pen = false;
+      });
+      return d;
+    };
+    const dots = (k, col) => days.map((dt, i) => {
+      const v = byDay[dt] ? byDay[dt][k] : 0;
+      return v > 0 ? '<circle cx="' + X(i) + '" cy="' + Y(v) + '" r="2.3" fill="' + col + '"/>' : '';
+    }).join('');
+    const tgt = (v, col) => '<line x1="' + pl + '" y1="' + Y(v) + '" x2="' + (W - pr) + '" y2="' + Y(v) + '" stroke="' + col + '" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>' +
+      '<text x="' + (pl - 3) + '" y="' + (+Y(v) + 3) + '" text-anchor="end" font-size="8" fill="' + col + '">' + v + '</text>';
+    const labels = days.map((dt, i) => i % 3 === 1 ? '<text x="' + X(i) + '" y="' + (H - 5) + '" text-anchor="middle" font-size="7.5" fill="var(--text-muted)">' + dt.slice(5) + '</text>' : '').join('');
+    document.getElementById('typChart').innerHTML =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%; height:auto; display:block;">' +
+      tgt(20, 'var(--pale-green-text)') + tgt(30, 'var(--pale-yellow-text)') + tgt(40, 'var(--pale-red-text)') + labels +
+      '<polyline points="' + line('en') + '" fill="none" stroke="var(--pale-blue-text)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<polyline points="' + line('zh') + '" fill="none" stroke="var(--pale-green-text)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      dots('en', 'var(--pale-blue-text)') + dots('zh', 'var(--pale-green-text)') + '</svg>';
+  }
+  function setExamDate(v) {
+    if (!v) return;
+    localStorage.setItem('zoe_exam_date', v);
+    renderExamDate();
+  }
+  function renderExamDate() {
+    const v = localStorage.getItem('zoe_exam_date');
+    const tag = document.getElementById('examDateTag');
+    const pick = document.getElementById('examDatePick');
+    if (pick && v) pick.value = v;
+    if (!v) return;
+    const d = new Date(v + 'T00:00:00');
+    const left = Math.ceil((d - new Date()) / 86400000);
+    tag.textContent = v + '（' + (left >= 0 ? '仲有 ' + left + ' 天' : '已考完 🎉') + '）';
+    tag.className = 'tag ' + (left >= 0 && left <= 14 ? 'tag-red' : 'tag-green');
+  }
+  function renderTyping() {
+    const dp = document.getElementById('typDate');
+    if (dp && !dp.value) dp.value = dateStr.replace(/\./g, '-');
+    const streak = typingStreak();
+    const done = typingLog.some(l => l.date === dateStr);
+    document.getElementById('typStreakTag').textContent = streak + ' 天' + (done ? ' · 今日✅' : ' · 今日未打');
+    document.getElementById('typStreakTag').className = 'tag ' + (done ? 'tag-green' : 'tag-red');
+    const totalMin = typingLog.reduce((a, l) => a + (parseFloat(l.mins) || 0), 0);
+    document.getElementById('typTotalTag').textContent = Math.round(totalMin) + ' 分鐘 · ' + typingLog.length + ' 節';
+    renderExamDate();
+    renderTypingChart();
+    document.getElementById('typLogList').innerHTML = typingLog.slice(-10).reverse().map((l, ri) => {
+      const i = typingLog.length - 1 - ri;
+      const tag = l.src === 'auto' ? '⌨️ ' : '';
+      return '<div class="log-row"><span class="log-date">' + tag + l.date + ' ' + l.time + '</span>' +
+        '<span><span class="log-value">' + ((l.en > 0 && l.zh > 0) ? ('英 ' + l.en + ' · 中 ' + l.zh) : (l.zh > 0 ? '中 ' + l.zh : '英 ' + l.en)) + (l.acc != null ? ' · ' + l.acc + '%' : '') + (l.mins ? ' · ' + l.mins + 'm' : '') + '</span> ' +
+        '<button class="log-del" onclick="delTypingLog(' + i + ')">×</button></span></div>';
+    }).join('') || '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">未有記錄 · 今日開始！</span></div>';
+  }
+
+  // ===== 📚 Office 每日一課（v2.24）=====
+  const OFFICE_SYLLABUS = [
+    { id: 1, s: 'W', t: '介面與檔案操作', p: ['功能區 Ribbon、索引標籤與群組導覽', '開新檔／儲存 Ctrl+S／另存新檔 F12', 'docx vs doc vs PDF 格式分別'], tasks: ['開新文件儲存成 test.docx，再另存為 PDF', '檢查 檔案＞選項＞儲存 嘅自動復原間隔'] },
+    { id: 2, s: 'W', t: '文字選取與編輯', p: ['滑鼠雙擊選字／三擊選段落', 'Shift＋方向鍵、Ctrl＋Shift＋Home', 'Ctrl+C／X／V、復原 Ctrl+Z、重做 Ctrl+Y'], tasks: ['用鍵盤選取成段文字並搬移', '測試自動校正（輸入 tehs → 自動更正）'] },
+    { id: 3, s: 'W', t: '字型格式', p: ['字型大小、粗斜底線、色彩、醒目提示', '上標下標（Ctrl+= / Ctrl+Shift+=）', '字元間距與縮放：進階字型對話框'], tasks: ['做一行「H₂O 同 X²」效果', '整句加黃色醒目提示'] },
+    { id: 4, s: 'W', t: '段落格式', p: ['五種對齊：左/中/右/左右對齊/分散', '縮排：首行/凸排/左右縮排', '行距 1.5／2.0 與段落前後間距'], tasks: ['設定首行縮排 2 字元', '全文行距 1.5 行'] },
+    { id: 5, s: 'W', t: '尋找與取代', p: ['Ctrl+F 尋找、Ctrl+H 取代', '取代「全部」與逐個確認', '特殊字元：段落標記^p、定位字元^t'], tasks: ['將文件全部「公司」改為「本局」', '練習移除多餘空行（^p^p→^p）'] },
+    { id: 6, s: 'W', t: '拼字與文法檢查', p: ['F7 拼字檢查、忽略/新增字典', '設定校對語言（中/英）', '紅綠波浪底線意思'], tasks: ['打一段故意有錯字嘅英文做檢查', '切換校對語言為英文(US)'] },
+    { id: 7, s: 'W', t: '項目符號與編號', p: ['項目符號清單／編號清單', '多層次清單：Tab 下一層、Shift+Tab 上一層', '自訂符號圖片與編號格式'], tasks: ['做一個三層大綱清單', '自訂符號做「■」'] },
+    { id: 8, s: 'W', t: '框線與網底', p: ['段落框線：方框/底線/上框線', '網底填色（段落 vs 字元）', '頁面框線（版面配置＞頁面框線）'], tasks: ['段落加 0.5pt 黑色方框', '段落網底設淺灰'] },
+    { id: 9, s: 'W', t: '定位點', p: ['靠左/置中/靠右/小數/分隔線定位點', '定位點位置精確輸入（段落對話框）', '前置字元：目錄式點線 ······'], tasks: ['用定位點做一行「章節………頁數」', '在小數定位點輸入金額對齊小數位'] },
+    { id: 10, s: 'W', t: '表格建立與編輯', p: ['插入表格：拖曳/插入表格對話框', 'Tab 跳下一格、加新列', '選取列/欄/整個表格（表格左上十字）'], tasks: ['做 3×4 表格並填資料', '用 Tab 喺表尾自動加新列'] },
+    { id: 11, s: 'W', t: '表格進階', p: ['合併/分割儲存格', '表格框線與網底（框線及網底按鈕）', '自動調整：內容/視窗/平均分配列欄'], tasks: ['合併第一列做標題列', '平均分配各欄寬'] },
+    { id: 12, s: 'W', t: '版面設定', p: ['邊界上下左右/裝訂邊', '直向橫向切換', '紙張大小 A4/Letter；多欄設定'], tasks: ['整頁轉橫向', '設定左右邊界 2.54cm'] },
+    { id: 13, s: 'W', t: '頁首頁尾頁碼', p: ['插入頁碼位置與格式', '首頁不同／奇偶頁不同', '頁首文字＋底線框線'], tasks: ['頁尾插入置中頁碼', '勾選首頁不同'] },
+    { id: 14, s: 'W', t: '分頁與分節', p: ['分頁符號 Ctrl+Enter vs 自動分頁', '分節符號（下一頁/接續本頁）用途', '同文件唔同節設唔同方向邊界'], tasks: ['喺第二頁插入分頁符號', '將某節獨立轉橫向'] },
+    { id: 15, s: 'W', t: '圖片與文繞圖', p: ['插入圖片/線上圖片', '文繞圖：矩形/緊密/文字在前/後', '裁剪、大小、鎖定比例'], tasks: ['插入圖片設「緊密」文繞圖', '等比例縮細至 50%'] },
+    { id: 16, s: 'W', t: '圖案、SmartArt、文字藝術師', p: ['插入圖案＋快速樣式', 'SmartArt 流程圖/階層圖', '文字藝術師樣式同文字效果'], tasks: ['畫簡單流程圖（開始→處理→結束）', '標題轉文字藝術師'] },
+    { id: 17, s: 'W', t: '樣式與格式刷', p: ['樣式：標題1/2、內文', '修改樣式＝全文件一次過改', '格式刷單擊/雙擊連續複製格式'], tasks: ['套用標題1並改其字型大小', '用格式刷將格式複製到三段'] },
+    { id: 18, s: 'W', t: '目錄', p: ['自動目錄：引用＞目錄', '標題樣式配合先入到目錄', '更新目錄（F9／右鍵更新）'], tasks: ['做三個標題再插入目錄', '加一個標題後更新目錄'] },
+    { id: 19, s: 'W', t: '合併列印', p: ['郵件＞啟動合併列印：信件/信封/標籤', '選取收件者（Excel 清單）', '插入合併欄位＋預覽結果＋完成合併'], tasks: ['用 3 人名單做合併信件', '預覽下一筆記錄'] },
+    { id: 20, s: 'W', t: '列印、校對與保護', p: ['預覽列印、列印範圍（頁1-3）、雙面', '追蹤修訂＋接受/拒絕變更', '註解、以密碼保護文件'], tasks: ['設定只列印第 1-2 頁', '開追蹤修訂改一句並接受'] },
+    { id: 21, s: 'E', t: '介面與儲存格', p: ['欄英文列數字：A1 位址觀念', '工作表：插入/重新命名/移動/複製/刪除', '名稱方塊直接跳位'], tasks: ['新增工作表改名「8月」', '用名稱方塊跳去 D100'] },
+    { id: 22, s: 'E', t: '資料輸入與填滿', p: ['輸入/編輯 F2/刪除', '自動填滿：數列、日期、星期', '自訂清單（選項＞進階）'], tasks: ['拖曳做 1-10 同星期一至日', '用 Ctrl 拖曳做複製而非數列'] },
+    { id: 23, s: 'E', t: '數字格式', p: ['通用/貨幣/百分比/日期格式', '小數位增減按鈕', '文字型數字（綠色三角）同轉換'], tasks: ['一欄金額設千分位貨幣格式', '輸入 001 保留為文字'] },
+    { id: 24, s: 'E', t: '儲存格格式', p: ['對齊：跨欄置中、自動換行', '框線（外框/內線/繪製框線）與網底', '格式刷、儲存格樣式'], tasks: ['標題列跨欄置中＋填色', '資料區加所有框線'] },
+    { id: 25, s: 'E', t: '資料驗證', p: ['下拉式選單（清單）', '整數/日期範圍限制', '錯誤提示訊息設定'], tasks: ['做性別下拉選單（男/女）', '限制分數只可以 0-100'] },
+    { id: 26, s: 'E', t: '公式與參照', p: ['公式以 = 開頭、運算子 + - * / ^', '相對參照 vs 絕對參照 $A$1', 'F4 循環切換參照類型'], tasks: ['寫 =B2*C2 再拖曳填滿', '將 B2 改 $B$2 觀察填滿分別'] },
+    { id: 27, s: 'E', t: 'SUM 與 AVERAGE', p: ['SUM 範圍寫法：=SUM(B2:B10)', 'AVERAGE 平均', '自動加總 Alt+= 與狀態列快速統計'], tasks: ['加總一欄金額', '計平均並比較狀態列數值'] },
+    { id: 28, s: 'E', t: 'MAX、MIN、COUNT', p: ['MAX/MIN 搵最高最低', 'COUNT 計數字格 vs COUNTA 計非空白', 'COUNTBLANK 空格數'], tasks: ['搵出最高分同最低分', '比較 COUNT 同 COUNTA 結果'] },
+    { id: 29, s: 'E', t: 'IF 函數', p: ['=IF(條件, 成立, 不成立)', '巢狀 IF：三段式判斷', 'AND/OR 配合 IF'], tasks: ['分數≥50 顯示及格否則不合格', '用 IF+AND 做「兩科都≥50 先及格」'] },
+    { id: 30, s: 'E', t: 'SUMIF 與 COUNTIF', p: ['=COUNTIF(範圍,"條件")', '=SUMIF(範圍,"條件",加總範圍)', '條件寫法：">60"、"*陳*"'], tasks: ['計「陳」姓人數', '加總某部門嘅薪金'] },
+    { id: 31, s: 'E', t: 'VLOOKUP', p: ['=VLOOKUP(找咩, 邊度, 第幾欄, 0)', '第4參數 0 = 精確符合', '找不到傳 #N/A 同 IFERROR 處理'], tasks: ['用編號自動帶出姓名', '用 IFERROR 將 #N/A 攌成「查無」'] },
+    { id: 32, s: 'E', t: '排序', p: ['單鍵排序 vs 多層排序（自訂排序）', '擴大選取範圍（成表一齊調）', '按色彩/自訂清單排序'], tasks: ['按總分降序再按姓名排序', '故意揀「繼續用目前選取範圍」睇後果'] },
+    { id: 33, s: 'E', t: '篩選', p: ['自動篩選：文字/數字/色彩/日期', '數字篩選：大於/前10項', '清除篩選 vs 關閉自動篩選'], tasks: ['篩選某部門所有記錄', '篩選金額前 10 項'] },
+    { id: 34, s: 'E', t: '進階篩選與移除重複', p: ['進階篩選：條件範圍寫法（同一列=及、唔同列=或）', '複製到其他位置', '資料＞移除重複'], tasks: ['用進階篩選抽兩個條件（OR）', '移除重複姓名'] },
+    { id: 35, s: 'E', t: '凍結窗格與分割', p: ['凍結首列／首欄／窗格', '捲動時標題列保持', '分割視窗對比'], tasks: ['凍結首列後捲動驗證', '取消凍結'] },
+    { id: 36, s: 'E', t: '小計與群組', p: ['資料＞小計：分組欄位＋彙總方式', '大綱 1/2/3 層級切換', '組成群組（資料＞群組）'], tasks: ['按部門做加總小計', '收合大綱睇總數'] },
+    { id: 37, s: 'E', t: '圖表', p: ['直條圖/橫條圖/圓形圖/折線圖選擇', '圖表元素：標題/圖例/資料標籤', '選取資料來源同切換列欄'], tasks: ['用季度數據畫直條圖', '加資料標籤同改圖表標題'] },
+    { id: 38, s: 'E', t: '圖表進階', p: ['新增/刪除數列', '變更圖表類型（組合圖）', '走勢線＋座標軸格式'], tasks: ['折線圖加線性走勢線', '改成「直條+折線」組合圖'] },
+    { id: 39, s: 'E', t: '版面與列印', p: ['列印範圍設定/清除', '列印標題：每頁重複頂端標題列', '寬度調成一頁、列印格線/標題'], tasks: ['設定每頁重複標題列', '將成表調成一頁寬預覽'] },
+    { id: 40, s: 'E', t: '保護與檔案', p: ['保護工作表（鎖定/解除鎖定儲存格）', '保護活頁簿結構、密碼', 'xlsx/csv/pdf 另存'], tasks: ['鎖定公式區只俾人改輸入格', '另存 CSV 睇分別'] },
+    { id: 41, s: 'X', t: '綜合實戰：Word 公文', p: ['政府通告格式排版全流程', '定位點/框線/頁首頁尾綜合運用', '計時 20 分鐘完成'], tasks: ['由空白文件起，排版一份通告', '核對：邊界/字體/頁碼'] },
+    { id: 42, s: 'X', t: '綜合實戰：Excel 數據表', p: ['資料驗證+函數+排序篩選一齊用', '小計+圖表輸出', '計時 25 分鐘完成'], tasks: ['起員工表：下拉+IF+VLOOKUP', '按部門小計＋畫圖'] },
+    { id: 43, s: 'X', t: '模擬測驗一（Word 計時）', p: ['15 題操作限時 30 分鐘', '覆蓋課 1-20 全部知識點', '記錄分數上 dashboard'], tasks: ['限時完成', '錯嘅題目記低翻查嗰課'] },
+    { id: 44, s: 'X', t: '模擬測驗二（Excel 計時）', p: ['15 題操作限時 30 分鐘', '覆蓋課 21-40 全部知識點', '記錄分數上 dashboard'], tasks: ['限時完成', '弱點課重做測驗'] }
+  ];
+  // 每日 10:00 ZCode 推送測驗種子（格式同第 1 課；10:00 cron 自動注入下一課）
+  const OFFICE_QUIZ_SEEDS = {
+    1: { quiz: [
+      { q: '喺 Word 2016 儲存新文件，預設檔案格式係？', options: ['.docx', '.doc', '.txt', '.pdf'], a: 0, e: 'Word 2007 起預設係 .docx（XML 格式）;.doc 係舊版 97-2003 相容格式。' },
+      { q: 'Ctrl+S 嘅作用係？', options: ['另存新檔', '立即儲存（覆蓋原檔）', '開新檔', '關閉文件'], a: 1, e: 'Ctrl+S 係直接儲存；另存新檔係 F12 或 檔案＞另存新檔，可以改名/格式/位置。' },
+      { q: '想對方冇 Word 都睇到文件、而且唔會被改內容，最好另存做？', options: ['.docx', '.dotx', '.pdf', '.txt'], a: 2, e: 'PDF 保留排版、跨平台、不易修改——實務上俾人睇嘅版本用 PDF。' },
+      { q: '「另存新檔」同「儲存」最大分別係？', options: ['另存可以改檔名、格式、位置，原本檔案保留', '另存會刪除原本檔案', '冇分別', '另存只可以存一次'], a: 0, e: '儲存＝覆蓋原檔；另存新檔＝開新一份，可揀格式同位置，原檔不動。' },
+      { q: '自動復原檔案嘅間隔喺邊度設定？', options: ['檔案＞選項＞儲存', '常用＞字型', '版面配置＞邊界', '校對＞拼字檢查'], a: 0, e: '檔案＞選項＞儲存：可設「儲存自動復原資訊時間間隔」（預設10分鐘）。' }
+    ] }
+  };
+  (function seedOfficeQuiz() {
+    let quizzes = JSON.parse(localStorage.getItem('zoe_office_quizzes') || '{}');
+    Object.keys(OFFICE_QUIZ_SEEDS).forEach(id => {
+      const mk = 'zoe_office_quiz_seeded_' + id;
+      if (localStorage.getItem(mk) === String(OFFICE_QUIZ_SEEDS[id].quiz.length)) return;
+      quizzes[id] = OFFICE_QUIZ_SEEDS[id].quiz;
+      localStorage.setItem('zoe_office_quizzes', JSON.stringify(quizzes));
+      localStorage.setItem(mk, String(OFFICE_QUIZ_SEEDS[id].quiz.length));
+    });
+  })();
+  const SYLLABUS_START = localStorage.getItem('zoe_syllabus_start') || '2026.08.28';
+  let officeProgress = JSON.parse(localStorage.getItem('zoe_office_progress') || '{}');
+  let officeQuizData = JSON.parse(localStorage.getItem('zoe_office_quizzes') || '{}');
+  function lessonOfDay() {
+    const p = SYLLABUS_START.split('.');
+    const start = new Date(+p[0], +p[1] - 1, +p[2]);
+    const now = new Date();
+    const diff = Math.floor((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - start) / 86400000) + 1;
+    return Math.max(1, Math.min(diff, OFFICE_SYLLABUS.length));
+  }
+  function officeSaveProgress() { localStorage.setItem('zoe_office_progress', JSON.stringify(officeProgress)); }
+  function officeLessonState(id) {
+    const st = officeProgress[id];
+    if (!st) return { label: '未開始', cls: 'tag-gray', mastered: false };
+    const tasksDone = (st.tasks || []).length && (st.tasks || []).every(Boolean);
+    const quiz = typeof st.quiz === 'number' ? st.quiz : 0;
+    if (quiz >= 80 && tasksDone) return { label: '已掌握 ✅', cls: 'tag-green', mastered: true };
+    if (quiz >= 80) return { label: '測驗達標 ' + quiz + '%', cls: 'tag-green', mastered: true };
+    if (quiz > 0) return { label: '測驗 ' + quiz + '%', cls: 'tag-yellow', mastered: false };
+    if (tasksDone) return { label: '任務完成', cls: 'tag-yellow', mastered: false };
+    return { label: '學習中', cls: 'tag-gray', mastered: false };
+  }
+  let curLessonId = null;
+  function renderTodayLesson(id) {
+    curLessonId = id;
+    const L = OFFICE_SYLLABUS.find(x => x.id === id);
+    const card = document.getElementById('todayLessonCard');
+    const isToday = id === lessonOfDay();
+    const st = officeProgress[id] || { tasks: [] };
+    const subTag = L.s === 'W' ? '<span class="tag tag-blue">Word</span>' : L.s === 'E' ? '<span class="tag tag-green">Excel</span>' : '<span class="tag tag-yellow">綜合</span>';
+    const state = officeLessonState(id);
+    card.innerHTML =
+      '<div class="progress-row"><span class="progress-label">' + (isToday ? '知識點速覽 · 第 ' + id + ' 課' : '第 ' + id + ' 課（回顧）') + '</span>' + subTag + '</div>' +
+      '<div class="card-value-sm serif" style="margin-top:6px;">' + L.t + '</div>' +
+      '<div style="margin-top:8px; font-size:12px; line-height:1.7;">' +
+        L.p.map(x => '📌 ' + x).join('<br>') +
+      '</div>' +
+      '<div class="field-label-mini" style="margin-top:12px;">🛠️ 實作任務（喺真 Word/Excel 做完打勾）</div>' +
+      L.tasks.map((t, ti) =>
+        '<div class="log-row" onclick="toggleOfficeTask(' + id + ',' + ti + ')" style="cursor:pointer;">' +
+        '<span style="font-size:12px;">' + ((st.tasks || [])[ti] ? '✅ ' : '⬜ ') + t + '</span></div>').join('') +
+      '<div class="field-label-mini" style="margin-top:12px;">🧠 練習測驗（80% 先算掌握）</div>' +
+      '<div id="officeQuizArea">' + quizAreaHTML(id) + '</div>' +
+      '<div style="margin-top:10px; text-align:right;"><span class="' + state.cls + '">' + state.label + '</span></div>';
+    if (quizState && quizState.id === id && !quizState.done) renderQuizQ();
+  }
+  function quizAreaHTML(id) {
+    const quiz = officeQuizData[id];
+    if (!quiz) return '<div style="font-size:11px; color:var(--text-muted); line-height:1.6;">📂 每日10:00 ZCode 出實作練習檔：<br>Desktop/ZCode備考練習/（Word＋Excel，iCloud同步）<br>用弟弟 Windows 機做，擬真考試計時。<br>呢度嘅選擇題測驗只係輔助記憶。</div>';
+    // 保留進行中/已完成嘅測驗畫面（renderTodayLesson 重畫時唔會沖走）
+    if (quizState && quizState.id === id && quizState.done) {
+      const pct = quizState.pct;
+      return '<div style="text-align:center; padding:14px 0;">' +
+        '<div class="card-value serif">' + pct + '%</div>' +
+        '<div style="font-size:12px; color:var(--text-muted); margin-top:4px;">' + quizState.score + ' / ' + quiz.length + ' 題</div>' +
+        '<div style="margin-top:8px;"><span class="tag ' + (pct >= 80 ? 'tag-green' : 'tag-yellow') + '">' + (pct >= 80 ? '🎉 已達掌握標準' : '未達 80%，撳重試') + '</span></div></div>' +
+        (pct >= 80 ? '' : '<button class="typing-btn" style="width:100%;" onclick="startOfficeQuiz(' + id + ')">🔁 重試</button>');
+    }
+    return '<button class="typing-btn" style="width:100%;" onclick="startOfficeQuiz(' + id + ')">▶ 開始測驗（' + quiz.length + ' 題）</button><div id="officeQuizBody"></div>';
+  }
+  function toggleOfficeTask(id, ti) {
+    const st = officeProgress[id] = officeProgress[id] || {};
+    st.tasks = st.tasks || [];
+    st.tasks[ti] = !st.tasks[ti];
+    officeSaveProgress();
+    renderTodayLesson(id); renderOfficeList();
+  }
+  let quizState = null;
+  function startOfficeQuiz(id) {
+    quizState = { id, i: 0, score: 0, answered: false, done: false };
+    renderQuizQ();
+  }
+  function renderQuizQ() {
+    const quiz = officeQuizData[quizState.id];
+    const q = quiz[quizState.i];
+    document.getElementById('officeQuizBody').innerHTML =
+      '<div style="font-size:11px; color:var(--text-muted); margin-top:10px;">第 ' + (quizState.i + 1) + ' / ' + quiz.length + ' 題</div>' +
+      '<div style="font-size:13px; font-weight:500; margin:6px 0 10px;">' + q.q + '</div>' +
+      q.options.map((o, oi) => '<button class="quick-btn" style="display:block; width:100%; text-align:left; margin-top:6px;" id="qo' + oi + '" onclick="answerOfficeQuiz(' + oi + ')">' + String.fromCharCode(65 + oi) + '. ' + o + '</button>').join('') +
+      '<div id="quizFeedback" style="margin-top:10px;"></div>';
+  }
+  function answerOfficeQuiz(oi) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+    const quiz = officeQuizData[quizState.id];
+    const q = quiz[quizState.i];
+    const ok = oi === q.a;
+    if (ok) quizState.score++;
+    document.getElementById('qo' + q.a).style.cssText += ';background:var(--pale-green-bg);color:var(--pale-green-text);border-color:var(--pale-green-text);';
+    if (!ok) document.getElementById('qo' + oi).style.cssText += ';background:var(--pale-red-bg);color:var(--pale-red-text);border-color:var(--pale-red-text);';
+    const next = quizState.i + 1 < quiz.length;
+    document.getElementById('quizFeedback').innerHTML =
+      '<div style="font-size:12px; ' + (ok ? 'color:var(--pale-green-text)' : 'color:var(--pale-red-text)') + ';">' + (ok ? '✅ 正確' : '❌ 唔啱，正確係 ' + String.fromCharCode(65 + q.a)) + ' — ' + q.e + '</div>' +
+      '<button class="typing-btn" style="width:100%; margin-top:8px;" onclick="nextOfficeQuiz()">' + (next ? '下一題 →' : '睇成績 📊') + '</button>';
+  }
+  function nextOfficeQuiz() {
+    const quiz = officeQuizData[quizState.id];
+    if (quizState.i + 1 < quiz.length) {
+      quizState.i++; quizState.answered = false; renderQuizQ();
+    } else {
+      const pct = Math.round(quizState.score / quiz.length * 100);
+      const st = officeProgress[quizState.id] = officeProgress[quizState.id] || {};
+      st.quiz = Math.max(st.quiz || 0, pct);
+      officeSaveProgress();
+      quizState.done = true; quizState.pct = pct;
+      renderTodayLesson(quizState.id); renderOfficeList();
+    }
+  }
+  function renderOfficeList() {
+    const total = OFFICE_SYLLABUS.length;
+    const mastered = OFFICE_SYLLABUS.filter(l => officeLessonState(l.id).mastered).length;
+    document.getElementById('officeProgTag').textContent = mastered + ' / ' + total;
+    document.getElementById('officeProgFill').style.width = (mastered / total * 100).toFixed(1) + '%';
+    const todayId = lessonOfDay();
+    document.getElementById('officeList').innerHTML = OFFICE_SYLLABUS.map(l => {
+      const state = officeLessonState(l.id);
+      const sub = l.s === 'W' ? 'W' : l.s === 'E' ? 'E' : '綜';
+      const hl = l.id === todayId ? 'background:var(--surface-2); border-radius:6px;' : '';
+      return '<div class="log-row" onclick="renderTodayLesson(' + l.id + ')" style="cursor:pointer; ' + hl + '">' +
+        '<span class="log-date">' + String(l.id).padStart(2, '0') + ' ' + sub + '</span>' +
+        '<span style="flex:1; font-size:12px; padding:0 6px;">' + l.t + (l.id === todayId ? ' 📍' : '') + '</span>' +
+        '<span class="' + state.cls + '">' + state.label + '</span></div>';
+    }).join('');
+  }
+  function renderOffice() { renderTodayLesson(lessonOfDay()); renderOfficeList(); }
+
+  // ===== 🗓️ 學習計劃（月→週→日，v2.26）=====
+  const PLAN_SEED = {
+    version: '2026-09-v2',
+    monthTitle: '9月目標 · 備考正規月（第1個月）｜W1已收官：10/25綠',
+    goals: [
+      '弱點地圖：25個知識點全部有狀態（W1已達成✅）',
+      '英打：以第1週基線每週+2~3 wpm，月底穩定≥35',
+      '中打：穩定≥18（終極目標20）',
+      'Office：weak知識點≤8個（最少17個✅）——現況10綠12黃紅3白',
+      '習慣：打字打卡率≥85%，Office練習≥20日'
+    ],
+    weeks: [
+      { start: '2026-08-31', end: '2026-09-06', title: 'W1 診斷＋基線週 ✅收官', tasks: ['✅ Word＋Excel診斷完成', '✅ 建立每晚練習習慣（8份檔案大爆發）', '✅ 10/25知識點升綠', '⬜ 打字基線（順延W2必報）'] },
+      { start: '2026-09-07', end: '2026-09-13', title: 'W2 斷尾＋範圍紀律週', tasks: ['頁尾鐵律斷尾：連續2次置中全對升綠', '公式範圍紀律：SUM/MAX/MIN/AVERAGE啱啱好連續2次', '多層排序＋自動篩選（新題型）→掌握', 'IF/COUNTIF/AVERAGE/圖表/凍結/列印→升綠', '新題型：文繞圖＋合併列印＋註腳首測', '打字：每日打卡＋報基線（英/中各3次）'] },
+      { start: '2026-09-14', end: '2026-09-20', title: 'W3 鞏固＋模擬（一）', tasks: ['每日還原卷：還原度≥90%', '首份30分鐘混合模擬（Word15+Excel15計時）', '弱點清零衝刺：weak≤5'] },
+      { start: '2026-09-21', end: '2026-09-27', title: 'W4 模擬（二）＋穩定期', tasks: ['混合模擬每週2份，錯誤≤2處', '全部25知識點綠燈目標', '打字衝刺：英≥38'] },
+      { start: '2026-09-28', end: '2026-09-30', title: 'W5 月結＋10月計劃', tasks: ['9月月結review', '10月計劃上dashboard', '月末模擬：連續2份90%+'] }
+    ],
+    daily: [
+      '💻 Office實作檔（15分Word＋15分Excel，計時）',
+      '⌨️ 打字20分（英15＋中5）',
+      '📊 回報自評＋dashboard打卡'
+    ]
+  };
+  (function seedPlan() {
+    if (localStorage.getItem('zoe_plan_seeded') !== PLAN_SEED.version) {
+      localStorage.setItem('zoe_plan_data', JSON.stringify(PLAN_SEED));
+      localStorage.setItem('zoe_plan_seeded', PLAN_SEED.version);
+    }
+  })();
+  let planData = JSON.parse(localStorage.getItem('zoe_plan_data') || 'null') || PLAN_SEED;
+  function currentPlanWeek() {
+    const t = new Date();
+    const tn = new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime();
+    let cur = planData.weeks[0];
+    planData.weeks.forEach(w => {
+      const s = new Date(w.start + 'T00:00:00').getTime(), e = new Date(w.end + 'T23:59:59').getTime();
+      if (tn >= s && tn <= e) cur = w; else if (tn > e) cur = w; // 過咗嘅週都指住最後一週
+    });
+    return cur;
+  }
+  function renderPlan() {
+    document.getElementById('planMonthTitle').textContent = planData.monthTitle;
+    document.getElementById('planGoals').innerHTML = planData.goals.map(g =>
+      '<div class="log-row"><span style="font-size:12px;">🎯 ' + g + '</span></div>').join('');
+    const w = currentPlanWeek();
+    document.getElementById('planWeekTitle').textContent = w.title;
+    document.getElementById('planWeekRange').textContent = w.start.slice(5).replace('-', '/') + ' - ' + w.end.slice(5).replace('-', '/');
+    const wst = JSON.parse(localStorage.getItem('zoe_weektask_' + w.start + '_' + w.end) || '{}');
+    document.getElementById('planWeekTasks').innerHTML = w.tasks.map((t, i) =>
+      '<div class="log-row" onclick="toggleWeekTask(' + i + ')" style="cursor:pointer;"><span style="font-size:12px;' + (wst[i] ? ' text-decoration:line-through; color:var(--text-muted);' : '') + '">' + (wst[i] ? '✅' : '⬜') + ' ' + t + '</span></div>').join('');
+  }
+  function toggleWeekTask(i) {
+    const w = currentPlanWeek();
+    const k = 'zoe_weektask_' + w.start + '_' + w.end;
+    const st = JSON.parse(localStorage.getItem(k) || '{}');
+    st[i] = !st[i];
+    localStorage.setItem(k, JSON.stringify(st));
+    renderPlan();
+  }
+  function togglePlanTask(i) {
+    const k = 'zoe_plan_check_' + dateStr;
+    const st = JSON.parse(localStorage.getItem(k) || '{}');
+    st[i] = !st[i];
+    localStorage.setItem(k, JSON.stringify(st));
+    renderPlanToday();
+  }
+  function renderPlanToday() {
+    const st = JSON.parse(localStorage.getItem('zoe_plan_check_' + dateStr) || '{}');
+    document.getElementById('planToday').innerHTML = planData.daily.map((t, i) =>
+      '<div class="log-row" onclick="togglePlanTask(' + i + ')" style="cursor:pointer;"><span style="font-size:12px;">' + (st[i] ? '✅' : '⬜') + ' ' + t + '</span></div>').join('');
+  }
+
+  // ----- 瑜伽課記錄 / 類型統計 / 1000小時計劃 -----
+  const YOGA_TYPES = ['陰瑜伽','瘦身瑜伽','空中瑜伽','瑜伽拉伸','哈達瑜伽','流瑜伽','其他瑜伽'];
+  function yogaTypeOf(name) {
+    const n = String(name || '');
+    if (n.indexOf('陰') >= 0 || /yin/i.test(n)) return '陰瑜伽';
+    if (n.indexOf('瘦') >= 0 || /slimming/i.test(n)) return '瘦身瑜伽';
+    if (n.indexOf('空中') >= 0 || /aerial/i.test(n)) return '空中瑜伽';
+    if (n.indexOf('拉伸') >= 0 || /stretch/i.test(n)) return '瑜伽拉伸';
+    if (n.indexOf('哈達') >= 0 || /hatha/i.test(n)) return '哈達瑜伽';
+    if (n.indexOf('流') >= 0 || /vinyasa|flow/i.test(n)) return '流瑜伽';
+    return YOGA_TYPES.indexOf(n) >= 0 ? n : '其他瑜伽';
+  }
+  function addYogaClass() {
+    const type = document.getElementById('ycType').value;
+    const mins = parseInt(document.getElementById('ycMins').value);
+    if (!mins || mins <= 0) { alert('請輸入時長（分鐘）'); return; }
+    const dv = document.getElementById('ycDate').value;
+    const date = dv ? dv.replace(/-/g, '.') : dateStr;
+    if (editState.yc !== undefined) {
+      if (!confirm('確認修改呢堂瑜伽課？')) return;
+      workouts[editState.yc] = { date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' };
+    } else {
+      workouts.push({ date: date, exercise: type, weight: '', reps: mins + 'min', group: '瑜伽' });
+    }
+    const wasEdit = editState.yc !== undefined;
+    localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
+    cancelEdit('yc');
+    afterWoChange(); renderYogaTypeStats(); renderYoga1000();
+    alert((wasEdit ? '✅ 已更新 ' : '✅ 已記錄 ') + type + ' ' + mins + ' 分鐘（' + date + '）\n同步至：實踐時數 / 1000小時計劃 / 肌群分佈 / 週回顧');
+  }
+  function editYogaClass(i) {
+    const w = workouts[i];
+    document.getElementById('ycType').value = YOGA_TYPES.indexOf(w.exercise) >= 0 ? w.exercise : '其他瑜伽';
+    document.getElementById('ycMins').value = parseInt(String(w.reps).replace(/[^0-9]/g, '')) || '';
+    document.getElementById('ycDate').value = (w.date || dateStr).replace(/\./g, '-');
+    editState.yc = i;
+    const b = document.getElementById('ycBtn'); if (b) b.textContent = '💾 更新瑜伽課';
+    const cb = document.getElementById('ycCancel'); if (cb) cb.style.display = 'inline-block';
+    document.getElementById('ycType').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function renderYogaTypeStats() {
+    const el = document.getElementById('yogaTypeStats');
+    if (!el) return;
+    const yw = workouts.filter(w => w.group === '瑜伽');
+    if (yw.length === 0) {
+      el.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:8px 0;">未有瑜伽課記錄</div>';
+    } else {
+      const byType = {};
+      yw.forEach(w => {
+        const t = yogaTypeOf(w.exercise);
+        const m = parseInt(String(w.reps).replace(/[^0-9]/g, '')) || 0;
+        byType[t] = byType[t] || { mins: 0, count: 0 };
+        byType[t].mins += m; byType[t].count++;
+      });
+      const entries = Object.entries(byType).sort((a,b) => b[1].mins - a[1].mins);
+      const max = Math.max(...entries.map(e => e[1].mins));
+      el.innerHTML = entries.map(([t, v]) =>
+        '<div class="bar-row"><div class="bar-label-line"><span>'+t+' <span style="color:var(--text-muted); font-size:10px;">×'+v.count+'</span></span>'+
+        '<span style="font-family:JetBrains Mono,monospace; font-size:11px; color:var(--text-muted);">'+(Math.round(v.mins/6)/10)+' hr</span></div>'+
+        '<div class="bar-track-h"><div class="bar-fill-h" style="width:'+(v.mins/max*100)+'%; background:#8B7355;"></div></div></div>'
+      ).join('');
+    }
+    // 最近課程
+    const logEl = document.getElementById('yogaClassLog');
+    if (logEl) {
+      const yAll = workouts.map((w,i)=>({w,i})).filter(x => x.w.group === '瑜伽');
+      if (yAll.length === 0) {
+        logEl.innerHTML = '<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:6px 0;">未有記錄</div>';
+      } else {
+        logEl.innerHTML = yAll.slice(-8).reverse().map(x =>
+          '<div class="log-row" onclick="editYogaClass('+x.i+')" style="cursor:pointer;">'+
+          '<span class="log-date">'+x.w.date+' · '+yogaTypeOf(x.w.exercise)+'</span>'+
+          '<span><span class="log-value">'+(parseInt(String(x.w.reps).replace(/[^0-9]/g,''))||0)+' min · 撳我編輯</span> '+
+          '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div>'
+        ).join('');
+      }
+    }
+  }
+  function renderYoga1000() {
+    const el = document.getElementById('yoga1000Hrs');
+    if (!el) return;
+    const totalMin = workouts.filter(w => w.group === '瑜伽')
+      .reduce((a,w) => a + (parseInt(String(w.reps).replace(/[^0-9]/g,''))||0), 0);
+    const hrs = totalMin / 60;
+    el.textContent = Math.round(hrs*10)/10;
+    document.getElementById('yoga1000Bar').style.width = Math.min(hrs/1000*100, 100) + '%';
+    const next = (Math.floor(hrs/100)+1) * 100;
+    document.getElementById('yoga1000Milestone').textContent = hrs < 1000
+      ? '下一個里程碑：' + next + ' hr（仲差 ' + Math.round((next-hrs)*10)/10 + ' hr）'
+      : '已達成 1000 小時 🎉 傳奇達成';
+  }
+
+  // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
+  const REVIEW_SEED = {
+    version: '2026-09-04-v4',
+    subtitle: 'Zoe 弱點地圖（9/4深夜）｜E6-E10批改完：3對+1差步+1三缺',
+    items: [
+      { id: 'rv1', point: '多層次編號（一級＋二級）', symptom: '9/3 第1次全對✨（3+2結構、Tab降級正確）——再1次全對升綠', fix: '子項刪走「包括」等贅字；繼續：編號掣＋Tab降級', status: 'almost', asked: '2026-09-02' },
+      { id: 'rv2', point: '項目符號（•掣）', symptom: '連續2次全對（8/29卷＋診斷5/5）', fix: '已食碎嚼爛✅ 撳完望有•嘅習慣keep住', status: 'mastered' },
+      { id: 'rv3', point: '表格（框線／底色／置中）', symptom: '連續2次全對（診斷＋8/31複習卷：Table Grid＋粗體＋淺綠底＋置中）', fix: '已食碎嚼爛✅（9/3晚升mastered🎉）', status: 'mastered' },
+      { id: 'rv4', point: '紙張A4（Letter陷阱）', symptom: '連續兩次Letter後，9/3診斷第1次全對✨（A4＋邊界齊）', fix: '再1次全對升綠；開檔第一件事望【大小】掣', status: 'almost' },
+      { id: 'rv5', point: '標題格式（粗體✅字體✨）', symptom: '8/31複習卷字體改正✨（細明體返嚟啦）；宋体問題只出現過一次', fix: '再1次全對（連埋16pt/粗體/置中）就升返綠', status: 'almost' },
+      { id: 'rv7', point: '頁尾頁碼（今日主攻🔴）', symptom: '連續兩份文件同一款錯：真欄位✅但【未置中＋插咗兩次】——頑疾確認', fix: '插頁碼之後兩個動作：①Ctrl+E置中 ②望一眼——見到兩組「第X頁」即刻刪一組；首頁不同仍未做過', status: 'weak' },
+      { id: 'rv8', point: '頁首靠右', symptom: '9/3晚第1次全對✨（靠右＋10pt＋文字齊）', fix: '再1次全對升綠；雙擊頁首＞Ctrl+R', status: 'almost' },
+      { id: 'rv10', point: '尋找與取代', symptom: '連續2次全對（8/30卷＋8/31複習卷，0殘留）', fix: '已食碎嚼爛✅（9/3晚升mastered🎉）', status: 'mastered' },
+      { id: 'rv11', point: '另存PDF', symptom: '連續2次成功（診斷＋8/30卷）', fix: '已食碎嚼爛✅ 記住：揀咗PDF類型就唔使自己打.pdf（8/30打咗.pdf.pdf已修正）', status: 'mastered' },
+      { id: 'rv9', point: '註腳／插圖', symptom: '9/3診斷兩樣第1次全對✨（K2註腳＋5cm圖置中）', fix: '再1次全對升綠——已經好近', status: 'almost' },
+      { id: 'rv6', point: 'Excel 基礎四式（E1-E5✅）', symptom: 'E1-E5自評全✅＋9/3晚迷你卷4/4全對', fix: '再1次全對升綠；小執漏：公式隔籬要打標籤', status: 'almost' },
+      { id: 'rv12', point: 'IF 公式（E6）✨第1次全對', symptom: '9/4晚讀檔驗證：F2:F14十三格公式完美（引號逗號相對參照全啱）——一日內由唔識到全對', fix: '再1次唔同場景全對（唔睇步驟）升綠；Zoe自認要睇步驟→每卷繼續循環', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv13', point: 'COUNTIF／SUMIF（E7+E9）✨第1次全對', symptom: '9/4晚讀檔驗證：COUNTIF＋四條SUMIF全部正確；執漏重犯：H1隔籬冇打標籤', fix: '再1次全對升綠；鐵律：每條統計公式左邊一格打返個名（行政筆數/平均金額…）', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv14', point: '多層排序（E8）✨結果全對＋新陷阱', symptom: '9/4晚讀檢：兩層排序完全正確✨但排序範圍吞埋統計區→MAX/MIN/SUM三公式搬位整傷（SUM變189應199）', fix: '新知識點：①數據表同統計區之間留空行②排序後望一眼統計區數字有冇變', status: 'almost', asked: '2026-09-04' },
+      { id: 'rv15', point: '簇狀直條圖（E9）⚠️90%', symptom: '9/4晚讀檢：簇狀✓數據引用✓SUMIF表✓——標題只打「各部門」漏「總開支」三隻字', fix: '打標題打齊六個字先好點出去；重做一次全對升綠', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv16', point: '頁面設定＋凍結（E10）🔴主攻', symptom: '9/4晚讀檢4做1：列印標題列✓｜橫向✗未設｜1頁寬✗未設｜凍結✗鎖咗首欄B1（應A2首列）', fix: '版面配置→方向橫向＋調整成1頁寬（高度自動）；凍結：先取消凍結→再揀「凍結首列」呢個名；驗證=上下捲第1列唔郁', status: 'weak', asked: '2026-09-04' },
+      { id: 'rv17', point: '統計公式標籤（頑疾觀察）', symptom: '連續兩次批改都漏：H1/B9隔籬冇打標籤——考試改卷見唔個名可能當漏做', fix: '每打一條統計公式，即刻喺左邊一格打返個名（合計/最高/行政筆數）', status: 'weak', asked: '2026-09-04' }
+    ]
+  };
+  (function seedReview() {
+    if (localStorage.getItem('zoe_review_seeded') !== REVIEW_SEED.version) {
+      localStorage.setItem('zoe_review_data', JSON.stringify(REVIEW_SEED));
+      localStorage.setItem('zoe_review_seeded', REVIEW_SEED.version);
+    }
+  })();
+  let reviewData = JSON.parse(localStorage.getItem('zoe_review_data') || 'null') || REVIEW_SEED;
+  function renderReview() {
+    document.getElementById('reviewSubtitle').textContent = reviewData.subtitle;
+    const tag = s => s === 'weak' ? '<span class="tag tag-red">未攻破</span>'
+      : s === 'fixed' ? '<span class="tag tag-green">已改正</span>'
+      : s === 'mastered' ? '<span class="tag tag-green">已掌握</span>'
+      : s === 'almost' ? '<span class="tag tag-yellow">差一步·再1次升綠</span>'
+      : '<span class="tag tag-gray">未開始</span>';
+    const bar = s => s === 'weak' ? 'red' : s === 'almost' ? 'yellow'
+      : (s === 'mastered' || s === 'fixed') ? 'green' : 'gray';
+    document.getElementById('reviewList').innerHTML = reviewData.items.map(it =>
+      '<div class="train-item ' + bar(it.status) + '">' +
+      '<div style="font-size:13px; font-weight:600; line-height:1.5;">' + it.point + '</div>' +
+      '<div style="margin-top:6px;">' + tag(it.status) + '</div>' +
+      '<div style="font-size:11px; color:var(--text-muted); margin-top:7px;">🩺 病徵' +
+      vlines(it.symptom).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      '<div style="font-size:11.5px; margin-top:7px; padding-top:7px; border-top:1px dashed var(--border);">💊 修正' +
+      vlines(it.fix).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      (it.asked ? '<div style="font-size:11px; color:var(--text-muted); margin-top:5px;">❓ 問過：' + it.asked + '</div>' : '') +
+      '</div>').join('');
+  }
+
+  // ===== 📂 練習檔案進度（v2.38：批改後自動同步）=====
+  const PRACTICE_SEED = {
+    version: '2026-09-12-v1',
+    summary: '已完成 7 份｜34 題驗證 26 題全對｜E6-E10一日攻破3題✨',
+    files: [
+      { name: '8/28 Word 格式暖身', status: 'done', score: '3/4（粗體其後已修正）' },
+      { name: '8/28 Word 弱點診斷', status: 'done', score: '8/10' },
+      { name: '8/29 Word 表格清單', status: 'done', score: '3/5（表格A4其後攻破）' },
+      { name: '8/30 Word 頁首頁尾取代', status: 'done', score: '3/5' },
+      { name: '8/31 Word 複習卷', status: 'done', score: '4/5（表格🎉取代🎉升綠）' },
+      { name: '9/3 Excel 迷你二連勝', status: 'done', score: '4/4 🎉Excel首勝' },
+      { name: '8/28 Excel 弱點診斷 E1-E10', status: 'done', score: 'E6-E10：3全對✨＋1差一步＋1三缺（9/4批改）' },
+      { name: '9/4 Word 頁首頁尾攻堅卷', status: 'todo', score: '主攻：頁尾三步鐵律＋首頁不同' },
+      { name: '9/4 Excel 衝綠卷', status: 'todo', score: '基礎4項衝綠＋AVERAGE＋E10頁面設定主攻' },
+      { name: '9/5+ 還原制練習卷', status: 'todo', score: '🆕題目版＋答案版還原100%目標（擬真PSII考法）' }
+    ]
+  };
+  (function seedPractice() {
+    if (localStorage.getItem('zoe_practice_seeded') !== PRACTICE_SEED.version) {
+      localStorage.setItem('zoe_practice_data', JSON.stringify(PRACTICE_SEED));
+      localStorage.setItem('zoe_practice_seeded', PRACTICE_SEED.version);
+    }
+  })();
+  let practiceData = JSON.parse(localStorage.getItem('zoe_practice_data') || 'null') || PRACTICE_SEED;
+  function renderPractice() {
+    document.getElementById('practiceSummary').textContent = practiceData.summary;
+    document.getElementById('practiceList').innerHTML = practiceData.files.map(f =>
+      '<div class="log-row"><span class="log-date">' + (f.status === 'done' ? '✅' : '⬜') + '</span>' +
+      '<span style="flex:1; font-size:12px; padding:0 4px;">' + f.name + '</span>' +
+      '<span style="font-size:11px; color:var(--text-muted); text-align:right;">' + f.score + '</span></div>').join('');
+  }
+
+  // ===== 🎯 弱點訓練台（v2.39：由弱點數據驅動，連住實際練習檔）=====
+  const TRAIN_SEED = {
+    version: '2026-09-05-v1',
+    updated: '2026-09-04 23:55（大爆發日批改後）',
+    summary: '9/5 訓練 8 項（Excel範圍紀律＋排序＋頑疾）· 每項連住練習檔',
+    items: [
+      { lvl: 'red', point: '公式範圍紀律（9/4診斷3處中招）', howto: 'SUM/MAX/MIN範圍啱啱好：=SUM(D2:D14)——①唔好包標題行D1②唔好漏尾行③對住「金額」欄打（E4加錯咗數量欄）', file: '8/28診斷修正功課＋9/4衝綠卷' },
+      { lvl: 'red', point: '多層排序（E8未做，從未實測）', howto: '資料＞排序：主要=日期舊至新＞新增層級=金額大至小＞彈窗揀「擴大選取範圍」', file: '聽日10:00卷實戰' },
+      { lvl: 'red', point: 'E10 頁面設定（9/4批改4做1）', howto: '版面配置→方向橫向；調整成1頁寬（高度自動）；列印標題✓已做', file: '8/28診斷檔修正功課＋9/4衝綠卷' },
+      { lvl: 'red', point: '凍結首列（鎖錯咗欄）', howto: '檢視→凍結窗格→先【取消凍結窗格】→再揀【凍結首列】呢個名；驗證=上下捲第1列唔郁', file: '8/28診斷檔修正功課' },
+      { lvl: 'red', point: '頁尾頁碼三步鐵律', howto: '插一次＞Ctrl+E置中＞望一眼（一組啱，兩組刪一組）', file: '9/4 Word頁首頁尾攻堅卷 D1' },
+      { lvl: 'yellow', point: '統計公式標籤（兩連犯）', howto: '每打一條統計公式，左邊一格即刻打返個名（合計/最高/行政筆數）', file: '9/4衝綠卷F區＋以後每卷' },
+      { lvl: 'yellow', point: '圖表標題打齊字', howto: '「各部門總開支」六隻字打齊先好點出去——E9就係漏尾三隻字', file: '8/28診斷檔修正功課' },
+      { lvl: 'yellow', point: '排序範圍陷阱（新知識點）', howto: '數據同統計區隔一行空行；排序後望一眼統計區數字有冇變', file: '之後每份Excel卷都會出' }
+    ],
+    mastered: ['縮排行距','段落對齊','項目符號','表格','尋找與取代','另存PDF','A4紙張','標題格式·細明體','Excel標題列','Excel貨幣格式']
+  };
+  (function seedTrain() {
+    if (localStorage.getItem('zoe_train_seeded') !== TRAIN_SEED.version) {
+      localStorage.setItem('zoe_train_data', JSON.stringify(TRAIN_SEED));
+      localStorage.setItem('zoe_train_seeded', TRAIN_SEED.version);
+    }
+  })();
+  let trainData = JSON.parse(localStorage.getItem('zoe_train_data') || 'null') || TRAIN_SEED;
+  // 豎列工具：將「；」分隔嘅步驟拆做一行一行（v2.44）
+  function vlines(s) { return String(s).split('；').map(x => x.trim()).filter(Boolean); }
+
+  function renderTrain() {
+    document.getElementById('trainSummary').textContent = trainData.summary;
+    const tag = l => l === 'red' ? '<span class="tag tag-red">未攻破</span>' : '<span class="tag tag-yellow">差一步</span>';
+    document.getElementById('trainList').innerHTML = trainData.items.map(it =>
+      '<div class="train-item ' + it.lvl + '">' +
+      '<div class="train-head"><span class="train-title">' + it.point + '</span>' + tag(it.lvl) + '</div>' +
+      '<div class="train-how">' + vlines(it.howto).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      '<div class="train-file">📄 ' + it.file + '</div>' +
+      '</div>').join('') +
+      (trainData.updated ? '<div class="train-updated">🕐 最後更新：' + trainData.updated + '</div>' : '');
+    document.getElementById('trainMastered').innerHTML = trainData.mastered.map(m =>
+      '<div class="vrow"><span class="tag tag-green">✅ 已掌握</span><span style="flex:1;">' + m + '</span></div>').join('') +
+      '<div style="font-size:10px; color:var(--text-muted); margin-top:6px;">連續2次（唔同場景）全對先入呢度</div>';
+  }
+
+  // ===== 📈 我的實際訓練＋進度條（v2.41）=====
+  const REAL_SEED = {
+    version: '2026-09-12-v1',
+    today: { date: '2026.09.12', items: [
+      { h: '📊 積壓批改（9/7晚4份）', lines: ['9/7斷尾專項 4/4🎉頁尾斷尾', '9/5還原卷 85%（空行+A4漏）', '8/29 Excel：IF升綠🎉統計區未做', '8/28 Excel：標籤漏'] },
+      { h: '🏆 IF升mastered（11/25）', lines: ['連續2次全欄IF全對'] },
+      { h: '🔍 癥結破解', lines: ['凍結用「凍結首列」按鈕', '真日期先有日期排序'] }
+    ]},
+    word: { mastered: 8, total: 13 },
+    excel: { mastered: 3, total: 12 },
+    unlearned: ['圖片文繞圖（Word）', '合併列印（Word）', '自動篩選（Excel）'],
+    learning: ['頁首頁尾（置中習慣）', '註腳', '插圖', '多層排序', '公式範圍紀律（SUM/MAX/MIN）', 'IF/COUNTIF/AVERAGE鞏固', '圖表', '凍結欄列', '列印設定'],
+    log: [
+      { d: '9/4', t: '大爆發：8份檔案＋3教學＋4升綠（Word 6卷＋Excel診斷）' },
+      { d: '9/3', t: '3份卷（8/30＋Excel迷你4/4首勝＋8/31複習）＋弱點複習室設立' },
+      { d: '9/2', t: '表格清單卷＋多層編號教學＋Excel基礎練習檔' },
+      { d: '9/1', t: '格式暖身批改（首次）＋縮排行距對齊重溫' }
+    ]
+  };
+  (function seedReal() {
+    if (localStorage.getItem('zoe_real_seeded') !== REAL_SEED.version) {
+      localStorage.setItem('zoe_real_data', JSON.stringify(REAL_SEED));
+      localStorage.setItem('zoe_real_seeded', REAL_SEED.version);
+    }
+  })();
+  let realData = JSON.parse(localStorage.getItem('zoe_real_data') || 'null') || REAL_SEED;
+  function renderReal() {
+    const today = realData.today && realData.today.date === dateStr ? realData.today : null;
+    document.getElementById('realToday').innerHTML = today
+      ? today.items.map(i => '<div class="train-item yellow" style="border-left-color:var(--pale-blue-text);"><div class="train-title">' + i.h + '</div>' +
+          i.lines.map(l => '<div style="font-size:11.5px; margin-top:4px;">▸ ' + l + '</div>').join('') + '</div>').join('')
+      : '<div class="log-row" style="color:var(--text-muted); justify-content:center;"><span style="font-size:12px;">今日未有記錄——做完練習或問完ZCode就會出現</span></div>';
+    // 今日打字（live讀打卡數據）
+    const tToday = typingLog.filter(l => l.date === dateStr);
+    document.getElementById('realTyping').textContent = tToday.length
+      ? tToday.map(l => '英' + l.en + '／中' + l.zh + ' wpm' + (l.mins ? '（' + l.mins + '分）' : '')).join('  ｜  ')
+      : '今日未打卡（下方⌨️打字打卡區輸入）';
+    // 進度條
+    const wp = Math.round(realData.word.mastered / realData.word.total * 100);
+    const ep = Math.round(realData.excel.mastered / realData.excel.total * 100);
+    document.getElementById('barWord').style.width = wp + '%';
+    document.getElementById('barWordTag').textContent = realData.word.mastered + '/' + realData.word.total + '（' + wp + '%）';
+    document.getElementById('barExcel').style.width = ep + '%';
+    document.getElementById('barExcelTag').textContent = realData.excel.mastered + '/' + realData.excel.total + '（' + ep + '%）';
+    // 未學／學習中（豎列，每項一行）
+    document.getElementById('unlearnedList').innerHTML =
+      realData.unlearned.map(u => '<div class="vrow"><span class="tag tag-gray">⚪ 未學</span><span style="flex:1;">' + u + '</span></div>').join('') +
+      realData.learning.map(l => '<div class="vrow"><span class="tag tag-yellow">🟡 學習中</span><span style="flex:1;">' + l + '</span></div>').join('');
+    // 日誌
+    document.getElementById('trainLog').innerHTML = realData.log.map(l =>
+      '<div class="log-row"><span class="log-date">' + l.d + '</span><span style="flex:1; font-size:12px;">' + l.t + '</span></div>').join('');
+  }
+
+  // ===== 🤖 Agent 課程（v2.42：課程進度＋每日打卡＋學習成果留言）=====
+  const AGENT_SEED = {
+    version: '2026-09-04-v1',
+    course: 'v2.0',
+    currentStage: 1,
+    totalStages: 10,
+    currentLesson: '第1課｜LLM基礎名詞＋五層方案階梯',
+    homework: '6個產品方案配對＋市場直覸（｜分隔，每產品一行）',
+    homeworkStatus: '待提交',
+    stages: [
+      { n: 1, name: '基礎認知＆五層方案決策框架', status: 'active' },
+      { n: 2, name: 'Prompt工程→上下文工程', status: 'todo' },
+      { n: 3, name: 'RAG完整產品設計', status: 'todo' },
+      { n: 4, name: 'Function Calling＆MCP工具調用', status: 'todo' },
+      { n: 5, name: 'Agent三大核心模塊', status: 'todo' },
+      { n: 6, name: 'Agent主流架構（單vs多）', status: 'todo' },
+      { n: 7, name: '效果評測＋低成本需求驗證', status: 'todo' },
+      { n: 8, name: '小型迭代實戰MVP', status: 'todo' },
+      { n: 9, name: '完整商業專案（小說→影片）', status: 'todo' },
+      { n: 10, name: '作品集＋面試pitch', status: 'todo' }
+    ],
+    log: [
+      { d: '9/4', t: '課程指令v2.0定版（Zoe確認）＋第1課派發，作業待提交' },
+      { d: '9/4', t: 'Dashboard「Agent」tab上線：每日打卡＋學習成果留言' }
+    ]
+  };
+  (function seedAgent() {
+    if (localStorage.getItem('zoe_agent_seeded') !== AGENT_SEED.version) {
+      localStorage.setItem('zoe_agent_data', JSON.stringify(AGENT_SEED));
+      localStorage.setItem('zoe_agent_seeded', AGENT_SEED.version);
+    }
+  })();
+  let agentData = JSON.parse(localStorage.getItem('zoe_agent_data') || 'null') || AGENT_SEED;
+  let agentLog = JSON.parse(localStorage.getItem('zoe_agent_log') || '[]');
+  let agentNotes = JSON.parse(localStorage.getItem('zoe_agent_notes') || '[]');
+
+  function agentStreak() {
+    const days = new Set(agentLog.map(l => l.date));
+    if (!days.size) return 0;
+    const ds = d => d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+    let probe = days.has(ds(new Date())) ? new Date() : new Date(Date.now() - 86400000);
+    let n = 0;
+    while (days.has(ds(probe))) { n++; probe = new Date(probe.getTime() - 86400000); }
+    return n;
+  }
+  const escAgent = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  function addAgentLog() {
+    const mins = parseFloat(document.getElementById('agMin').value);
+    if (!mins || mins <= 0) { alert('填返學習咗幾多分鐘先'); return; }
+    const dpick = document.getElementById('agDate').value;
+    const logDate = dpick ? dpick.replace(/-/g, '.') : dateStr;
+    const type = document.getElementById('agType').value;
+    agentLog.push({ date: logDate, time: new Date().toTimeString().slice(0, 5), mins: mins, type: type });
+    agentLog.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    localStorage.setItem('zoe_agent_log', JSON.stringify(agentLog));
+    document.getElementById('agMin').value = '';
+    renderAgent();
+  }
+  function addAgentNote() {
+    const txt = document.getElementById('agNoteText').value.trim();
+    if (!txt) { alert('寫低少少成果先啦 😊'); return; }
+    agentNotes.unshift({ date: dateStr, time: new Date().toTimeString().slice(0, 5), text: txt, id: Date.now() });
+    localStorage.setItem('zoe_agent_notes', JSON.stringify(agentNotes));
+    document.getElementById('agNoteText').value = '';
+    renderAgent();
+  }
+  function delAgentNote(id) {
+    agentNotes = agentNotes.filter(n => n.id !== id);
+    localStorage.setItem('zoe_agent_notes', JSON.stringify(agentNotes));
+    renderAgent();
+  }
+  function renderAgent() {
+    // 課程現況（ZCode push 更新）
+    document.getElementById('agVersion').textContent = agentData.course;
+    document.getElementById('agStageTag').textContent = '階段 ' + agentData.currentStage + ' / ' + agentData.totalStages;
+    const pct = Math.round(agentData.currentStage / agentData.totalStages * 100);
+    document.getElementById('agStageBar').style.width = pct + '%';
+    document.getElementById('agCardStage').textContent = '階段 ' + agentData.currentStage + '/' + agentData.totalStages + ' · ' + agentData.currentLesson.split('｜')[0];
+    document.getElementById('agCardBar').style.width = pct + '%';
+    document.getElementById('agLesson').textContent = agentData.currentLesson;
+    document.getElementById('agHomework').textContent = agentData.homework;
+    const hw = agentData.homeworkStatus;
+    document.getElementById('agHwStatus').innerHTML = hw === '已過關'
+      ? '<span class="tag tag-green">✅ 已過關</span>'
+      : hw === '已提交' ? '<span class="tag tag-blue">📥 已提交 · 待ZCode點評</span>'
+      : '<span class="tag tag-yellow">✍️ 待提交</span>';
+    // 每日打卡（Zoe本地）
+    const streak = agentStreak();
+    const done = agentLog.some(l => l.date === dateStr);
+    document.getElementById('agStreakTag').textContent = streak + ' 天' + (done ? ' · 今日✅' : ' · 今日未學');
+    const totalMin = agentLog.reduce((s, l) => s + (l.mins || 0), 0);
+    document.getElementById('agTotalTag').textContent = totalMin + ' 分鐘 · ' + agentLog.length + ' 次';
+    const dpick = document.getElementById('agDate'); if (dpick && !dpick.value) dpick.value = dateStr.replace(/\./g, '-');
+    document.getElementById('agLogList').innerHTML = agentLog.slice(-10).reverse().map(l =>
+      '<div class="log-row"><span class="log-date">' + l.date.slice(5) + '</span><span style="flex:1; font-size:12px;">' + l.type + ' · ' + l.mins + ' 分</span></div>'
+    ).join('') || '<div style="font-size:11px; color:var(--text-muted);">未有打卡記錄——學完嘢記得嚟打卡 🔥</div>';
+    // 學習成果留言（Zoe本地）
+    document.getElementById('agNoteList').innerHTML = agentNotes.map(n =>
+      '<div class="log-item" style="cursor:default;">' +
+      '<div class="log-item-head"><span class="log-item-title">' + n.date + ' ' + n.time + '</span>' +
+      '<button onclick="delAgentNote(' + n.id + ')" style="background:none;border:none;color:var(--text-muted);font-size:14px;padding:0 4px;cursor:pointer;">✕</button></div>' +
+      '<div class="log-item-meta" style="text-align:left; white-space:pre-wrap; font-size:12px; color:var(--text); line-height:1.6;">' + escAgent(n.text) + '</div></div>'
+    ).join('') || '<div style="font-size:11px; color:var(--text-muted);">仲未有留言——學完第一課記低你嘅領悟 💬</div>';
+    // 十大階段
+    const stTag = s => s === 'done' ? '<span class="tag tag-green">✅ 完成</span>' : s === 'active' ? '<span class="tag tag-blue">🔵 進行中</span>' : '<span class="tag tag-gray">⚪ 未開始</span>';
+    document.getElementById('agStages').innerHTML = agentData.stages.map(s =>
+      '<div class="progress-row" style="margin:8px 0;">' +
+      '<span class="progress-label">' + s.n + '｜' + s.name + '</span>' + stTag(s.status) + '</div>'
+    ).join('');
+    // 課程日誌
+    document.getElementById('agCourseLog').innerHTML = agentData.log.map(l =>
+      '<div class="log-row"><span class="log-date">' + l.d + '</span><span style="flex:1; font-size:12px;">' + l.t + '</span></div>'
+    ).join('');
+  }
+
+  // ----- Init yoga -----
+  renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
+
   // ===== Hash deep-linking（例如 #fitness 直接開健身 tab）=====
   const hashTab = location.hash.replace('#', '');
-  const validTabs = ['overview','study','fitness','web','finance','life'];
+  const validTabs = ['overview','study','fitness','yoga','web','finance','life','agent'];
   if (validTabs.includes(hashTab) && hashTab !== 'overview') {
     document.querySelector('.tab-view.active')?.classList.remove('active');
     document.getElementById('tab-' + hashTab).classList.add('active');
@@ -2254,9 +4589,12 @@
     try { history.replaceState(null, '', '#' + hashTab); } catch (e) {}
   }
 
-  renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight();
-  renderTodayWorkout(); renderMuscleDist(); rebuildStrengthSelect(); renderSchedule();
+  renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory(); renderSleep();
+  renderDcheck(); renderDcheckWeek();
+  const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
+  renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
+  renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice(); renderReal(); renderAgent();
 </script>
 
 </body>
