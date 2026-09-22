@@ -1111,6 +1111,12 @@
               <div class="field-label-mini">動作名稱</div>
               <input class="input-mini input-text" id="woExercise" placeholder="例如：寬距深蹲">
             </div>
+            <div class="field-full">
+              <div class="field-label-mini">⚡ 快速揀動作（跟肌群 · 自動學你用過嘅）</div>
+              <select class="input-mini input-text" id="woExercisePick" onchange="pickExercise(this.value)">
+                <option value="">— 先揀肌群，再喺度拉 —</option>
+              </select>
+            </div>
             <div>
               <div class="field-label-mini">重量 kg</div>
               <input type="number" class="input-mini" id="woWeight" placeholder="17.5">
@@ -1119,9 +1125,19 @@
               <div class="field-label-mini">下數 × 組數</div>
               <input class="input-mini" id="woReps" placeholder="12×4">
             </div>
+            <div>
+              <div class="field-label-mini">⚡ 組數快選</div>
+              <select class="input-mini" id="woRepsPick" onchange="document.getElementById('woReps').value=this.value">
+                <option value="">—</option>
+                <option>12×4</option><option>12×3</option><option>12×5</option>
+                <option>8×4</option><option>10×4</option><option>15×4</option>
+                <option>10×3</option><option>15×3</option><option>20×4</option>
+                <option>2×2</option><option>30min</option><option>45min</option><option>60min</option>
+              </select>
+            </div>
             <div class="field-full">
               <div class="field-label-mini">肌群</div>
-              <select class="input-mini input-text" id="woGroup">
+              <select class="input-mini input-text" id="woGroup" onchange="buildExercisePick()">
                 <option value="背">背</option>
                 <option value="胸">胸</option>
                 <option value="肩">肩</option>
@@ -1161,7 +1177,10 @@
         <div class="card card-full">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
             <span id="schedWeekLabel" style="font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--text-muted);"></span>
-            <button class="quick-btn" id="schedCopyBtn" onclick="copyPrevSched()" style="display:none;">📋 複製上週</button>
+            <span style="display:flex; gap:6px;">
+              <button class="quick-btn" id="schedCopyBtn" onclick="copyPrevSched()" style="display:none;">📋 複製上週</button>
+              <button class="quick-btn" id="schedClearBtn" onclick="clearSched()" style="display:none;">🗑 清除本週</button>
+            </span>
           </div>
           <div class="sched-grid" id="schedGrid"></div>
           <div style="font-size:10px; color:var(--text-muted); margin-top:12px;">撥格仔 → 滾輪拉動揀部位 · 每週自動重置 · 上週一模一樣就撳「複製上週」</div>
@@ -2380,7 +2399,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.65 · 2026.09.22</span>
+  <span style="font-size:10px; opacity:0.5;">v2.66 · 2026.09.22</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2867,7 +2886,7 @@
     clearEdit(kind);
     const resets = {
       meal: ['mealFood','mealTime','mealKcal','mealP','mealC','mealF'],
-      wo: ['woExercise','woWeight','woReps','woDate'],
+      wo: ['woExercise','woWeight','woReps','woDate','woExercisePick','woRepsPick'],
       weight: ['weightInput'],
       ms: ['mWaist','mHip','mThigh','mArm'],
       pd: ['periodInput'],
@@ -3050,6 +3069,32 @@
   }
 
   // ----- Workouts -----
+  // ----- 動作快速揀選（預設庫 + 自動學歷史）-----
+  const WO_PRESETS = {
+    '背': ['中距高位下拉','反手高位下拉','寬距高位下拉','V把龍門架低位划船','龍門架直臂下壓','面拉','坐姿划船'],
+    '胸': ['胸推','上斜胸推','坐姿夾胸','纜索飛鳥','掌上壓'],
+    '肩': ['肩前舉','飛鳥','招財貓','面拉','蝴蝶機後束飛鳥','史密斯推肩','側平舉'],
+    '臀': ['臀推','硬拉','硬拉（輕組）','寬距深蹲','經典坐姿外展','前傾坐姿外展','半蹲外展','坐姿外展（標準）','髖外展'],
+    '腿': ['深蹲','腿舉','腿屈伸','腿彎舉','保加利亞分腿蹲','弓步蹲'],
+    '手臂': ['二頭彎舉','錘式彎舉','龍門架二頭彎舉','龍門架三頭下壓','龍門架三頭','三頭肌下壓','集中彎舉'],
+    '核心': ['山羊挺身','平板支撐','捲腹','俄式轉體','死蟲式'],
+    '有氧': ['跑步','爬坡跑步','樓梯機','踩單車','橢圓機'],
+    '瑜伽': ['陰瑜伽','瘦身瑜伽','空中瑜伽','瑜伽拉伸','哈達瑜伽','流瑜伽']
+  };
+  function buildExercisePick() {
+    const sel = document.getElementById('woExercisePick');
+    if (!sel) return;
+    const g = document.getElementById('woGroup').value;
+    const used = [...new Set(workouts.filter(w => w.group === g).map(w => w.exercise))];
+    const all = [...new Set([...(WO_PRESETS[g] || []), ...used])];
+    sel.innerHTML = '<option value="">— 揀動作（' + all.length + ' 個可選）—</option>' +
+      all.map(x => '<option value="'+x+'">'+x+'</option>').join('');
+  }
+  function pickExercise(v) {
+    if (!v) return;
+    document.getElementById('woExercise').value = v;
+  }
+
   function buildWoEntry() {
     return {
       exercise: document.getElementById('woExercise').value.trim(),
@@ -3059,6 +3104,7 @@
     };
   }
   function fillWoForm(w) {
+    buildExercisePick();
     document.getElementById('woExercise').value = w.exercise;
     document.getElementById('woWeight').value = w.weight;
     document.getElementById('woReps').value = w.reps;
@@ -3282,11 +3328,18 @@
     const prev = getSched(1);
     const cb = document.getElementById('schedCopyBtn');
     if (cb) cb.style.display = Object.keys(prev).length > 0 ? 'inline-block' : 'none';
+    const clr = document.getElementById('schedClearBtn');
+    if (clr) clr.style.display = Object.keys(cur).length > 0 ? 'inline-block' : 'none';
   }
   function setSched(i, val) {
     const cur = getSched(0);
     if (val) cur['d'+i] = val; else delete cur['d'+i];
     localStorage.setItem(schedWeekKey(0), JSON.stringify(cur));
+    renderSchedule();
+  }
+  function clearSched() {
+    if (!confirm('確認清除本週排程？（唔影響上週紀錄）')) return;
+    localStorage.removeItem(schedWeekKey(0));
     renderSchedule();
   }
   function copyPrevSched() {
@@ -4612,7 +4665,7 @@
   renderDiet(); renderMeals(); renderWater(); renderOverview(); renderWeight(); renderWeightList(); renderWorkoutHistory(); renderSleep();
   renderDcheck(); renderDcheckWeek();
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
-  renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule();
+  renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule(); buildExercisePick();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
   renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice(); renderReal(); renderAgent();
 </script>
