@@ -175,7 +175,7 @@
     font-weight: 500;
     padding: 3px 8px;
     border-radius: 9999px;
-  }
+  ; display: inline-block; line-height: 1.4; flex-shrink: 0 }
   .tag-green { background: var(--pale-green-bg); color: var(--pale-green-text); }
   .tag-blue { background: var(--pale-blue-bg); color: var(--pale-blue-text); }
   .tag-yellow { background: var(--pale-yellow-bg); color: var(--pale-yellow-text); }
@@ -373,8 +373,7 @@
     align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
+    font-size: 13px;; flex-wrap: wrap; row-gap: 4px; min-width: 0 }
   .log-row:last-child { border-bottom: none; }
   .log-date { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
   .log-value { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
@@ -491,7 +490,7 @@
   .dc-chip:active { transform: scale(0.95); }
 
   /* ===== 弱點訓練台卡片（v2.43 豎列設計）===== */
-  .train-item { border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 10px; padding: 11px 12px; margin-top: 10px; background: var(--surface); }
+  .train-item { border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 10px; padding: 11px 12px; margin-top: 10px; background: var(--surface); line-height: 1.65; word-break: break-word; overflow-wrap: anywhere; }
   .train-item.red { border-left-color: var(--pale-red-text); }
   .train-item.yellow { border-left-color: var(--pale-yellow-text); }
   .train-item.green { border-left-color: var(--pale-green-text); }
@@ -2381,7 +2380,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.63 · 2026.09.22</span>
+  <span style="font-size:10px; opacity:0.5;">v2.64 · 2026.09.22</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -4286,18 +4285,18 @@
 
   // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
   const REVIEW_SEED = {
-    version: '2026-09-21-v15',
+    version: '2026-09-21-v16',
     subtitle: 'Zoe 弱點地圖（9/21深夜）｜Word 18/23綠🎉今日+5｜剩5個全部差一步｜Excel 7個未綠聽日衝',
     items: [
-      { id: 'rv1', point: 'Word 表格進階（合併·插列·刪欄）', symptom: '三次攻堅：答案版已做出正確結構（打橫合併✓一人一行✓）——題目版聽朝重做即計', fix: '口訣：合併第一列（打橫嗰排）——欄杆企、排隊瞓；一行一個人', status: 'almost' },
-      { id: 'rv2', point: 'Word 段落間距（前後段距離pt）', symptom: '衝綠A：兩個值✓但標題before打咗216pt（應12pt）——手誤', fix: '段落對話框＞間距＞與前段距離打12（pt）——綜合甲卷W3第2次', status: 'almost' },
-      { id: 'rv3', point: 'Word 字元間距（加寬1pt）', symptom: '衝綠B修正成功（上次1cm→今次啱啱好1pt）——第1次全對', fix: '字型對話框＞進階＞加寬1 pt（⚠️pt唔係cm）——綜合乙卷W1第2次', status: 'almost' },
-      { id: 'rv4', point: 'Word 目錄＋追蹤修訂', symptom: '衝綠E：目錄✓（標題1×2＋TOC兩條目）＋修訂✓（刪得靚）＝第1次完整全對', fix: '次序鐵律：開追蹤修訂先做嘢——刪同插都要有記錄——綜合乙卷W5+W6第2次', status: 'almost' },
-      { id: 'rv5', point: 'Word 頁面框線「藝術」花邊（最後一塊拼圖）', symptom: '9/18揀咗普通實線——「藝術」下拉未揀過', fix: '設計＞頁面框線＞中間「藝術(A)」下拉揀花邊款——綜合丙卷W1首測', status: 'weak', asked: '2026-09-18' },
-      { id: 'rv6', point: 'Excel COUNTIF／SUMIF 🧮主攻', symptom: '公式集中令進行中：場景輪換做過——等1次全對（標籤紀律）', fix: '引號包條件">=3000"；每條公式左邊打名——Excel全綠衝刺G1', status: 'almost' },
-      { id: 'rv7', point: 'Excel VLOOKUP＋自動篩選（首測）', symptom: '兩個從未實做——聽日衝刺卷首測', fix: 'VLOOKUP(E6,$I$4:$J$7,2,FALSE)——$鎖查表＋FALSE；篩選：資料＞篩選掣＞揀＞清除', status: 'weak' },
+      { id: 'rv1', point: 'Word 表格進階（合併·插列·刪欄）', symptom: '三次攻堅：答案版已做出正確結構（打橫合併✓一人一行✓）；題目版聽朝重做即計', fix: '口訣：合併第一列（打橫嗰排）；欄杆企、排隊瞓；一行一個人', status: 'almost' },
+      { id: 'rv2', point: 'Word 段落間距（前後段距離pt）', symptom: '衝綠A：兩個值✓但標題before打咗216pt（應12pt）；手誤', fix: '段落對話框＞間距＞與前段距離打12（pt）；綜合甲卷W3第2次', status: 'almost' },
+      { id: 'rv3', point: 'Word 字元間距（加寬1pt）', symptom: '衝綠B修正成功（上次1cm→今次啱啱好1pt）；第1次全對', fix: '字型對話框＞進階＞加寬1 pt（⚠️pt唔係cm）；綜合乙卷W1第2次', status: 'almost' },
+      { id: 'rv4', point: 'Word 目錄＋追蹤修訂', symptom: '衝綠E：目錄✓（標題1×2＋TOC兩條目）＋修訂✓（刪得靚）＝第1次完整全對', fix: '次序鐵律：開追蹤修訂先做嘢；刪同插都要有記錄；綜合乙卷W5+W6第2次', status: 'almost' },
+      { id: 'rv5', point: 'Word 頁面框線「藝術」花邊（最後一塊拼圖）', symptom: '9/18揀咗普通實線；「藝術」下拉未揀過', fix: '設計＞頁面框線＞中間「藝術(A)」下拉揀花邊款；綜合丙卷W1首測', status: 'weak', asked: '2026-09-18' },
+      { id: 'rv6', point: 'Excel COUNTIF／SUMIF 🧮主攻', symptom: '公式集中令進行中：場景輪換做過；等1次全對（標籤紀律）', fix: '引號包條件">=3000"；每條公式左邊打名；Excel全綠衝刺G1', status: 'almost' },
+      { id: 'rv7', point: 'Excel VLOOKUP＋自動篩選（首測）', symptom: '兩個從未實做；聽日衝刺卷首測', fix: 'VLOOKUP(E6,$I$4:$J$7,2,FALSE)；$鎖查表＋FALSE；篩選：資料＞篩選掣＞揀＞清除', status: 'weak' },
       { id: 'rv8', point: 'Excel 凍結首列＋列印三件套', symptom: '凍結口訣生效（A2✓）等實戰2連對；列印橫向+1頁寬從未成功設定', fix: '直欄橫列；版面配置＞方向橫向＋寬度1頁＋標題列$1:$1', status: 'weak' },
-      { id: 'rv9', point: 'Excel 圖表標題六字＋排序', symptom: '圖表標題曾漏尾三字；排序識做等1次乾淨全對', fix: '「各組別總開支」六字打齊先點出去——衝刺卷G7+G3', status: 'almost' }
+      { id: 'rv9', point: 'Excel 圖表標題六字＋排序', symptom: '圖表標題曾漏尾三字；排序識做等1次乾淨全對', fix: '「各組別總開支」六字打齊先點出去；衝刺卷G7+G3', status: 'almost' }
     ]
   };
   (function seedReview() {
@@ -4321,9 +4320,9 @@
       '<div style="font-size:13px; font-weight:600; line-height:1.5;">' + it.point + '</div>' +
       '<div style="margin-top:6px;">' + tag(it.status) + '</div>' +
       '<div style="font-size:11px; color:var(--text-muted); margin-top:7px;">🩺 病徵' +
-      vlines(it.symptom).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      vlines(it.symptom).map(s => '<div style="margin-top:5px; line-height:1.55; word-break:break-word;">▸ ' + s + '</div>').join('') + '</div>' +
       '<div style="font-size:11.5px; margin-top:7px; padding-top:7px; border-top:1px dashed var(--border);">💊 修正' +
-      vlines(it.fix).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      vlines(it.fix).map(s => '<div style="margin-top:5px; line-height:1.55; word-break:break-word;">▸ ' + s + '</div>').join('') + '</div>' +
       (it.asked ? '<div style="font-size:11px; color:var(--text-muted); margin-top:5px;">❓ 問過：' + it.asked + '</div>' : '') +
       '</div>').join('');
   }
@@ -4366,12 +4365,12 @@
     updated: '2026-09-21深夜（五連爆後全面同步）',
     summary: '聽日全綠衝刺：Word三份綜合+D重做=23/23🏆｜Excel全綠衝刺=7個未綠｜考試倒數ACO 8日',
     items: [
-      { lvl: 'red', point: '表格進階斷尾（D卷三次攻堅）', howto: '答案版已證明識做——打橫合併第一列（欄杆企、排隊瞓）；一行一個人唔係一欄一個人；做完自查：燈籠/月餅/購物券一行一個', file: '09-21 D卷題目版重做（聽朝第一件事）' },
+      { lvl: 'red', point: '表格進階斷尾（D卷三次攻堅）', howto: '答案版已證明識做；打橫合併第一列（欄杆企、排隊瞓）；一行一個人唔係一欄一個人；做完自查：燈籠/月餅/購物券一行一個', file: '09-21 D卷題目版重做（聽朝第一件事）' },
       { lvl: 'red', point: 'Excel列印三件套（從未成功設定）', howto: '版面配置＞方向＞橫向；版面配置＞調整成下列大小＞寬度1頁（高度自動）；版面配置＞列印標題＞頂端標題列$1:$1；驗證Ctrl+P預覽橫向一頁', file: '09-22 Excel全綠衝刺G5' },
       { lvl: 'yellow', point: '頁面框線花邊（最後一塊）', howto: '設計＞頁面框線＞設定揀方框＞「藝術(A)」下拉揀花邊款（唔係普通實線）＞確定', file: '09-22 綜合丙W1首測' },
-      { lvl: 'yellow', point: '做卷流程鐵律', howto: '①做卷前望檔名——有「_答案」=參考唔好做落去；②撳勾前望一眼成品對唔對應任務描述；③交卷前對任務清單逐條掃一次', file: '每份卷' },
-      { lvl: 'yellow', point: '追蹤修訂次序', howto: '校閱＞開追蹤修訂＞先做嘢——刪同插都要有記錄先係完整改稿；Zoe刪得靚（逗號刪句號留）', file: '09-22 綜合乙W6' },
-      { lvl: 'yellow', point: 'VLOOKUP四格口訣', howto: '=VLOOKUP(要查嘅值, $查表區$, 返回第幾欄, FALSE)——$鎖查表區；FALSE=要完全符合', file: '09-22 Excel全綠衝刺G2' }
+      { lvl: 'yellow', point: '做卷流程鐵律', howto: '①做卷前望檔名；有「_答案」=參考唔好做落去；②撳勾前望一眼成品對唔對應任務描述；③交卷前對任務清單逐條掃一次', file: '每份卷' },
+      { lvl: 'yellow', point: '追蹤修訂次序', howto: '校閱＞開追蹤修訂＞先做嘢；刪同插都要有記錄先係完整改稿；Zoe刪得靚（逗號刪句號留）', file: '09-22 綜合乙W6' },
+      { lvl: 'yellow', point: 'VLOOKUP四格口訣', howto: '=VLOOKUP(要查嘅值, $查表區$, 返回第幾欄, FALSE)；$鎖查表區；FALSE=要完全符合', file: '09-22 Excel全綠衝刺G2' }
     ],
     mastered: ['縮排行距','段落對齊','項目符號','表格基礎','尋找與取代','另存PDF','A4紙張','標題格式','頁尾頁碼','註腳','插圖等比例','文繞圖四邊矩形','合併列印','多欄🎉','框線網底🎉','日期欄位🎉','定位點🎉','Word列印🎉','Excel標題列','Excel貨幣','Excel SUM','Excel AVERAGE','Excel MAX/MIN','Excel IF']
   };
@@ -4391,7 +4390,7 @@
     document.getElementById('trainList').innerHTML = trainData.items.map(it =>
       '<div class="train-item ' + it.lvl + '">' +
       '<div class="train-head"><span class="train-title">' + it.point + '</span>' + tag(it.lvl) + '</div>' +
-      '<div class="train-how">' + vlines(it.howto).map(s => '<div style="margin-top:3px;">▸ ' + s + '</div>').join('') + '</div>' +
+      '<div class="train-how">' + vlines(it.howto).map(s => '<div style="margin-top:5px; line-height:1.55; word-break:break-word;">▸ ' + s + '</div>').join('') + '</div>' +
       '<div class="train-file">📄 ' + it.file + '</div>' +
       '</div>').join('') +
       (trainData.updated ? '<div class="train-updated">🕐 最後更新：' + trainData.updated + '</div>' : '');
