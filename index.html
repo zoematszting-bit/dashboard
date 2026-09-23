@@ -2399,7 +2399,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.67 · 2026.09.23</span>
+  <span style="font-size:10px; opacity:0.5;">v2.68 · 2026.09.23</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -4356,16 +4356,15 @@
 
   // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
   const REVIEW_SEED = {
-    version: '2026-09-23-v17',
-    subtitle: 'Zoe 弱點地圖（9/23）｜Word 18/23綠｜Excel 7/13綠（COUNTIF·SUMIF🎉）｜雙考倒數：ACO 7日·PSII 12日',
+    version: '2026-09-23-v18',
+    subtitle: 'Zoe 弱點地圖（9/23晚）｜Word 18/23·Excel 9/13（合計28/36綠）｜雙考倒數ACO 7日·PSII 12日',
     items: [
-      { id: 'rv1', point: 'Word 表格進階（合併·插列·刪欄）', symptom: '合併方向已斷尾✓（綜合甲gridSpan正確）；數據仍轉置——一欄一個獎品＋表頭未打', fix: '金句：打橫嗰排係欄名（獎品/數量/兌換點/負責組）；一個獎品嘅四樣嘢先係打橫一行', status: 'almost' },
-      { id: 'rv2', point: 'Word 段落間距（pt vs 行）', symptom: '兩次都栽喺單位：A卷216pt（12×18）、綜合甲72pt（6×12）——數值啱但單位揀咗「行」', fix: '段落對話框間距單位下拉：揀「pt」先打數字——綜合甲重做時一次過斷', status: 'almost' },
-      { id: 'rv3', point: 'Word 字元間距＋目錄修訂＋頁框線花邊', symptom: '字元間距1pt✓第1次；目錄修訂✓第1次；頁框線花邊未測', fix: '綜合乙（字元間距+目錄修訂第2次）＋綜合丙（頁框線首測）——做完=Word 23/23', status: 'almost' },
-      { id: 'rv4', point: 'Excel 凍結首列（同日搖擺）', symptom: '9/23：09-05卷B1✗（三犯）但09-20卷A2✓——一錯一對未穩', fix: '口訣直欄橫列識但出手仲揀錯掣——檢視＞凍結窗格＞下拉第2項「凍結首列」；連續2次A2先升綠', status: 'weak' },
-      { id: 'rv5', point: 'Excel IF單格改正（新發現）', symptom: '09-05卷F欄12格全部打咗範圍（=IF(D2:D13…）應該單格D2＋逐格手打冇用填滿控點', fix: '新技能：打一格啱（D2）＞右下角實心十字拉落去自動填；12格變1格功夫', status: 'almost' },
-      { id: 'rv6', point: 'Excel 列印「1頁寬」＋圖表標題內容', symptom: '1頁寬從未set（版面配置＞調整成下列大小＞寬度1頁）；09-20圖表標題照抄「各組別總開支」但輔助表係項目——文不對題', fix: '標題要對應數據：項目表用「各項目總金額」——打齊字之餘要啱內容', status: 'weak' },
-      { id: 'rv7', point: 'Excel 篩選＋VLOOKUP（未驗證）', symptom: '09-20篩選做咗又關閉（讀檔無痕）；VLOOKUP仍未實做（09-22衝刺卷未同步）', fix: '下份卷一次過驗：資料＞篩選＞揀＞清除＞關；VLOOKUP(E6,$查表,2,FALSE)', status: 'weak' }
+      { id: 'rv1', point: 'Excel 凍結「第2項」正法（新病灶已確診）', symptom: '8份卷4款錯位（A23/A14/A26/A20）全部＝游標當時位置——撳咗第一項自訂「凍結窗格(F)」；撳啱第2項時就A2✓（09-18/09-22丁）', fix: '檢視＞凍結窗格＞下拉▶永遠揀第2項「凍結首列」——第一項係自訂（游標位）千祈唔好撳；驗證上下捲第1行唔郁', status: 'weak' },
+      { id: 'rv2', point: 'Excel 列印「1頁寬」（8份全缺）', symptom: '橫向✓標題列✓已成慣性——唯獨1頁寬從未set過', fix: '版面配置＞調整成下列大小＞寬度1頁（高度自動）；驗證Ctrl+P一頁裝晒', status: 'weak' },
+      { id: 'rv3', point: 'VLOOKUP（差1次）＋篩選（差口頭確認）', symptom: 'VLOOKUP首測12條全對✨（跨sheet＋2/3欄＋FALSE）；篩選首測完成（ref留底）讀檔驗證唔到揀咗咩', fix: '下份卷VLOOKUP再出一次＝升綠；篩選口頭覆述「開/揀/清除/關」四步＝確認', status: 'almost' },
+      { id: 'rv4', point: 'IF單格＋填滿控點（頑疾重現）', symptom: '09-21卷12格IF全部打範圍（D2:D13逐格+1飄移）——教咗「打D2單格+拖十字」未落地', fix: '打一格=IF(D2>=1500,"大額","一般")＞右下角實心十字拉落去——12格變1格功夫', status: 'almost' },
+      { id: 'rv5', point: 'SUMIF拖前$鎖（時用時唔用）＋條件核對', symptom: '09-05/09-22丁用咗$✓但09-18又飄；09-22丁H4打兩次西區（重複條件）', fix: '拖公式之前F4鎖$成習慣；打條件後望返輔助表——四行四個唔同條件', status: 'almost' },
+      { id: 'rv6', point: 'Word剩5個（等Excel清完一次過做）', symptom: '表格進階（重做）·段落間距pt·字元間距·目錄修訂（各差1次）·頁框線花邊（首測）', fix: '綜合甲修正＋乙丙＋D重做——一日清晒＝Word 23/23', status: 'almost' }
     ]
   };
   (function seedReview() {
@@ -4398,16 +4397,17 @@
 
   // ===== 📂 練習檔案進度（v2.38：批改後自動同步）=====
   const PRACTICE_SEED = {
-    version: '2026-09-23-v11',
-    summary: '9/23兩份Excel批改歸檔✅（COUNTIF·SUMIF🎉升綠）｜Word 18/23·Excel 7/13｜待做：綜合甲乙丙+D重做+09-22衝刺（未同步）',
+    version: '2026-09-23-v12',
+    summary: '9/23批改10份Excel（8份批量+2份歸檔）→排序🎉圖表🎉升綠（9/13）｜Word 18/23｜剩：凍結列印VLOOKUP篩選4項+Word 5項',
     files: [
-      { name: '09-22 綜合甲（表格第2次+間距pt修正）', status: 'todo', score: 'W3間距改pt+W5表格重做（打橫一行一個獎品）' },
-      { name: '09-22 綜合乙＋丙', status: 'todo', score: '字元間距+目錄修訂第2次；頁框線花邊首測' },
-      { name: '09-22 Excel全綠衝刺', status: 'todo', score: 'Zoe話做咗——等iCloud同步再批' },
-      { name: '09-21 衝綠D題目版重做', status: 'todo', score: '3分鐘——已證明識做' },
-      { name: '09-05 還原卷', status: 'done', score: 'SUMIF$鎖✓圖表✓——IF範圍凍結1頁寬待下卷——已歸檔' },
-      { name: '09-20 綜合收割', status: 'done', score: '凍結A2✓斷尾·COUNTIF·SUMIF✓——標題內容+列印待下卷——已歸檔' },
-      { name: '09-16/09-17/09-21模擬一（3份可選）', status: 'todo', score: '考核點已被新卷覆蓋——有時間先做' }
+      { name: '09-19 排序篩選首測', status: 'done', score: '🏆全對卷——排序+篩選+SUM' },
+      { name: '09-17 VLOOKUP列印首測', status: 'done', score: 'VLOOKUP 12條全對✨；凍結A26+1頁寬待修' },
+      { name: '09-18 圖表列印完成', status: 'done', score: '凍結A2✓圖表標題✓；SUMIF飄+橫向缺' },
+      { name: '09-22 綜合丁', status: 'done', score: '凍結A2✓SUMIF$鎖✓；COUNTIF範圍錯+H4重複' },
+      { name: '09-06/07/12/21 四份', status: 'done', score: '各有亮點（07五公式範圍全對/12$鎖/21圖表）+凍結錯位等' },
+      { name: '09-05/09-20（已歸檔）', status: 'done', score: 'SUMIF$鎖✓凍結A2✓等' },
+      { name: '09-22 綜合甲乙丙＋D重做（Word）', status: 'todo', score: '等Excel清完一次過做——目標23/23' },
+      { name: '下一份Excel收尾卷', status: 'todo', score: '凍結第2項+1頁寬+VLOOKUP第2次+篩選口頭——四項斷尾' }
     ]
   };
   (function seedPractice() {
@@ -4427,17 +4427,17 @@
 
   // ===== 🎯 弱點訓練台（v2.39：由弱點數據驅動，連住實際練習檔）=====
   const TRAIN_SEED = {
-    version: '2026-09-23-v4',
-    updated: '2026-09-23（兩份Excel批改後）',
-    summary: '剩低任務：Word 5個（甲乙丙三份卷+D重做）＝23/23🏆｜Excel 6個（衝刺卷等同步+搖擺項）｜ACO倒數7日',
+    version: '2026-09-23-v5',
+    updated: '2026-09-23晚（8份批量批改後）',
+    summary: 'Excel剩4項一卷斷尾（凍結第2項·1頁寬·VLOOKUP第2次·篩選口頭）＝13/13🏆｜Word 5項一日清＝23/23🏆',
     items: [
-      { lvl: 'red', point: '段落間距單位pt（兩連栽）', howto: 'A卷216pt＝12×行；綜合甲72pt＝6×行——數值啱單位錯；段落對話框「與前/後段距離」右邊單位下拉：撳開揀「pt」先打數字', file: '綜合甲W3重做' },
-      { lvl: 'red', point: '表格打字方向（轉置頑疾）', howto: '打橫嗰排＝欄名（獎品/數量/兌換點/負責組）；一個獎品嘅四樣嘢（名/數量/地點/組別）先係打橫一行；自查：燈籠同行嘅應該係50·大堂·福利組', file: '綜合甲W5+D卷' },
-      { lvl: 'yellow', point: 'IF填滿控點（新技能）', howto: '打一格＝IF(D2>=1000,"大額","一般")＞右下角實心十字拉落F13——12格1格功夫；$鎖F4已學識✓', file: '綜合甲重做時實踐' },
-      { lvl: 'yellow', point: '凍結出手穩定性', howto: '口訣識（09-20 A2✓）但09-05同日B1✗——撳掣前停一秒：我要凍嗰條係「打橫嘅列」；驗證上下捲第1行唔郁', file: '每份Excel卷' },
-      { lvl: 'yellow', point: '列印1頁寬＋圖表標題內容', howto: '版面配置＞調整成下列大小＞寬度1頁（高度自動）；圖表標題要對應輔助表內容（項目表＝各項目總金額）', file: '下份Excel卷' }
+      { lvl: 'red', point: '凍結＝第2項（8份卷4款錯位確診）', howto: '錯法：撳第一項「凍結窗格(F)」自訂——游標喺邊凍到邊（A23/A14/A26/A20就係咁嚟）；正法：檢視＞凍結窗格＞下拉▶揀第2項「凍結首列」；驗證上下捲第1行唔郁', file: '下一份Excel卷G凍結位' },
+      { lvl: 'red', point: '列印1頁寬（8份全缺最後硬骨頭）', howto: '版面配置＞調整成下列大小＞撞「寬度：1頁」高度自動；驗證Ctrl+P一頁裝晒——橫向同標題列你已慣性做對，埋呢樣三件套齊', file: '下一份Excel卷' },
+      { lvl: 'yellow', point: 'IF單格＋十字拖（頑疾重現）', howto: '12格打範圍版本＝錯；打一格=IF(D2>=1500,"大額","一般")＞右下角實心十字拉落去自動填', file: '下份卷IF題' },
+      { lvl: 'yellow', point: 'SUMIF三好習慣', howto: '①拖之前F4鎖$；②打條件望返輔助表（四行四個唔同條件——唔好重複西區）；③排完COUNTIF範圍核對（E7:E49呢啲亂range=眼望數據首尾行）', file: '每份Excel卷' },
+      { lvl: 'yellow', point: 'VLOOKUP第2次（首測12條全對✨）', howto: '四格口訣：查邊個·去邊度查$·攞第幾欄·FALSE——保持水準就升綠；篩選口頭覆述：資料＞篩選＞揀＞清除＞關', file: '下一份Excel卷' }
     ],
-    mastered: ['縮排行距','段落對齊','項目符號','表格基礎','尋找與取代','另存PDF','A4紙張','標題格式','頁尾頁碼','註腳','插圖等比例','文繞圖四邊矩形','合併列印','多欄','框線網底','日期欄位','定位點','Word列印','Excel標題列','Excel貨幣','Excel SUM','Excel AVERAGE','Excel MAX/MIN','Excel IF','COUNTIF·SUMIF🎉']
+    mastered: ['縮排行距','段落對齊','項目符號','表格基礎','尋找與取代','另存PDF','A4紙張','標題格式','頁尾頁碼','註腳','插圖等比例','文繞圖','合併列印','多欄','框線網底','日期欄位','定位點','Word列印','Excel標題列','Excel貨幣','SUM','AVERAGE','MAX/MIN','IF','COUNTIF·SUMIF','排序🎉','圖表🎉']
   };
   (function seedTrain() {
     if (localStorage.getItem('zoe_train_seeded') !== TRAIN_SEED.version) {
@@ -4466,20 +4466,20 @@
 
   // ===== 📈 我的實際訓練＋進度條（v2.41）=====
   const REAL_SEED = {
-    version: '2026-09-23-v2',
+    version: '2026-09-23-v3',
     today: { date: '2026.09.23', items: [
-      { h: '🎉 COUNTIF／SUMIF升綠', lines: ['09-05修正版SUMIF×4全$鎖死（F4學以致用）＋09-20 COUNTIF·SUMIF✓', '連續2次全對→mastered（Excel 7/13）', '公式集中令正式完成——條件類公式斷尾'] },
-      { h: '📊 兩份Excel批改歸檔', lines: ['09-05：SUMIF$鎖✓圖表六字✓統計5公式✓；IF範圍+B1三犯+1頁寬待下卷', '09-20：凍結A2✓✓三犯斷尾反彈；圖表標題文不對題+列印1/3待下卷', '同日凍結搖擺（一錯一對）——繼續觀察'] }
+      { h: '🏆 8份Excel批量批改', lines: ['🎉排序升綠（三連乾淨）＋🎉圖表升綴（標題內容對應）', 'VLOOKUP首測12條全對✨差1次｜篩選首測完成差口頭確認', '新病灶確診：凍結撳第一項自訂掣（4份凍咗游標位A23/A14/A26/A20）', '1頁寬8份全缺｜IF範圍頑疾重現｜09-19全對卷🏆'] },
+      { h: '📈 Excel 9/13綠', lines: ['今日+3：COUNTIF·SUMIF🎉排序🎉圖表🎉', '剩4個：凍結（第2項正法）·列印1頁寬·VLOOKUP差1次·篩選差1次', 'Word 18/23等Excel清完一次過做（甲乙丙+D）'] }
     ]},
     word: { mastered: 18, total: 23 },
-    excel: { mastered: 7, total: 13 },
-    unlearned: ['自動篩選（Excel·下卷驗證）', 'VLOOKUP（Excel·PSII）'],
-    learning: ['Word剩5：表格進階重做·段落間距pt·字元間距·目錄修訂·頁框線花邊', 'Excel剩6：凍結（搖擺觀察）·排序·圖表（差1次）·列印1頁寬·篩選·VLOOKUP'],
+    excel: { mastered: 9, total: 13 },
+    unlearned: [],
+    learning: ['Excel剩4：凍結·列印1頁寬·VLOOKUP（差1次）·篩選（差1次）', 'Word剩5：表格進階·段落間距pt·字元間距·目錄修訂·頁框線花邊'],
     log: [
-      { d: '9/23', t: '兩份Excel批改歸檔：COUNTIF/SUMIF🎉升綠（Excel 7/13）；凍結同日搖擺；09-22衝刺卷仲未同步' },
-      { d: '9/21', t: '五連爆：Word 18/23；歸檔A/B/C/E' },
-      { d: '9/18', t: '大爆發：9個unknown首測完成' },
-      { d: '9/13', t: '📩CSB邀請到：ACO 9/30＋PSII 10/5' }
+      { d: '9/23', t: '8份Excel批量批改：排序🎉圖表🎉升綠（9/13）；VLOOKUP首測全對；凍結自訂掣新病灶' },
+      { d: '9/23', t: '兩份批改歸檔：COUNTIF·SUMIF🎉升綠' },
+      { d: '9/21', t: '五連爆：Word 18/23' },
+      { d: '9/13', t: '📩CSB邀請：ACO 9/30＋PSII 10/5' }
     ]
   };
   (function seedReal() {
