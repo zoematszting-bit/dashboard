@@ -4356,9 +4356,10 @@
 
   // ===== 🔄 弱點複習室（v2.30：Zoe問過/批改發現嘅唔識位，出題重點）=====
   const REVIEW_SEED = {
-    version: '2026-09-23-v18',
-    subtitle: 'Zoe 弱點地圖（9/23晚）｜Word 18/23·Excel 9/13（合計28/36綠）｜雙考倒數ACO 7日·PSII 12日',
+    version: '2026-09-29-v19',
+    subtitle: 'Zoe 弱點地圖（9/29考前）｜Word 19/23·Excel 12/13（31/36）｜🆕註腳符號232已教｜明日ACO 11:00',
     items: [
+      { id: 'rv0', point: 'Word 註腳自訂符號 Wingdings 232➔（CAACO考點·9/29新教）', symptom: '基本註腳已mastered；自訂符號版本從未實做——七步只係睇咗未撳過', fix: '參考資料＞註腳小箭嘴＞自訂標記＞符號(S)＞字型Wingdings＞字元代碼232＞插入＞插入；⚠️已插嘅「1」要刪咗重插', status: 'almost', asked: '2026-09-29' },
       { id: 'rv1', point: 'Excel 凍結「第2項」正法（新病灶已確診）', symptom: '8份卷4款錯位（A23/A14/A26/A20）全部＝游標當時位置——撳咗第一項自訂「凍結窗格(F)」；撳啱第2項時就A2✓（09-18/09-22丁）', fix: '檢視＞凍結窗格＞下拉▶永遠揀第2項「凍結首列」——第一項係自訂（游標位）千祈唔好撳；驗證上下捲第1行唔郁', status: 'weak' },
       { id: 'rv2', point: 'Excel 列印「1頁寬」（8份全缺）', symptom: '橫向✓標題列✓已成慣性——唯獨1頁寬從未set過', fix: '版面配置＞調整成下列大小＞寬度1頁（高度自動）；驗證Ctrl+P一頁裝晒', status: 'weak' },
       { id: 'rv3', point: 'VLOOKUP（差1次）＋篩選（差口頭確認）', symptom: 'VLOOKUP首測12條全對✨（跨sheet＋2/3欄＋FALSE）；篩選首測完成（ref留底）讀檔驗證唔到揀咗咩', fix: '下份卷VLOOKUP再出一次＝升綠；篩選口頭覆述「開/揀/清除/關」四步＝確認', status: 'almost' },
@@ -4397,9 +4398,13 @@
 
   // ===== 📂 練習檔案進度（v2.38：批改後自動同步）=====
   const PRACTICE_SEED = {
-    version: '2026-09-23-v12',
-    summary: '9/23批改10份Excel（8份批量+2份歸檔）→排序🎉圖表🎉升綠（9/13）｜Word 18/23｜剩：凍結列印VLOOKUP篩選4項+Word 5項',
+    version: '2026-09-29-v13',
+    summary: '考前衝刺：🆕註腳符號速練（3分鐘）＋排序篩選雙卷＋圖表零死角｜Excel剩凍結1項斷尾｜明日ACO 9/30 11:00',
     files: [
+      { name: '09-29 註腳符號速練（Wingdings232）', status: 'todo', score: '考前3分鐘一題——七步流程實做一次' },
+      { name: '09-29 排序篩選初階（ACO級·7題）', status: 'todo', score: '明日考試範圍熱身' },
+      { name: '09-29 排序篩選進階（PSII級·8題）', status: 'todo', score: '10/5 PSII深一度' },
+      { name: '09-28 圖表零死角全卷（CAACO·11題）', status: 'todo', score: '圖表類全題型覆蓋' },
       { name: '09-19 排序篩選首測', status: 'done', score: '🏆全對卷——排序+篩選+SUM' },
       { name: '09-17 VLOOKUP列印首測', status: 'done', score: 'VLOOKUP 12條全對✨；凍結A26+1頁寬待修' },
       { name: '09-18 圖表列印完成', status: 'done', score: '凍結A2✓圖表標題✓；SUMIF飄+橫向缺' },
@@ -4427,17 +4432,18 @@
 
   // ===== 🎯 弱點訓練台（v2.39：由弱點數據驅動，連住實際練習檔）=====
   const TRAIN_SEED = {
-    version: '2026-09-23-v5',
-    updated: '2026-09-23晚（8份批量批改後）',
-    summary: 'Excel剩4項一卷斷尾（凍結第2項·1頁寬·VLOOKUP第2次·篩選口頭）＝13/13🏆｜Word 5項一日清＝23/23🏆',
+    version: '2026-09-29-v6',
+    updated: '2026-09-29（考前·註腳232問答後）',
+    summary: '考前最後衝刺：註腳符號232速練＋凍結第2項（Excel 13/13最後一塊）｜明日ACO 11:00·10:45前到稅務大樓37樓',
     items: [
+      { lvl: 'red', point: '註腳自訂符號232➔（CAACO考點·9/29問過）', howto: '七步：游標定位＞參考資料＞註腳群組右下小箭嘴＞自訂標記旁「符號(S)」＞字型Wingdings＞字元代碼打232＞插入＞插入；⚠️已插嘅「1」要刪咗重插；符號必須由對話方塊插入（唔係打字）；同族：項目符號178◆入口係常用＞定義新的項目符號', file: '09-29 註腳符號速練（⬜待做·3分鐘）' },
       { lvl: 'red', point: '凍結＝第2項（8份卷4款錯位確診）', howto: '錯法：撳第一項「凍結窗格(F)」自訂——游標喺邊凍到邊（A23/A14/A26/A20就係咁嚟）；正法：檢視＞凍結窗格＞下拉▶揀第2項「凍結首列」；驗證上下捲第1行唔郁', file: '下一份Excel卷G凍結位' },
-      { lvl: 'red', point: '列印1頁寬（8份全缺最後硬骨頭）', howto: '版面配置＞調整成下列大小＞撞「寬度：1頁」高度自動；驗證Ctrl+P一頁裝晒——橫向同標題列你已慣性做對，埋呢樣三件套齊', file: '下一份Excel卷' },
+      { lvl: 'yellow', point: '列印三件套（🎉已升綠·9/29平反）', howto: '橫向＋標題列$1:$1＋寬度1頁全部已慣性做對——1頁寬9/29平反（fitToWidth省略=預設1頁，一直set啂）；keep住收工Ctrl+P望一眼', file: '每份Excel卷列印題' },
       { lvl: 'yellow', point: 'IF單格＋十字拖（頑疾重現）', howto: '12格打範圍版本＝錯；打一格=IF(D2>=1500,"大額","一般")＞右下角實心十字拉落去自動填', file: '下份卷IF題' },
       { lvl: 'yellow', point: 'SUMIF三好習慣', howto: '①拖之前F4鎖$；②打條件望返輔助表（四行四個唔同條件——唔好重複西區）；③排完COUNTIF範圍核對（E7:E49呢啲亂range=眼望數據首尾行）', file: '每份Excel卷' },
-      { lvl: 'yellow', point: 'VLOOKUP第2次（首測12條全對✨）', howto: '四格口訣：查邊個·去邊度查$·攞第幾欄·FALSE——保持水準就升綠；篩選口頭覆述：資料＞篩選＞揀＞清除＞關', file: '下一份Excel卷' }
+      { lvl: 'yellow', point: '考場四提醒（9/29晚）', howto: '①copy公式跨欄前望清楚（E13教訓）；②「件數」用SUMIF加數量欄（COUNTIF只計筆數）；③繁體用字——簡體字即扣（「查無此货」教訓）；④交卷前對任務清單逐條掃一次', file: '聽日考試每題' }
     ],
-    mastered: ['縮排行距','段落對齊','項目符號','表格基礎','尋找與取代','另存PDF','A4紙張','標題格式','頁尾頁碼','註腳','插圖等比例','文繞圖','合併列印','多欄','框線網底','日期欄位','定位點','Word列印','Excel標題列','Excel貨幣','SUM','AVERAGE','MAX/MIN','IF','COUNTIF·SUMIF','排序🎉','圖表🎉']
+    mastered: ['縮排行距','段落對齊','項目符號','表格基礎','尋找與取代','另存PDF','A4紙張','標題格式','頁尾頁碼','註腳','插圖等比例','文繞圖','合併列印','多欄','框線網底','日期欄位','定位點','Word列印','Excel標題列','Excel貨幣','SUM','AVERAGE','MAX/MIN','IF','COUNTIF·SUMIF','排序🎉','圖表🎉','VLOOKUP🎉','列印三件套🎉']
   };
   (function seedTrain() {
     if (localStorage.getItem('zoe_train_seeded') !== TRAIN_SEED.version) {
@@ -4466,8 +4472,9 @@
 
   // ===== 📈 我的實際訓練＋進度條（v2.41）=====
   const REAL_SEED = {
-    version: '2026-09-29-v5',
+    version: '2026-09-29-v6',
     today: { date: '2026.09.29', items: [
+      { h: '❓ 問：註腳符號改Wingdings 232（➔）→已教＋速練卷', lines: ['七步：參考資料＞註腳小箭嘴＞自訂標記＞符號(S)＞Wingdings＞232＞插入＞插入', '⚠️已插嘅「1」要刪咗重插；符號必須對話方塊插入', 'CAACO考點——速練卷已出（考前3分鐘一題）'] },
       { h: '🙏 1頁寬平反＋列印🎉升綠', lines: ['XML證實：fitToPage=1＋fitToHeight=0＋fitToWidth省略（預設=1）', 'Zoe嘅寬度1頁一直set啂——係ZCode儀器誤判', '正式道歉＋批改鐵律修正（fitToWidth空=預設1頁）'] },
       { h: '📊 公式清理二＋三批改', lines: ['二：🆕四項首測全對（嵌套IF/COUNTIFS/SUMIFS/萬用字元）', '三：帶名✓繁體字改正✨嵌套✓；E13錯copy＋COUNTIF筆數≠SUMIF件數', '⚠️考場：copy公式跨欄前望清楚；「件數」用SUMIF加數量'] },
       { h: '📈 Excel 12/13', lines: ['淨最後一個：凍結（A35自訂掣第6次）', '撳掣面=自訂；撥箭嘴▼=揀第2項「凍結首列」', '一撳＝Excel 13/13全綠🏆'] }
@@ -4475,8 +4482,9 @@
     word: { mastered: 19, total: 23 },
     excel: { mastered: 12, total: 13 },
     unlearned: [],
-    learning: ['Excel剩1：凍結（第2項「凍結首列」）', 'Word剩4：表格進階·字元間距·目錄修訂·頁框線花邊'],
+    learning: ['Excel剩1：凍結（第2項「凍結首列」）', 'Word剩4：表格進階·字元間距·目錄修訂·頁框線花邊', '考前新教：註腳自訂符號232➔（速練卷待做）'],
     log: [
+      { d: '9/29', t: '問註腳Wingdings232➔→教七步＋出速練卷（考前3分鐘）——CAACO考點' },
       { d: '9/29', t: '1頁寬平反🎉列印升綠（12/13）；公式清理二首測四項全對；簡體字警示' },
       { d: '9/28', t: '公式清理三連出卷（COUNT/COUNTA/COUNTIFS/SUMIFS/萬用字元/嵌套IF/IFERROR）' },
       { d: '9/25', t: 'VLOOKUP五連階梯出卷＋批改（簡體字+第4格空+G欄漏IF）' },
