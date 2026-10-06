@@ -1645,6 +1645,9 @@
           <span class="tag tag-gray" id="examDateTag">未定（等 CSB）</span>
         </div>
         <input type="date" class="input-mini" id="examDatePick" style="margin-top:6px;" onchange="setExamDate(this.value)">
+        <div class="card" id="typingReviewCard" style="margin-top:12px; background:var(--pale-blue-bg); border:1px solid var(--border); border-left:3px solid var(--pale-blue-text);">
+          <div style="font-size:11px; font-weight:600; margin-bottom:4px;">📋 打字週復盤 <span id="typingReviewDate" style="color:var(--text-muted); font-weight:400;"></span></div>          <div id="typingReviewBody" style="font-size:11px; line-height:1.7; color:var(--text);">等第一次週復盤（每週日 20:00 自動生成）</div>
+        </div>
         <div id="typChart" style="margin-top:12px;"></div>
         <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
           <span style="color:var(--pale-blue-text); font-weight:500;">— 英打</span> ｜ <span style="color:var(--pale-green-text); font-weight:500;">— 中打</span> ｜ 虛線＝目標（中20 · 英30 ACO · 英40 PSII）
@@ -3844,6 +3847,19 @@
   // ZCode 推送種子：Zoe 報打字成績 → 加喺下面陣列 → push（marker 用長度）
   const TYPING_SEED = [
   ];
+  // ===== 📋 打字週復盤卡（v2.74 · 每週日 20:00 cron 自動更新呢度）=====
+  // ZCode 改完 push → Zoe refresh 即見（ver 係版本指紋，curl 驗證用）
+  const TYPING_REVIEW = { ver: 'review_v1', date: '', verdict: '', lines: [] };
+  (function renderTypingReview(){
+    const el = document.getElementById('typingReviewBody');
+    if(!el) return;
+    if(TYPING_REVIEW && TYPING_REVIEW.lines && TYPING_REVIEW.lines.length){
+      const dEl = document.getElementById('typingReviewDate');
+      if(dEl) dEl.textContent = TYPING_REVIEW.date ? '· ' + TYPING_REVIEW.date : '';
+      el.innerHTML = (TYPING_REVIEW.verdict ? '<div style="font-weight:600; margin-bottom:3px;">' + TYPING_REVIEW.verdict + '</div>' : '')
+        + TYPING_REVIEW.lines.map(l => '<div>' + l + '</div>').join('');
+    }
+  })();
   (function seedTyping() {
     const mk = parseInt(localStorage.getItem('zoe_typing_seeded') || '0', 10);
     if (TYPING_SEED.length > mk) {
