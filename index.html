@@ -1427,6 +1427,12 @@
       <section>
         <p class="section-title">瑜伽課記錄（自動同步健身板塊）</p>
         <div class="card card-full">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span class="card-label" style="margin-bottom:0;">⚡ 常用快選（一撳即記今日）</span>
+            <button class="quick-btn" onclick="toggleYogaQuickCfg()" id="yqCfgBtn">✏️ 設定</button>
+          </div>
+          <div id="yogaQuickBar" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px;"></div>
+          <div id="yogaQuickCfg" style="display:none; border-top:1px dashed var(--border); padding-top:12px; margin-bottom:10px;"></div>
           <div class="field-grid">
             <div>
               <div class="field-label-mini">瑜伽類型</div>
@@ -2399,7 +2405,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.72 · 2026.09.30</span>
+  <span style="font-size:10px; opacity:0.5;">v2.73 · 2026.10.06</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -4274,6 +4280,58 @@
     if (n.indexOf('流') >= 0 || /vinyasa|flow/i.test(n)) return '流瑜伽';
     return YOGA_TYPES.indexOf(n) >= 0 ? n : '其他瑜伽';
   }
+  // ----- 瑜伽常用快選（5 個自選 type+時數，一撳即記）-----
+  const YOGA_QUICK_DEF = [
+    {type:'陰瑜伽', mins:45}, {type:'瘦身瑜伽', mins:45}, {type:'空中瑜伽', mins:60},
+    {type:'瑜伽拉伸', mins:30}, {type:'哈達瑜伽', mins:60}
+  ];
+  let yogaQuick = JSON.parse(localStorage.getItem('zoe_yoga_quick') || 'null') || YOGA_QUICK_DEF;
+  function renderYogaQuick() {
+    const bar = document.getElementById('yogaQuickBar');
+    if (!bar) return;
+    bar.innerHTML = yogaQuick.map((q,i) =>
+      '<button class="quick-btn" onclick="quickYoga('+i+')" style="padding:9px 14px;">🧘 '+q.type+' '+q.mins+'min</button>'
+    ).join('');
+  }
+  function quickYoga(i) {
+    const q = yogaQuick[i];
+    workouts.push({ date: dateStr, exercise: q.type, weight: '', reps: q.mins + 'min', group: '瑜伽' });
+    localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
+    afterWoChange(); renderYogaTypeStats(); renderYoga1000();
+    alert('✅ 已記錄 '+q.type+' '+q.mins+' 分鐘（今日）\n同步至：實踐時數 / 1000小時 / 類型統計');
+  }
+  function toggleYogaQuickCfg() {
+    const p = document.getElementById('yogaQuickCfg');
+    const open = p.style.display === 'none';
+    if (open) {
+      const opts = YOGA_TYPES.map(t => '<option value="'+t+'">'+t+'</option>').join('');
+      p.innerHTML = yogaQuick.map((q,i) =>
+        '<div style="display:flex; gap:6px; align-items:center; margin-bottom:8px;">'+
+        '<span style="font-size:11px; color:var(--text-muted); width:14px;">'+(i+1)+'</span>'+
+        '<select class="input-mini input-text" id="yqType'+i+'" style="flex:1;">'+
+        opts.replace('value="'+q.type+'"', 'value="'+q.type+'" selected')+'</select>'+
+        '<input type="number" class="input-mini" id="yqMins'+i+'" value="'+q.mins+'" style="width:76px;">'+
+        '<span style="font-size:11px; color:var(--text-muted);">min</span></div>'
+      ).join('') +
+      '<button class="typing-btn" style="width:100%;" onclick="saveYogaQuickCfg()">💾 儲存設定</button>';
+    }
+    p.style.display = open ? 'block' : 'none';
+    document.getElementById('yqCfgBtn').textContent = open ? '✕ 收起' : '✏️ 設定';
+  }
+  function saveYogaQuickCfg() {
+    const next = [];
+    for (let i = 0; i < 5; i++) {
+      const t = document.getElementById('yqType'+i).value;
+      const m = parseInt(document.getElementById('yqMins'+i).value);
+      next.push({ type: t, mins: (m > 0 ? m : 45) });
+    }
+    yogaQuick = next;
+    localStorage.setItem('zoe_yoga_quick', JSON.stringify(yogaQuick));
+    renderYogaQuick();
+    toggleYogaQuickCfg();
+    alert('✅ 快選已儲存');
+  }
+
   function addYogaClass() {
     const type = document.getElementById('ycType').value;
     const mins = parseInt(document.getElementById('ycMins').value);
@@ -4623,7 +4681,7 @@
   }
 
   // ----- Init yoga -----
-  renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000();
+  renderYogaHours(); renderYogaModules(); renderYogaWeek(); renderYogaLogList(); renderYogaTypeStats(); renderYoga1000(); renderYogaQuick();
 
   // ===== Hash deep-linking（例如 #fitness 直接開健身 tab）=====
   const hashTab = location.hash.replace('#', '');
