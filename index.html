@@ -2408,7 +2408,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.73 · 2026.10.06</span>
+  <span style="font-size:10px; opacity:0.5;">v2.74 · 2026.10.06</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -2550,6 +2550,7 @@
   const SEED_WEIGHTS = [
     {date:'2026.09.22', weight:58.3}   // 9/22 傍晚量（經期前浮動期）
     ,{date:'2026.09.23', weight:58.3}  // 9/23 朝早空肚排便後（經期前夕）
+    ,{date:'2026.10.06', weight:57.4}  // 10/6 朝早空肚（經期完結後 · 真實趨勢）
   ];
   (function() {
     const mk = 'zoe_weights_seeded';
@@ -2629,6 +2630,17 @@
   let workouts = JSON.parse(localStorage.getItem('zoe_workouts') || '[]');
   let schedule = JSON.parse(localStorage.getItem('zoe_schedule') || '{}');
   let measurements = JSON.parse(localStorage.getItem('zoe_measurements') || '[]');
+  // ===== 經期種子數據（ZCode 遠程更新用，append+按日期去重）=====
+  const SEED_PERIODS = ['2026-09-28'];
+  (function() {
+    let cur = JSON.parse(localStorage.getItem('zoe_period') || '[]');
+    let ch = false;
+    SEED_PERIODS.forEach(d => {
+      if (!cur.some(p => p.date === d)) { cur.push({ date: d }); ch = true; }
+    });
+    if (ch) localStorage.setItem('zoe_period', JSON.stringify(cur));
+  })();
+
   let periodData = JSON.parse(localStorage.getItem('zoe_period') || '[]');
   let statusSel = {};
 
