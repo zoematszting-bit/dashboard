@@ -3861,7 +3861,13 @@
   ];
   // ===== 📋 打字週復盤卡（v2.74 · 每週日 20:00 cron 自動更新呢度）=====
   // ZCode 改完 push → Zoe refresh 即見（ver 係版本指紋，curl 驗證用）
-  const TYPING_REVIEW = { ver: 'review_v1', date: '', verdict: '', lines: [] };
+  const TYPING_REVIEW = { ver: 'review_v2', date: '2026-10-11', verdict: '❓ 開波前檢查：休息週零記錄（計劃之內）· 系統全綠', lines: [
+    '本週記錄：0 節——計劃休息週（唞到 10/10 ✓，還睡眠債）',
+    '系統檢查：工作站 ✓ 網站 ✓ 同步寫入 ✓ 測試 47/47',
+    '明日 10/12 開波：每日 35 分鐘（閃卡10＋紙本初階10＋慢打5＋測速5＋中打5）',
+    '第 1 週實證目標：初階準確率 ≥95% · 淨速 +2-4 wpm · 閃卡 Lv3',
+    '⚠️ 用 Mac 瀏覽器練（手機同步唔到）｜下次復盤 10/18 20:00'
+  ] };
   (function renderTypingReview(){
     const el = document.getElementById('typingReviewBody');
     if(!el) return;
