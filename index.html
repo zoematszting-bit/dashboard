@@ -1100,6 +1100,18 @@
     <div class="fit-sub" id="fit-exercise">
 
       <section>
+        <p class="section-title">⚖️ 體重記錄</p>
+        <div class="card card-full">
+          <div class="typing-input-wrap">
+            <input type="number" step="0.1" class="typing-input input-text" id="weightInput2" placeholder="輸入今日體重 kg">
+            <button class="typing-btn" onclick="quickAddWeight()">記錄</button>
+          </div>
+          <div style="margin-top:10px; font-size:12px;" id="quickWeightLine">未有記錄</div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">完整歷史＋趨勢環喺「身體」子頁 · 記錄即刻同步減脂進度環</div>
+        </div>
+      </section>
+
+      <section>
         <p class="section-title">今日訓練</p>
         <div class="card card-full">
           <div id="todayWorkout">
@@ -3020,6 +3032,27 @@
     const fci = document.getElementById('fitCardInfo');
     if (fci) fci.textContent = cw.toFixed(1) + ' → 53.0 kg · ' + Math.round(pct) + '%';
   }
+  function quickAddWeight() {
+    const input = document.getElementById('weightInput2');
+    const val = parseFloat(input.value);
+    if (!val || val<30 || val>100) { alert('請輸入 30-100 之間嘅體重（kg）'); return; }
+    weightData.push({ date: dateStr, weight: val });
+    localStorage.setItem('zoe_weight', JSON.stringify(weightData));
+    input.value = '';
+    renderWeight(); renderWeightList();
+  }
+  function renderQuickWeight() {
+    const el = document.getElementById('quickWeightLine');
+    if (!el) return;
+    if (!weightData.length) { el.innerHTML = '未有記錄'; return; }
+    const last = weightData[weightData.length-1];
+    const prev = weightData.length>1 ? weightData[weightData.length-2].weight : null;
+    const diff = prev !== null ? last.weight - prev : null;
+    const toGo = last.weight - 53;
+    el.innerHTML = '最新：<strong>'+last.weight+' kg</strong>（'+last.date+'）'+
+      (diff!==null ? ' · 對上 '+(diff>0?'+':'')+diff.toFixed(1) : '')+
+      ' · 仲要減 '+toGo.toFixed(1)+' kg';
+  }
   function addWeight() {
     const input = document.getElementById('weightInput');
     const val = parseFloat(input.value);
@@ -3049,6 +3082,7 @@
     renderWeight(); renderWeightList();
   }
   function renderWeightList() {
+    renderQuickWeight();
     const el = document.getElementById('weightHist');
     if (!el) return;
     if (weightData.length === 0) {
