@@ -612,7 +612,12 @@
     .field-grid { grid-template-columns: repeat(4, 1fr); }
     .week-grid { grid-template-columns: repeat(6, 1fr); }
   }
-</style>
+/* ===== 月度記錄摺疊卡（10/13 財務tab）===== */
+    details.month-card { background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:10px; }
+    details.month-card summary { cursor:pointer; font-weight:600; font-size:14px; color:var(--text-muted); list-style:none; display:flex; justify-content:space-between; align-items:center; }
+    details.month-card summary::after { content:'▾'; font-size:12px; }
+    details.month-card[open] summary::after { content:'▴'; }
+    </style>
 </head>
 <body>
 
@@ -1735,6 +1740,37 @@
     </section>
 
     <section>
+      <section>
+      <p class="section-title">🏃 12 週英打計劃（10/7 → 12/30）</p>
+      <div class="card card-full">
+        <div class="progress-row">
+          <span class="progress-label">10 月 · 基礎重建 21 → 25（10/12 起兩日未開機）</span>
+          <span class="tag tag-red">待啟動 · 0 節</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+        <div class="progress-row" style="margin-top:6px;">
+          <span class="progress-label">W1 菜單：閃卡10＋紙本初階10＋慢打5＋測速5＋中打5（分鐘）</span>
+          <span class="tag tag-blue">35/日</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">11 月 · 中旬 checkpoint 28-30</span>
+          <span class="tag tag-gray">未開始</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+        <div class="progress-row">
+          <span class="progress-label">12 月 · 33-35＋衝線</span>
+          <span class="tag tag-gray">未開始</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+        <div class="progress-row">
+          <span class="progress-label">12/30 · 重報申請（衝 35+）</span>
+          <span class="tag tag-gray">待開放</span>
+        </div>
+        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:0%;"></div></div>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">🔄 弱點複習室（出題重點）</p>
       <div class="card card-full">
         <div class="card-label" id="reviewSubtitle">Zoe 問過／批改發現嘅唔識位</div>
@@ -1901,6 +1937,36 @@
     </section>
 
     <section>
+      <section>
+      <p class="section-title">✍️ 小說短劇創作台（本地工作台）</p>
+      <div class="card card-full">
+        <div class="progress-row" style="margin-bottom:6px;">
+          <span class="card-value-sm serif">雙軌爆款創作系統</span>
+          <span class="tag tag-yellow">等第一個真靈感</span>
+        </div>
+        <div class="card-unit" style="margin-top:0;">七 prompt 引擎 · 工作台 · 市場情報（2026-09-12 建成）</div>
+        <div style="margin-top:14px;">
+          <div class="progress-row">
+            <span class="progress-label">示範項目《重生後我拒絕豪門劇本》42/50</span>
+            <span class="tag tag-green">過爆款線</span>
+          </div>
+          <div class="progress-row">
+            <span class="progress-label">市場快照 10/11 已更新（下次 10/25）</span>
+            <span class="tag tag-green">新鮮</span>
+          </div>
+          <div class="progress-row">
+            <span class="progress-label">週日 09:00 自動維護 · 講「記靈感：xxx」即刻入庫</span>
+            <span class="tag tag-blue">玩法</span>
+          </div>
+        </div>
+        <a class="link-item" href="http://localhost:8766" target="_blank" style="margin-top:8px; border-top:1px solid var(--border); padding-top:14px;">
+          <span class="link-text">打開工作台（Mac） →</span>
+          <span class="link-arrow">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
       <p class="section-title">資源</p>
       <div class="card card-full">
         <div class="link-item" style="cursor:default;">
@@ -1919,10 +1985,10 @@
 
     <section>
       <div class="card card-full" style="text-align:center;">
-        <div class="card-label">淨資產（HKD）· 零負債</div>
+        <div class="card-label">淨資產（HKD）· 10月</div>
         <div class="countdown-box">
-          <div class="countdown-num serif">135,624<span style="font-size:24px;">.00</span></div>
-          <div class="countdown-label">截至 2026.08.10 · 資產 = 淨資產</div>
+          <div class="countdown-num serif">125,206<span style="font-size:24px;">.00</span></div>
+          <div class="countdown-label">截至 2026.10.08 · 資產 145,206 − 負債 20,000（媽媽借款）</div>
         </div>
       </div>
     </section>
@@ -1935,270 +2001,169 @@
             <div class="asset-name">全職秘書月薪</div>
             <div class="asset-sub">ADECCO PERSONNEL LTD</div>
           </div>
-          <span class="asset-val pos">+17,271</span>
+          <span class="asset-val pos">+17,200</span>
         </div>
         <div class="asset-row">
           <div>
-            <div class="asset-name">補習社月薪</div>
-            <div class="asset-sub">每月固定</div>
+            <div class="asset-name">補習社後台</div>
+            <div class="asset-sub">已取消 · 弟弟做店長接手（9月最後一次）</div>
           </div>
-          <span class="asset-val pos">+5,000</span>
+          <span class="asset-val">—</span>
         </div>
         <div class="asset-row">
           <span class="asset-name"><strong>月入總計</strong></span>
-          <span class="asset-val pos"><strong>+22,271</strong></span>
+          <span class="asset-val pos"><strong>+17,200</strong></span>
         </div>
       </div>
     </section>
 
     <section>
-      <p class="section-title">資產明細</p>
+      <p class="section-title">💎 儲蓄投資</p>
       <div class="card card-full">
         <div class="asset-row">
           <div>
             <div class="asset-name">📈 富途基金（Zoe 實際）</div>
-            <div class="asset-sub">總額 85,644 · 扣除媽媽代存 10,000</div>
+            <div class="asset-sub">總額 101,000 · 含媽媽代存 10,000</div>
           </div>
-          <span class="asset-val">75,644.74</span>
+          <span class="asset-val">91,000.00</span>
         </div>
         <div class="asset-row">
           <div>
-            <div class="asset-name">🏦 中銀香港</div>
-            <div class="asset-sub">結餘</div>
+            <div class="asset-name">👨🏻‍💼 Brian 應收</div>
+            <div class="asset-sub">9月尾已還最後 5,000 人工（49k → 44k）</div>
           </div>
-          <span class="asset-val">8,073.96</span>
+          <span class="asset-val">44,000.00</span>
         </div>
         <div class="asset-row">
           <div>
-            <div class="asset-name">🏦 Za Bank</div>
-            <div class="asset-sub">結餘</div>
+            <div class="asset-name">👦 弟弟借款（應收）</div>
+            <div class="asset-sub">要還</div>
           </div>
-          <span class="asset-val">2,905.30</span>
+          <span class="asset-val">5,000.00</span>
         </div>
         <div class="asset-row">
-          <div>
-            <div class="asset-name">👨🏻‍💼 Brian 應收欠款</div>
-            <div class="asset-sub">老師人工+淘寶+運費+借款</div>
-          </div>
-          <span class="asset-val">49,000.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name"><strong>總資產</strong></span>
-          <span class="asset-val"><strong>135,624.00</strong></span>
+          <span class="asset-name"><strong>儲蓄投資合計</strong></span>
+          <span class="asset-val"><strong>140,000.00</strong></span>
         </div>
       </div>
     </section>
 
     <section>
-      <p class="section-title">負債（信用卡）</p>
+      <p class="section-title">💸 流動資金</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">銀行流動（中銀＋Za）</div>
+            <div class="asset-sub">還完所有信用卡後 · 隨時會花，唔算入儲蓄</div>
+          </div>
+          <span class="asset-val">5,206.00</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">🛡️ 保險 · FWD 兩份（2026-10-08 分析定版）</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">危疾應援保（升級版）· 儲蓄型</div>
+            <div class="asset-sub">保單 87318603 · 保額 USD 127,389 ≈99.4萬 · 年繳 26,096（中銀實扣）· 供20年保至100歲 · 多重賠償上限990% · 退保價值首年 0（每年10月重估先有機會轉資產）</div>
+          </div>
+          <span class="tag tag-blue">供款中</span>
+        </div>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">醫家保 vFamily · 消費型</div>
+            <div class="asset-sub">保單 87308393 · 年繳 5,184（432/月）· 全球全數賠不設限額 · VHIS 可扣稅</div>
+          </div>
+          <span class="tag tag-green">生效中</span>
+        </div>
+        <div class="alert-banner" style="background:var(--pale-yellow-bg); border-color:rgba(140,110,30,0.15); margin-top:12px;">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-text"><strong>兩份都未設自動轉帳</strong>——2027年9月續保合計預算 31,280 · 7月起月儲 10,500</div>
+        </div>
+        <div class="asset-row" style="margin-top:12px;">
+          <span class="asset-name">今年合計已交（9/27，媽媽借 20,000）</span>
+          <span class="asset-val">29,987.52</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">💳 信用卡（10月全清 ✅）</p>
       <div class="card card-full">
         <div class="alert-banner" style="background:var(--pale-green-bg); border-color:rgba(52,101,56,0.15); margin-bottom:14px;">
           <span class="alert-icon" style="color:var(--pale-green-text);">🎉</span>
           <div class="alert-text" style="color:var(--pale-green-text);">
-            <strong>三張信用卡全部清零！</strong>零負債狀態
+            <strong>四張卡全部清零！</strong>月月清卡紀律持續
           </div>
         </div>
         <div class="asset-row">
-          <div>
-            <div class="asset-name">💳 信銀 Motion</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
-          </div>
-          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
+          <span class="asset-name">信銀 Motion · 花旗 Citi · 中銀人民幣卡 · 中銀 Master</span>
+          <span class="asset-val" style="color:var(--pale-green-text);">全部 0.00 ✅</span>
         </div>
         <div class="asset-row">
-          <div>
-            <div class="asset-name">💳 花旗 Citi Quick Cash</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
-          </div>
-          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">💳 中銀 Go 銀聯鑽石卡</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 本期已清</div>
-          </div>
-          <span class="asset-val" style="color:var(--pale-green-text);">0.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name"><strong>總負債</strong></span>
-          <span class="asset-val" style="color:var(--pale-green-text);"><strong>0.00 ✨</strong></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 7月現金流分析 ===== -->
-    <section>
-      <p class="section-title">7月現金流（中銀）</p>
-      <div class="card card-full">
-        <div class="asset-row">
-          <span class="asset-name">6月底結餘</span>
-          <span class="asset-val">12,382.42</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">薪金入帳（ADECCO）</div>
-            <div class="asset-sub">7/7</div>
-          </div>
-          <span class="asset-val pos">+17,271.00</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">Brian 宿舍證明資金</div>
-            <div class="asset-sub">7/1 LEE KA HEI · 已歸位</div>
-          </div>
-          <span class="asset-val pos">+80,700.00</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">轉入富途（Zoe 自己）</div>
-            <div class="asset-sub">7/3 · 已計入富途</div>
-          </div>
-          <span class="asset-val neg">-75,000.00</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">媽媽資金（已退回）</div>
-            <div class="asset-sub">已轉返媽媽帳戶</div>
-          </div>
-          <span class="asset-val neg">-5,700.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name"><strong>7月底結餘</strong></span>
-          <span class="asset-val"><strong>3,768.40</strong></span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">8月薪金入帳後</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">✅ 已回升</div>
-          </div>
-          <span class="asset-val" style="color:var(--pale-green-text);"><strong>8,073.96</strong></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 信用卡消費分析 ===== -->
-    <section>
-      <p class="section-title">7月信用卡消費分析</p>
-
-      <!-- CITIC -->
-      <div class="card card-full" style="margin-bottom:12px;">
-        <div class="progress-row" style="margin-bottom:8px;">
-          <span class="card-value-sm serif" style="font-size:16px;">💳 信銀 Motion</span>
-          <span class="tag tag-gray">已清 ✅</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name">🏋️ 健身房（SnapFi）</span>
-          <span class="asset-val">568.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name">🚇 港鐵 MTR</span>
-          <span class="asset-val" style="color:var(--pale-yellow-text);">460.00 ⚠️</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name">🛒 超市（Wellcome×3 + TASTE）</span>
-          <span class="asset-val">417.70</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">📋 分期（第5/6期）</div>
-            <div class="asset-sub" style="color:var(--pale-green-text);">差1期就清</div>
-          </div>
-          <span class="asset-val">591.57</span>
-        </div>
-      </div>
-
-      <!-- Citi -->
-      <div class="card card-full">
-        <div class="progress-row" style="margin-bottom:8px;">
-          <span class="card-value-sm serif" style="font-size:16px;">💳 花旗 Citi</span>
-          <span class="tag tag-gray">已清 ✅</span>
-        </div>
-        <div class="asset-row">
-          <div>
-            <div class="asset-name">🍣 翠屋日料（Daikiya）</div>
-            <div class="asset-sub" style="color:var(--pale-red-text);">⚠️ 佔 76%</div>
-          </div>
-          <span class="asset-val" style="color:var(--pale-red-text);">2,244.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name">🚌 八達通增值</span>
-          <span class="asset-val">500.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name">🎬 電影院</span>
-          <span class="asset-val">195.00</span>
-        </div>
-        <div class="asset-row">
-          <span class="asset-name">🚇 港鐵</span>
-          <span class="asset-val">15.80</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 財務健康評分 ===== -->
-    <section>
-      <p class="section-title">財務健康評分</p>
-      <div class="card card-full">
-        <div style="text-align:center; margin-bottom:16px;">
-          <div class="card-label">綜合評分</div>
-          <div class="countdown-num serif" style="color:var(--pale-green-text);">8.5<span style="font-size:20px;">/10</span></div>
-        </div>
-
-        <div class="progress-row">
-          <span class="progress-label">收入穩定性</span>
-          <span class="tag tag-green">優</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:95%; background:var(--pale-green-text);"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">信用使用率</span>
-          <span class="tag tag-green">&lt; 7%</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:95%; background:var(--pale-green-text);"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">負債狀況</span>
-          <span class="tag tag-green">零負債</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:100%; background:var(--pale-green-text);"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">投資理財</span>
-          <span class="tag tag-green">有</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:80%; background:var(--pale-green-text);"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">現金緩衝</span>
-          <span class="tag tag-yellow">可加強</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:65%; background:var(--pale-yellow-text);"></div></div>
-
-        <div class="progress-row">
-          <span class="progress-label">消費控制</span>
-          <span class="tag tag-yellow">留意餐飲</span>
-        </div>
-        <div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:70%; background:var(--pale-yellow-text);"></div></div>
-      </div>
-
-      <div class="card card-full" style="margin-top:12px;">
-        <div class="card-label">💡 財務管家建議</div>
-        <div class="info-block" style="font-size:12px;">
-          <p>· 中銀戶口 keep 住 5,000+ 緩衝</p>
-          <p>· 大額餐飲（翠屋 2,244）每月限 1-2 次</p>
-          <p>· 港鐵 460 偏高，留意交通補貼</p>
-          <p>· 兩張卡 APR 34%+，保持全數清還</p>
+          <span class="asset-name">累計還款：7月 2,140.23 ＋ 8月 4,987.84 ＋ 9月 21,450.50</span>
+          <span class="asset-val">合計 28,578.57</span>
         </div>
       </div>
     </section>
 
     <section>
-      <p class="section-title">備註</p>
+      <p class="section-title">👩 媽媽借款（負債）</p>
       <div class="card card-full">
-        <div class="info-block">
-          <p>💡 富途基金總額 85,644.74，當中 10,000 為媽媽代存投資，Zoe 實際持有 75,644.74</p>
-          <p>💡 完整月結單分析：<strong>2026-08-12_銀行月結單分析.md</strong>（桌面）</p>
-          <p style="margin-top:10px; color:var(--text-muted); font-size:12px;">每月更新後跟我講，我幫你同步到此頁面</p>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">媽媽借款</div>
+            <div class="asset-sub">交 FWD 保費用 · 要還 · 未有還款進度</div>
+          </div>
+          <span class="asset-val">20,000.00</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📅 月度記錄</p>
+      <details class="month-card" open>
+        <summary>10月 · 進行中</summary>
+        <div style="margin-top:10px; font-size:12px; line-height:1.9;">
+          月薪 17,200（補習已取消）· 每月 FPS 10,000 入富途紀律持續<br>
+          信用卡全清 ✅ · 等 11/7 財務管家月結更新
+        </div>
+      </details>
+      <details class="month-card">
+        <summary>9月</summary>
+        <div style="margin-top:10px; font-size:12px; line-height:1.9;">
+          淨資產 125,206（10/8 第2次修正）<br>
+          9月還款 21,450.50 全清 ✅ · FWD 兩份新單 29,987.52<br>
+          補習社交棒弟弟 · Brian 還最後 5,000 人工（應收 49k→44k）
+        </div>
+      </details>
+      <details class="month-card">
+        <summary>8月</summary>
+        <div style="margin-top:10px; font-size:12px; line-height:1.9;">
+          月底 126,071 · 周大福事件 −9,552（屋企人分擔 8,115）<br>
+          8月還款 4,987.84 · 富途 +7.72%（年初至今）
+        </div>
+      </details>
+      <details class="month-card">
+        <summary>7月</summary>
+        <div style="margin-top:10px; font-size:12px; line-height:1.9;">
+          三卡首次全清（2,140.23）· 淨資產 135,624<br>
+          補習社 5,000 月入仍有效（8月起取消）
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <p class="section-title">📊 財務健康評分</p>
+      <div class="card card-full">
+        <div class="asset-row">
+          <span class="asset-name">綜合評分 · 六維度（收入穩定／信用使用／負債／投資理財／現金緩衝／消費控制）</span>
+          <span class="tag tag-blue">11/7 自動重評</span>
+        </div>
+        <div class="card-unit" style="margin-top:8px;">
+          財務管家每月 7 號按最新月結數據重評＋重寫建議——舊評分隨月結滾動更新
         </div>
       </div>
     </section>
@@ -2206,8 +2171,7 @@
   </div>
 </div>
 
-<!-- ============ TAB: 安排 ============ -->
-<div class="tab-view" id="tab-life">
+    <div class="tab-view" id="tab-life">
   <div class="container">
 
     <section>
@@ -2219,9 +2183,9 @@
           <div class="mini-sub">合約完結 · 12/31</div>
         </div>
         <div class="mini-box">
-          <div class="mini-num serif" style="color:var(--pale-green-text);">🎉</div>
-          <div class="mini-label">零負債</div>
-          <div class="mini-sub">三卡全清</div>
+          <div class="mini-num serif" style="font-size:22px;">10/16</div>
+          <div class="mini-label">入伙</div>
+          <div class="mini-sub">南昌薈 · Brian 宿舍</div>
         </div>
         <div class="mini-box">
           <div class="mini-num serif" style="font-size:22px;">0</div>
@@ -2229,7 +2193,7 @@
           <div class="mini-sub">信用卡待還</div>
         </div>
         <div class="mini-box">
-          <div class="mini-num serif" style="font-size:22px;">49k</div>
+          <div class="mini-num serif" style="font-size:22px;">44k</div>
           <div class="mini-label">HKD</div>
           <div class="mini-sub">Brian 應收</div>
         </div>
@@ -2408,7 +2372,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   一步一腳印，每日進步少少<br>
-  <span style="font-size:10px; opacity:0.5;">v2.74 · 2026.10.06</span>
+  <span style="font-size:10px; opacity:0.5;">v2.75 · 2026.10.06</span>
 </footer>
 
 <!-- ============ BOTTOM NAV ============ -->
@@ -3859,7 +3823,7 @@
   // ZCode 推送種子：Zoe 報打字成績 → 加喺下面陣列 → push（marker 用長度）
   const TYPING_SEED = [
   ];
-  // ===== 📋 打字週復盤卡（v2.74 · 每週日 20:00 cron 自動更新呢度）=====
+  // ===== 📋 打字週復盤卡（v2.75 · 每週日 20:00 cron 自動更新呢度）=====
   // ZCode 改完 push → Zoe refresh 即見（ver 係版本指紋，curl 驗證用）
   const TYPING_REVIEW = { ver: 'review_v3', date: '2026-10-13', verdict: '⚠️ 開波兩日檢查：10/12-13 零記錄——計劃已開跑但未開機', lines: [
     '開波日已過兩日：typing_history 0 節（工作站在線，非斷線）',
