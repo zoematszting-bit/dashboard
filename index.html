@@ -3179,7 +3179,7 @@
       '<div class="log-item" onclick="editWorkout('+x.i+')" style="cursor:pointer;">'+
       '<div class="log-item-head"><span class="log-item-title">'+x.w.exercise+
       ' <span class="tag tag-gray" style="margin-left:4px;">'+x.w.group+'</span></span>'+
-      '<span><span class="log-item-meta">'+(x.w.weight && x.w.weight!=='—' ? x.(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+' : '')+x.w.reps+'</span> '+
+      '<span><span class="log-item-meta">'+(x.w.weight && x.w.weight!=='—' ? x.w.weight+'kg · ' : '')+x.w.reps+'</span> '+
       '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div></div>'
     ).join('');
   }
@@ -3202,7 +3202,7 @@
       return '<div class="log-item" onclick="editWorkout('+i+')" style="cursor:pointer;">'+
         '<div class="log-item-head"><span class="log-item-title">'+w.exercise+
         ' <span class="tag tag-gray" style="margin-left:4px;">'+w.group+'</span></span>'+
-        '<span><span class="log-item-meta">'+(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+'+w.reps+'</span> '+
+        '<span><span class="log-item-meta">'+(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+w.reps+'</span> '+
         '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+i+')">×</button></span></div>'+
         '<div class="log-item-time" style="margin-top:2px;">'+w.date+'</div></div>';
     }).join('') + moreBtn;
@@ -3278,7 +3278,7 @@
         byDate[d].map(w =>
           '<div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-bottom:1px solid var(--border);">'+
           '<span>'+w.exercise+' <span class="tag tag-gray">'+w.group+'</span></span>'+
-          '<span style="color:var(--text-muted); font-family:JetBrains Mono,monospace; font-size:11px;">'+(w.weight?(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+':'')+(w.reps||'')+'</span></div>'
+          '<span style="color:var(--text-muted); font-family:JetBrains Mono,monospace; font-size:11px;">'+(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+(w.reps||'')+'</span></div>'
         ).join('')+'</div>'
       ).join('');
   }
