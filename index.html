@@ -1165,6 +1165,17 @@
             <div class="field-full">
               <button class="quick-btn" style="width:100%; font-size:13px;" onclick="exportZoeData()">📤 複製數據俾 ZCode（餐點＋訓練＋體重）</button>
             </div>
+            <div class="field-full" style="border-top:1px solid var(--border); padding-top:12px; margin-top:4px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="field-label-mini">📋 匯入訓練（ZCode 整理結果）</div>
+                <button class="quick-btn" id="woImportToggle" onclick="toggleWoImport()">展開</button>
+              </div>
+              <div id="woImportBox" style="display:none;">
+                <textarea id="woImportText" class="input-mini input-text" rows="5" placeholder="每行一個動作，用｜分隔：&#10;動作｜肌群｜重量kg｜下數×組數&#10;重量冇就填 — ；有氧/瑜伽 reps 填 20分/45分" style="width:100%; margin-top:8px; font-size:13px; line-height:1.6; resize:vertical;"></textarea>
+                <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importWorkouts()">📥 匯入訓練記錄</button>
+                <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">匯入會加喺現有記錄之後，唔會覆蓋 · 記入「日期」欄揀嗰日（冇揀就今日）</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -3104,6 +3115,32 @@
   function afterWoChange() {
     renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderYogaHours(); renderWorkoutHistory(); renderYogaTypeStats(); renderYoga1000();
   }
+  function toggleWoImport() {
+    const box = document.getElementById('woImportBox');
+    const show = box.style.display === 'none';
+    box.style.display = show ? 'block' : 'none';
+    document.getElementById('woImportToggle').textContent = show ? '收起' : '展開';
+  }
+  function importWorkouts() {
+    const ta = document.getElementById('woImportText');
+    const lines = ta.value.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.length) { alert('未有內容'); return; }
+    if (!confirm('匯入 ' + lines.length + ' 條訓練記錄？（加喺現有記錄之後）')) return;
+    const date = woFormDate();
+    let ok = 0, skip = [];
+    lines.forEach(line => {
+      const parts = line.split('｜').map(p => p.trim());
+      if (parts.length < 4) { skip.push(line); return; }
+      const entry = { date: date, exercise: parts[0], group: parts[1], weight: parts[2], reps: parts[3] };
+      if (!entry.exercise || !entry.reps) { skip.push(line); return; }
+      workouts.push(entry); ok++;
+    });
+    if (!ok) { alert('冇一行格式啱——格式：動作｜肌群｜重量kg｜下數×組數'); return; }
+    localStorage.setItem('zoe_workouts', JSON.stringify(workouts));
+    afterWoChange();
+    ta.value = ''; toggleWoImport();
+    alert('已匯入 ' + ok + ' 條' + (skip.length ? '\n跳過 ' + skip.length + ' 行（格式唔啱）' : ''));
+  }
   function addWorkout() {
     const entry = buildWoEntry();
     if (!entry.exercise) return;
@@ -3142,7 +3179,7 @@
       '<div class="log-item" onclick="editWorkout('+x.i+')" style="cursor:pointer;">'+
       '<div class="log-item-head"><span class="log-item-title">'+x.w.exercise+
       ' <span class="tag tag-gray" style="margin-left:4px;">'+x.w.group+'</span></span>'+
-      '<span><span class="log-item-meta">'+x.w.weight+'kg · '+x.w.reps+'</span> '+
+      '<span><span class="log-item-meta">'+(x.w.weight && x.w.weight!=='—' ? x.(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+' : '')+x.w.reps+'</span> '+
       '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+x.i+')">×</button></span></div></div>'
     ).join('');
   }
@@ -3165,7 +3202,7 @@
       return '<div class="log-item" onclick="editWorkout('+i+')" style="cursor:pointer;">'+
         '<div class="log-item-head"><span class="log-item-title">'+w.exercise+
         ' <span class="tag tag-gray" style="margin-left:4px;">'+w.group+'</span></span>'+
-        '<span><span class="log-item-meta">'+w.weight+'kg · '+w.reps+'</span> '+
+        '<span><span class="log-item-meta">'+(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+'+w.reps+'</span> '+
         '<button class="log-del" onclick="event.stopPropagation(); delWorkout('+i+')">×</button></span></div>'+
         '<div class="log-item-time" style="margin-top:2px;">'+w.date+'</div></div>';
     }).join('') + moreBtn;
@@ -3241,7 +3278,7 @@
         byDate[d].map(w =>
           '<div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-bottom:1px solid var(--border);">'+
           '<span>'+w.exercise+' <span class="tag tag-gray">'+w.group+'</span></span>'+
-          '<span style="color:var(--text-muted); font-family:JetBrains Mono,monospace; font-size:11px;">'+(w.weight?w.weight+'kg · ':'')+(w.reps||'')+'</span></div>'
+          '<span style="color:var(--text-muted); font-family:JetBrains Mono,monospace; font-size:11px;">'+(w.weight?(w.weight && w.weight!=='—' ? w.weight+'kg · ' : '')+':'')+(w.reps||'')+'</span></div>'
         ).join('')+'</div>'
       ).join('');
   }
