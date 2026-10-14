@@ -1654,22 +1654,67 @@
     </section>
 
     <section>
-      <p class="section-title">申請狀態 · 2026.09.13</p>
+      <p class="section-title">🎯 考試成績（雙信齊 · 10/13 定案）</p>
       <div class="card card-full">
-        <div class="progress-row">
-          <span class="progress-label">助理文書主任 ACO · C-5814060</span>
-          <span class="tag tag-red">📩 已收邀請 · 9/30考試</span>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">ACO · 助理文書主任＋文書助理</div>
+            <div class="asset-sub">9/30 考 · 10/7 通知書</div>
+          </div>
+          <span class="tag tag-red">❌ 不及格</span>
         </div>
-        <div class="progress-row">
-          <span class="progress-label">二級私人秘書 PSII · C-5814061</span>
-          <span class="tag tag-green">已遞交 ✅ 等邀請</span>
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">PSII · 二級私人秘書</div>
+            <div class="asset-sub">10/5 考 · 10/13 通知書</div>
+          </div>
+          <span class="tag tag-red">❌ 不及格</span>
         </div>
-        <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">
-          🎓 9/30（週三）11:00 稅務大樓37樓3701室（10:45前報到）<br>
-          🧾 帶邀請函＋香港身份證｜考核：中打＋英打＋Word/Excel 2016<br>
-          📬 PSII 邀請或另有信——留意email（有疑問致電 2594 6622 梁女士）<br>
-          ⚠️ 及格成績2年有效；缺席/唔及格要等3個月先可再申請
+        <div class="asset-row">
+          <div>
+            <div class="asset-name">死因（兩場同一個）</div>
+            <div class="asset-sub">英打 21.4 未達線（ACO 30／PSII 40）</div>
+          </div>
+          <span class="tag tag-yellow">差 8／19 字</span>
         </div>
+        <div class="asset-row">
+          <span class="asset-name">中打 · Word · Excel</span>
+          <span class="tag tag-green">全部達標 ✅</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📅 下次考試（重報窗口）</p>
+      <div class="countdown-mini">
+        <div class="mini-box">
+          <div class="mini-num serif" id="rdAco">—</div>
+          <div class="mini-label">日</div>
+          <div class="mini-sub">ACO 12/30 開放申請</div>
+        </div>
+        <div class="mini-box">
+          <div class="mini-num serif" id="rdPsii">—</div>
+          <div class="mini-label">日</div>
+          <div class="mini-sub">PSII 1/5 開放申請</div>
+        </div>
+      </div>
+      <div class="card card-full" style="margin-top:10px;">
+        <div class="card-label">預計重考時間表</div>
+        <div class="card-unit">12 月底＋1 月初交兩份申請（全年招聘）→ 估 2027 年 1-2 月收邀請開考</div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-title">📝 考試總結</p>
+      <div class="card card-full">
+        <div class="info-block" style="font-size:12px;">
+          <p><strong>一句講晒：</strong>全科達標，淨差英打一科——ACO 差 8 個字、PSII 差 19 個字。呢個係純粹「練幾多」嘅問題，唔係能力問題。</p>
+        </div>
+        <div class="asset-row" style="margin-top:10px;">
+          <span class="asset-name">🏃 12 週英打計劃（10/7 → 12/30）</span>
+          <span class="tag tag-red">待啟動</span>
+        </div>
+        <div class="card-unit">11 月中衝 28-30 → 12 月尾 33-35+ → 重考 35+（ACO 30 安全網／PSII 40 終極）——你開機嗰日就開波 💪</div>
       </div>
     </section>
 
@@ -4137,6 +4182,16 @@
       '<polyline points="' + line('zh') + '" fill="none" stroke="var(--pale-green-text)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
       dots('en', 'var(--pale-blue-text)') + dots('zh', 'var(--pale-green-text)') + '</svg>';
   }
+  // ===== 📅 重報窗口倒數（v2.80 自動計）=====
+  (function(){
+    const t1 = new Date('2026-12-30'), t2 = new Date('2027-01-05');
+    const today = new Date(); today.setHours(0,0,0,0);
+    const dd = x => Math.max(0, Math.ceil((x - today)/86400000));
+    const a = document.getElementById('rdAco'), p = document.getElementById('rdPsii');
+    if (a) a.textContent = dd(t1);
+    if (p) p.textContent = dd(t2);
+  })();
+
   // ===== 🎓 考試日期 seed（v2.52：CSB邀請已到·2026-09-30 ACO技能測驗·fill-if-empty）=====
   (function seedExamDate() {
     if (!localStorage.getItem('zoe_exam_date')) localStorage.setItem('zoe_exam_date', '2026-09-30');
