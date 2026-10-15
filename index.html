@@ -1201,7 +1201,7 @@
                 <button class="quick-btn" id="woImportToggle" onclick="toggleWoImport()">展開</button>
               </div>
               <div id="woImportBox" style="display:none;">
-                <textarea id="woImportText" class="input-mini input-text" rows="5" placeholder="每行一個動作，用｜分隔：&#10;動作｜肌群｜重量kg｜下數×組數&#10;重量冇就填 — ；有氧/瑜伽 reps 填 20分/45分" style="width:100%; margin-top:8px; font-size:13px; line-height:1.6; resize:vertical;"></textarea>
+                <textarea id="woImportText" class="input-mini input-text" rows="5" placeholder="每行一個動作，用｜分隔：&#10;動作｜肌群｜重量kg｜下數×組數｜日期(YYYY.MM.DD可選)&#10;重量冇填 — ；有氧/瑜伽 reps 填 20分/45分" style="width:100%; margin-top:8px; font-size:13px; line-height:1.6; resize:vertical;"></textarea>
                 <button class="typing-btn" style="width:100%; margin-top:8px;" onclick="importWorkouts()">📥 匯入訓練記錄</button>
                 <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">匯入會加喺現有記錄之後，唔會覆蓋 · 記入「日期」欄揀嗰日（冇揀就今日）</div>
               </div>
@@ -3394,7 +3394,8 @@
     lines.forEach(line => {
       const parts = line.split('｜').map(p => p.trim());
       if (parts.length < 4) { skip.push(line); return; }
-      const entry = { date: date, exercise: parts[0], group: parts[1], weight: parts[2], reps: parts[3] };
+      const d5 = parts[4] || date; // 可選第5欄：YYYY.MM.DD
+      const entry = { date: d5, exercise: parts[0], group: parts[1], weight: parts[2], reps: parts[3] };
       if (!entry.exercise || !entry.reps) { skip.push(line); return; }
       workouts.push(entry); ok++;
     });
