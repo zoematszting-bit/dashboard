@@ -617,7 +617,16 @@
     details.month-card summary { cursor:pointer; font-weight:600; font-size:14px; color:var(--text-muted); list-style:none; display:flex; justify-content:space-between; align-items:center; }
     details.month-card summary::after { content:'▾'; font-size:12px; }
     details.month-card[open] summary::after { content:'▴'; }
-    </style>
+    /* ===== 🩸 出血時間線（v2.93 經期追蹤中心）===== */
+    .bs-cell { width: 12px; height: 18px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--border); }
+    .bs-period { background: var(--pale-red-text); border-color: var(--pale-red-text); }
+    .bs-period-est { background: var(--pale-red-text); opacity: 0.45; }
+    .bs-drug { background: var(--pale-yellow-text); border-color: var(--pale-yellow-text); }
+    .bs-spot { background: var(--pale-red-text); opacity: 0.3; }
+    .bs-med { background: var(--surface-2); border-color: rgba(140,110,30,0.25); }
+    .bs-today { outline: 2px solid var(--pale-blue-text); outline-offset: 1px; }
+    .quick-btn.active { background: var(--pale-blue-text); color: #fff; border-color: var(--pale-blue-text); }
+</style>
 </head>
 <body>
 
@@ -1354,11 +1363,15 @@
       <section>
         <p class="section-title">經期週期</p>
         <div class="card card-full">
-          <div class="card-label">記錄經期開始日</div>
+          <div class="card-label">🌸 經期記錄（開始日＋完結日）</div>
           <div class="typing-input-wrap" style="margin-top:6px;">
             <input type="date" class="typing-input input-text" id="periodInput">
             <button class="typing-btn" onclick="addPeriod()" id="pdBtn">記錄</button>
             <button class="quick-btn" id="pdCancel" onclick="cancelEdit('pd')" style="display:none;">取消</button>
+          </div>
+          <div class="typing-input-wrap" style="margin-top:6px;">
+            <input type="date" class="typing-input input-text" id="periodEndInput" title="經期完結日">
+            <button class="quick-btn" onclick="addPeriodEnd()">記完結日</button>
           </div>
           <div class="info-block" style="font-size:12px; margin-top:12px;">
             <p id="periodInfo" style="margin-bottom:0;">未有記錄</p>
@@ -1366,6 +1379,72 @@
           <div id="periodTimeline"></div>
           <div id="periodLog" style="margin-top:6px;"></div>
         </div>
+      </section>
+
+      <section>
+        <p class="section-title">📝 症狀日誌（PCOS 追蹤）</p>
+        <div class="card card-full">
+          <div class="field-grid">
+            <div>
+              <div class="field-label-mini">日期</div>
+              <input type="date" class="input-mini input-text" id="symDate">
+            </div>
+            <div class="field-full">
+              <div class="field-label-mini">流量</div>
+              <div style="display:flex; gap:6px; margin-top:4px; flex-wrap:wrap;">
+                <button class="quick-btn" onclick="pickSymBtn(this,'flow',1)">點滴</button>
+                <button class="quick-btn" onclick="pickSymBtn(this,'flow',2)">輕</button>
+                <button class="quick-btn" onclick="pickSymBtn(this,'flow',3)">中</button>
+                <button class="quick-btn" onclick="pickSymBtn(this,'flow',4)">重</button>
+              </div>
+            </div>
+            <div class="field-full">
+              <div class="field-label-mini">經痛度</div>
+              <div style="display:flex; gap:6px; margin-top:4px;">
+                <button class="quick-btn" onclick="pickSymBtn(this,'pain',1)">1 輕微</button>
+                <button class="quick-btn" onclick="pickSymBtn(this,'pain',2)">2 中度</button>
+                <button class="quick-btn" onclick="pickSymBtn(this,'pain',3)">3 劇痛</button>
+              </div>
+            </div>
+            <div class="field-full">
+              <div class="field-label-mini">症狀（可多選）</div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;" id="symChips">
+                <button class="quick-btn" onclick="toggleSymChip(this,'經痛')">經痛</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'頭痛')">頭痛</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'水腫')">水腫</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'情緒低落')">情緒低落</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'易怒')">易怒</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'痤瘡')">痤瘡</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'疲勞')">疲勞</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'腰痠')">腰痠</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'乳房脹痛')">乳房脹痛</button>
+                <button class="quick-btn" onclick="toggleSymChip(this,'腹脹')">腹脹</button>
+              </div>
+            </div>
+            <div class="field-full" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button class="quick-btn" id="symDrugBtn" onclick="toggleSymDrug()">💊 食藥出血</button>
+              <button class="typing-btn" style="flex:1; min-width:120px;" onclick="addSymptomLog()">＋ 記錄症狀</button>
+            </div>
+          </div>
+          <div id="symLogList" style="margin-top:12px;"></div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">🩸 出血時間線（60 日）</p>
+        <div class="card card-full">
+          <div id="bleedStrip"></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:8px; line-height:1.8;">
+            🔴 自然經期（無完結日者按 5 日估）<br>
+            🟠 食藥出血｜🩷 點滴｜○ 今日<br>
+            10 月中 Exlutona 起——出血規律由藥物主導，記錄分開統計
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-title">📊 週期專業分析</p>
+        <div class="card card-full" id="cycleAnalysis"></div>
       </section>
 
       <section>
@@ -2824,18 +2903,185 @@
   let schedule = JSON.parse(localStorage.getItem('zoe_schedule') || '{}');
   let measurements = JSON.parse(localStorage.getItem('zoe_measurements') || '[]');
   // ===== 經期種子數據（ZCode 遠程更新用，append+按日期去重）=====
-  const SEED_PERIODS = ['2026-09-28'];
+  const SEED_PERIODS = [
+    {date:'2026-06-28'},
+    {date:'2026-08-28'},
+    {date:'2026-09-28', end:'2026-10-04'}
+  ];
   (function() {
     let cur = JSON.parse(localStorage.getItem('zoe_period') || '[]');
     let ch = false;
     SEED_PERIODS.forEach(d => {
-      if (!cur.some(p => p.date === d)) { cur.push({ date: d }); ch = true; }
+      if (!cur.some(p => p.date === d.date)) { cur.push(d); ch = true; }
     });
     if (ch) localStorage.setItem('zoe_period', JSON.stringify(cur));
   })();
 
   let periodData = JSON.parse(localStorage.getItem('zoe_period') || '[]');
   let statusSel = {};
+
+  // ===== 🌸 經期追蹤中心 v2.93（症狀日誌＋出血時間線＋專業分析）=====
+  let pcosLog = JSON.parse(localStorage.getItem('zoe_pcos_log') || '[]');
+  let symPick = { flow: null, pain: null, syms: [], drug: false };
+  (function initSymDate() {
+    const el = document.getElementById('symDate');
+    if (el) el.value = dateStr.replace(/\./g, '-');
+  })();
+  function pickSymBtn(btn, kind, val) {
+    const box = btn.parentElement;
+    [...box.children].forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    symPick[kind] = val;
+  }
+  function toggleSymChip(btn, name) {
+    btn.classList.toggle('active');
+    const i = symPick.syms.indexOf(name);
+    if (i === -1) symPick.syms.push(name); else symPick.syms.splice(i, 1);
+  }
+  function toggleSymDrug() {
+    symPick.drug = !symPick.drug;
+    const b = document.getElementById('symDrugBtn');
+    b.classList.toggle('active');
+    b.textContent = symPick.drug ? '💊 食藥出血 ✓' : '💊 食藥出血';
+  }
+  function addSymptomLog() {
+    const dEl = document.getElementById('symDate');
+    const date = (dEl && dEl.value) ? dEl.value : dateStr.replace(/\./g, '-');
+    const entry = {
+      date: date,
+      flow: symPick.flow || 0,
+      pain: symPick.pain || 0,
+      syms: symPick.syms.slice(),
+      drug: symPick.drug
+    };
+    if (!entry.flow && !entry.pain && !entry.syms.length && !entry.drug) {
+      alert('揀至少一項（流量/痛度/症狀/食藥出血）'); return;
+    }
+    const i = pcosLog.findIndex(e => e.date === date);
+    if (i !== -1) {
+      if (!confirm('同日已有記錄，覆蓋？')) return;
+      pcosLog[i] = entry;
+    } else pcosLog.push(entry);
+    localStorage.setItem('zoe_pcos_log', JSON.stringify(pcosLog));
+    symPick = { flow: null, pain: null, syms: [], drug: false };
+    ['symFlowBtns','symPainBtns','symChips'].forEach(id => {
+      const box = document.getElementById(id);
+      if (box) [...box.querySelectorAll('.active')].forEach(b => b.classList.remove('active'));
+    });
+    const db = document.getElementById('symDrugBtn');
+    if (db) { db.classList.remove('active'); db.textContent = '💊 食藥出血'; }
+    renderSymLog(); renderBleedStrip(); renderCycleAnalysis();
+    alert('已記錄 ' + date);
+  }
+  function renderSymLog() {
+    const el = document.getElementById('symLogList');
+    if (!el) return;
+    const sorted = [...pcosLog].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 14);
+    if (!sorted.length) { el.innerHTML = '<div class="log-item" style="color:var(--text-muted); justify-content:center;">未有記錄——每日有症狀就記，分析會越嚟越準</div>'; return; }
+    const flowTxt = ['—','點滴','輕','中','重'];
+    el.innerHTML = sorted.map(e =>
+      '<div class="log-item"><div class="log-item-head"><span class="log-item-title">' + e.date.slice(5) +
+      (e.drug ? ' <span class="tag tag-yellow" style="margin-left:4px;">💊藥</span>' : '') + '</span>' +
+      '<span class="log-item-meta">' + (e.flow ? '流量' + flowTxt[e.flow] : '') +
+      (e.pain ? ' · 痛' + e.pain : '') + '</span></div>' +
+      (e.syms.length ? '<div style="font-size:11px; color:var(--text-muted); margin-top:3px;">' + e.syms.join(' · ') + '</div>' : '') +
+      '</div>').join('');
+  }
+  function periodRanges() {
+    const sorted = [...periodData].sort((a,b) => a.date.localeCompare(b.date));
+    return sorted.map(p => {
+      const st = new Date(p.date);
+      const en = p.end ? new Date(p.end) : new Date(p.date + 'T00:00:00');
+      en.setDate(en.getDate() + (p.end ? 0 : 4));
+      return { start: p.date, end: en, seeded: !!p.end };
+    });
+  }
+  function renderBleedStrip() {
+    const el = document.getElementById('bleedStrip');
+    if (!el) return;
+    const ranges = periodRanges();
+    const cells = [];
+    for (let i = 59; i >= 0; i--) {
+      const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() - i);
+      const ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+      const isToday = i === 0;
+      let cls = 'bs-cell';
+      let title = ds;
+      const inPeriod = ranges.some(r => d >= new Date(r.start + 'T00:00:00') && d <= r.end);
+      const log = pcosLog.find(e => e.date === ds);
+      if (log && log.drug) { cls += ' bs-drug'; title += ' 🟠食藥出血'; }
+      else if (log && log.flow === 1) { cls += ' bs-spot'; title += ' 🩷點滴'; }
+      else if (log && log.flow >= 2) { cls += ' bs-drug'; title += ' 🟠出血' + log.flow; }
+      else if (inPeriod) { cls += ranges.some(r => d >= new Date(r.start+'T00:00:00') && d <= r.end && !r.seeded) ? ' bs-period-est' : ' bs-period'; title += ' 🔴經期'; }
+      else if (ds >= '2026-10-15') { cls += ' bs-med'; }
+      if (isToday) cls += ' bs-today';
+      cells.push('<div class="' + cls + '" title="' + title + '"></div>');
+    }
+    el.innerHTML = '<div style="display:flex; gap:2px; flex-wrap:wrap;">' + cells.join('') + '</div>';
+  }
+  function renderCycleAnalysis() {
+    const el = document.getElementById('cycleAnalysis');
+    if (!el) return;
+    const sorted = [...periodData].sort((a,b) => a.date.localeCompare(b.date));
+    const lens = [];
+    for (let i = 1; i < sorted.length; i++) {
+      const d = Math.round((new Date(sorted[i].date) - new Date(sorted[i-1].date)) / 86400000);
+      lens.push({ from: sorted[i-1].date.slice(5), len: d });
+    }
+    let html = '';
+    if (!lens.length) {
+      html = '<div class="card-unit">記錄多過一次經期開始日，就會自動出週期分析</div>';
+    } else {
+      const avg = Math.round(lens.reduce((a,x) => a + x.len, 0) / lens.length);
+      const last = lens[lens.length - 1];
+      let grade, tag;
+      if (last.len > 90) { grade = '閉經（>90 日）'; tag = 'tag-red'; }
+      else if (last.len > 35) { grade = '稀發月經（>35 日）——PCOS 典型'; tag = 'tag-red'; }
+      else { grade = '規律範圍（21-35 日）'; tag = 'tag-green'; }
+      const lastStart = sorted[sorted.length - 1];
+      const dayOfCycle = Math.floor((new Date(dateStr.replace(/\./g,'-')) - new Date(lastStart.date)) / 86400000) + 1;
+      let phase = '月經期';
+      if (dayOfCycle > 5 && dayOfCycle <= 13) phase = '增生期（估）';
+      else if (dayOfCycle > 13 && dayOfCycle <= 17) phase = '排卵窗口（估）';
+      else if (dayOfCycle > 17) phase = '黃體期（估）';
+      html += '<div class="progress-row"><span class="progress-label">最近週期分類</span><span class="tag ' + tag + '">' + grade + '</span></div>';
+      html += '<div class="progress-num" style="margin-top:2px;">最近一個週期 ' + last.len + ' 日（' + last.from + ' 起）</div>';
+      html += '<div class="progress-row" style="margin-top:10px;"><span class="progress-label">平均週期</span><span class="progress-num">' + avg + ' 日（' + lens.length + ' 個記錄）</span></div>';
+      lens.slice(-4).forEach(l => {
+        html += '<div class="progress-track" style="margin-top:4px;"><div class="progress-fill" style="width:' + Math.min(100, l.len / 90 * 100) + '%; background:var(--pale-red-text);"></div></div>';
+        html += '<div class="progress-num" style="margin-top:1px;">' + l.from + ' 起 · ' + l.len + ' 日</div>';
+      });
+      html += '<div class="progress-row" style="margin-top:12px;"><span class="progress-label">今日</span><span class="tag tag-blue">週期第 ' + dayOfCycle + ' 日 · ' + phase + '</span></div>';
+      const nextLo = new Date(lastStart.date); nextLo.setDate(nextLo.getDate() + 21);
+      const nextHi = new Date(lastStart.date); nextHi.setDate(nextHi.getDate() + Math.max(avg, 35));
+      html += '<div class="progress-num" style="margin-top:2px;">下次自然估計：' + nextLo.toISOString().slice(5,10) + ' 至 ' + nextHi.toISOString().slice(5,10) + '</div>';
+    }
+    // 症狀統計
+    const cnt = {};
+    pcosLog.forEach(e => e.syms.forEach(x => cnt[x] = (cnt[x] || 0) + 1));
+    const top = Object.entries(cnt).sort((a,b) => b[1]-a[1]).slice(0, 3);
+    html += '<div class="progress-row" style="margin-top:12px;"><span class="progress-label">症狀 Top 3</span>';
+    html += top.length ? '<span class="tag tag-yellow">' + top.map(t => t[0] + '×' + t[1]).join(' · ') + '</span></div>'
+      : '<span class="tag tag-gray">未有數據</span></div>';
+    const drugDays = pcosLog.filter(e => e.drug).length;
+    html += '<div class="progress-row" style="margin-top:6px;"><span class="progress-label">食藥出血日數</span><span class="tag tag-yellow">' + drugDays + ' 日</span></div>';
+    html += '<div class="card-unit" style="margin-top:10px;">💊 10 月中 Exlutona 起——週期由藥物主導，「下次估計」只供參考；1 月中 3 個月評估點對齊醫生</div>';
+    el.innerHTML = html;
+  }
+  function addPeriodEnd() {
+    const v = document.getElementById('periodEndInput').value;
+    if (!v) return;
+    const sorted = [...periodData].sort((a,b) => a.date.localeCompare(b.date));
+    const last = sorted[sorted.length - 1];
+    if (!last) { alert('先記經期開始日'); return; }
+    if (v < last.date) { alert('完結日唔可以早過開始日'); return; }
+    const real = periodData.find(p => p.date === last.date);
+    real.end = v;
+    localStorage.setItem('zoe_period', JSON.stringify(periodData));
+    calcPeriodStatus();
+    renderSymLog(); renderBleedStrip(); renderCycleAnalysis();
+    alert('已記 ' + last.date + ' 至 ' + v);
+  }
 
   // ----- Sub-segment switching -----
   function switchFit(id, btn) {
@@ -5014,6 +5260,7 @@
   const dpick = document.getElementById('dietDatePick'); if (dpick) dpick.value = dateStr.replace(/\./g, '-');
   renderTodayWorkout(); renderMuscleDist(); renderWeekWoList(); rebuildStrengthSelect(); renderSchedule(); buildExercisePick();
   renderMeasurements(); calcPeriodStatus(); loadStatus();
+  renderSymLog(); renderBleedStrip(); renderCycleAnalysis();
   renderTyping(); renderTrain(); renderPlan(); renderPlanToday(); renderReview(); renderPractice(); renderReal(); renderAgent();
 </script>
 
