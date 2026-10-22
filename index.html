@@ -2928,6 +2928,21 @@
     if (ch) localStorage.setItem('zoe_period', JSON.stringify(cur));
   })();
 
+  // ===== PCOS 症狀日誌種子（ZCode 遠程注入·按 date+drug 去重）=====
+  const SEED_PCOS_LOG = [
+    {date:'2026-10-19', flow:2, pain:0, syms:[], drug:true},
+    {date:'2026-10-20', flow:2, pain:0, syms:[], drug:true},
+    {date:'2026-10-21', flow:3, pain:0, syms:[], drug:true}
+  ];
+  (function() {
+    let cur = JSON.parse(localStorage.getItem('zoe_pcos_log') || '[]');
+    let ch = false;
+    SEED_PCOS_LOG.forEach(e => {
+      if (!cur.some(x => x.date === e.date)) { cur.push(e); ch = true; }
+    });
+    if (ch) localStorage.setItem('zoe_pcos_log', JSON.stringify(cur));
+  })();
+
   let periodData = JSON.parse(localStorage.getItem('zoe_period') || '[]');
   let statusSel = {};
 
