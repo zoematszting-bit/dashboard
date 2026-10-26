@@ -1914,7 +1914,7 @@
       <p class="section-title">🏃 12 週英打計劃（10/7 → 12/30）</p>
       <div class="card card-full">
         <div class="progress-row">
-          <span class="progress-label">10 月 · 基礎重建 21 → 25（W1 歸零·W2 今日開始）</span>
+          <span class="progress-label">10 月 · 基礎重建 21 → 25（W1-W2 兩週全零·W3 開始）</span>
           <span class="tag tag-red">待啟動 · 0 節</span>
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
@@ -4400,12 +4400,12 @@
   ];
   // ===== 📋 打字週復盤卡（v2.75 · 每週日 20:00 cron 自動更新呢度）=====
   // ZCode 改完 push → Zoe refresh 即見（ver 係版本指紋，curl 驗證用）
-  const TYPING_REVIEW = { ver: 'review_v8', date: '2026-10-18', verdict: '❌ W1 開波週未啟動（0/5 日·非技術）→ 已介入：🚀最低劑量 2 分鐘上線', lines: [
-    'W1（10/12-18）：0 節·0 次同步嘗試——工作站/網站/端點全綠，唔係斷線',
-    '診斷：35分鐘四式配方對「啟動難＋完美主義」係太重嘅門（Fogg：動機低→降門檻）',
-    '介入：🚰最低劑量（2分鐘）一撳即打已上線（v2.2·50測試全綠·指紋驗證✓）',
-    '新規則：做唔到 35 分鐘嗰日，撳一次 2 分鐘＝合格——先出現，先完美',
-    'W2 目標：≥5 日×最低劑量｜倒數：ACO 73 日·PSII 79 日｜下次復盤 10/25 20:00'
+  const TYPING_REVIEW = { ver: 'review_v9', date: '2026-10-26', verdict: '🔴 兩週全零（10/12-25）·介入未生效——W3 起改變策略', lines: [
+    'W1（10/12-18）：0 節｜W2（10/19-25）：0 節',
+    '最低劑量 2 分鐘制上線一週——等唔到第一次撳掣',
+    '結論：技術介入已到極限——問題唔係門檻，係開機呢個動作',
+    'W3 策略：同晨跑綁定（跑完步撳 2 分鐘）＋ Zoe 親自承諾一個開機日',
+    '距 12/30 重報 65 日 · 12 週計劃已去 2.5 週 · 差 8 字唔會自己縮'
   ]};
   (function renderTypingReview(){
     const el = document.getElementById('typingReviewBody');
